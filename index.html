@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stranger Danger | investigative Report</title>
+    <title>Stranger Danger | Investigative Report</title>
     <script src="//unpkg.com/globe.gl"></script>
     <style>
         :root { 
@@ -28,55 +28,56 @@
             position: sticky; top: 0; height: 100vh;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .hero-overlay h1 { font-size: 6rem; color: var(--text-white-dull); text-transform: uppercase; margin: 0; text-align: center; pointer-events: none; }
+        .hero-overlay h1 { font-size: 7rem; color: var(--text-white-dull); text-transform: uppercase; margin: 0; text-align: center; pointer-events: none; }
         .hero-overlay p { font-size: 1.6rem; color: var(--main-green-dull); opacity: 0.6; }
 
         .whisper {
             position: absolute; background: rgba(0, 4, 26, 0.9); color: var(--main-green-dull);
-            padding: 10px 20px; border-radius: 30px; font-size: 0.9rem; opacity: 0;
-            filter: blur(20px); transition: opacity 1.5s, filter 2s, transform 2s;
+            padding: 12px 24px; border-radius: 40px; font-size: 1rem; opacity: 0;
+            filter: blur(25px); transition: opacity 1.2s, filter 1.8s, transform 1.8s;
             border: 1px solid rgba(74, 139, 92, 0.1); pointer-events: none;
+            box-shadow: 0 0 20px rgba(0,0,0,1);
         }
-        .whisper.visible { opacity: 0.8; filter: blur(0px); transform: translateY(-10px); }
+        .whisper.visible { opacity: 0.7; filter: blur(0px); transform: translateY(-15px); }
 
-        /* --- 2. CENTERED CHAT INTERFACE --- */
-        .chat-section { height: 100vh; display: flex; align-items: center; justify-content: center; background: transparent; }
+        /* --- 2. CENTERED CHAT --- */
+        .chat-section { height: 100vh; display: flex; align-items: center; justify-content: center; }
         .chat-box {
-            width: 500px; background: rgba(255,255,255,0.03); backdrop-filter: blur(15px);
+            width: 550px; background: rgba(255,255,255,0.03); backdrop-filter: blur(20px);
             padding: 40px; border-radius: 20px; border: 1px solid rgba(74, 139, 92, 0.2);
             text-align: center;
         }
-        #chat-log { height: 150px; overflow-y: auto; margin-bottom: 20px; text-align: left; }
-        .msg { margin-bottom: 10px; font-size: 1.1rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px; }
-        .stranger { color: var(--alert-red-dull); }
-        .you { color: #5187cc; }
-        
-        .chat-options { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-        .chat-btn { background: none; border: 1px solid var(--main-green-dull); color: var(--main-green-dull); padding: 8px 15px; cursor: pointer; transition: 0.3s; }
+        #chat-log { height: 180px; overflow-y: auto; margin-bottom: 25px; text-align: left; }
+        .msg { margin-bottom: 12px; font-size: 1.1rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; color: var(--text-white-dull); }
+        .stranger { color: var(--alert-red-dull); font-weight: bold; }
+        .you { color: #5187cc; font-weight: bold; }
+        .chat-options { display: flex; gap: 10px; justify-content: center; }
+        .chat-btn { background: none; border: 1px solid var(--main-green-dull); color: var(--main-green-dull); padding: 10px 18px; cursor: pointer; transition: 0.3s; }
         .chat-btn:hover { background: var(--main-green-dull); color: black; }
 
-        /* --- 3. ARTICLE --- */
+        /* --- 3. THE FULL ARTICLE (UNTOUCHED) --- */
         .article-section { padding: 150px 20px; display: flex; justify-content: center; }
-        .article-content { max-width: 800px; line-height: 1.9; font-size: 1.3rem; color: var(--main-green-dull); }
-        .article-quote { font-style: italic; border-left: 3px solid var(--text-white-dull); padding-left: 20px; margin: 40px 0; color: white; opacity: 0.7; }
+        .article-content { max-width: 850px; line-height: 1.9; font-size: 1.35rem; color: var(--main-green-dull); }
+        .article-content p { margin-bottom: 30px; }
+        .article-quote { font-style: italic; border-left: 4px solid var(--text-white-dull); padding-left: 25px; margin: 45px 0; color: white; opacity: 0.8; font-size: 1.5rem; }
 
         /* --- 4. GLOBE & SCROLLY --- */
-        .globe-container { position: relative; height: 300vh; background: #000; }
-        .globe-sticky { position: sticky; top: 0; height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; }
-        #globeViz { width: 100%; height: 100%; transition: transform 1s ease; }
+        .globe-container { position: relative; height: 350vh; background: #000; z-index: 5; }
+        .globe-sticky { position: sticky; top: 0; height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        #globeViz { width: 100%; height: 100%; transition: transform 1.2s ease-in-out; }
         
-        .scrolly-text-overlay { position: absolute; right: 10%; width: 30%; z-index: 50; }
+        .scrolly-text-overlay { position: absolute; right: 10%; width: 32%; z-index: 100; pointer-events: none; }
         .step { height: 100vh; display: flex; align-items: center; opacity: 0; transition: 1s; }
         .step.active { opacity: 1; }
-        .step-card { background: rgba(0,0,0,0.9); padding: 25px; border-left: 4px solid var(--main-green-dull); color: white; }
+        .step-card { background: rgba(0,0,0,0.95); padding: 30px; border-left: 4px solid var(--main-green-dull); color: white; pointer-events: auto; }
 
-        /* --- 5. FULL SCREEN VIDEO TRANSITION --- */
-        .video-section { height: 200vh; position: relative; }
-        .video-sticky { position: sticky; top: 0; height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        /* --- 5. FULL SCREEN VIDEO --- */
+        .video-section { height: 250vh; position: relative; z-index: 10; }
+        .video-sticky { position: sticky; top: 0; height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; }
         .video-wrapper { 
-            width: 60%; height: 50%; /* Starts as a box */
+            width: 65%; height: 55%; 
             transition: width 0.1s linear, height 0.1s linear;
-            border: 1px solid var(--main-green-dull);
+            border: 1px solid rgba(74, 139, 92, 0.3);
         }
         video { width: 100%; height: 100%; object-fit: cover; }
     </style>
@@ -87,7 +88,7 @@
         <div class="hero-fixed" id="heroBase">
             <div class="hero-overlay">
                 <h1>Stranger Danger</h1>
-                <p>A Global Investigation into Unregulated Peer-to-Peer Safety</p>
+                <p>How Random Video Chatting Websites Impact Children’s Online Safety</p>
             </div>
         </div>
     </section>
@@ -95,31 +96,50 @@
     <section class="chat-section">
         <div class="chat-box">
             <div id="chat-log">
-                <div class="msg"><span class="stranger">Stranger:</span> u there?</div>
+                <div class="msg"><span class="stranger">Stranger:</span> hello?</div>
             </div>
             <div class="chat-options">
                 <button class="chat-btn" onclick="chat('Who is this?')">"Who is this?"</button>
                 <button class="chat-btn" onclick="chat('asl?')">"asl?"</button>
-                <button class="chat-btn" onclick="chat('Stop messaging me.')">"Stop."</button>
+                <button class="chat-btn" onclick="chat('...')">"..."</button>
             </div>
         </div>
     </section>
 
     <section class="article-section">
         <div class="article-content">
-            <p>It was 11:30 am when Adeen Asad Mirza opened her iPad and decided to talk to online strangers from her bedroom in Dubai. Mirza, who is now an 18-year-old woman, used to speak with anonymous strangers online since she was 10.</p>
-            <div class="article-quote">“Tons of weird experiences. I can write you an essay on the shit I have seen.”</div>
-            <p>Omegle.com was the first few websites that popularised the idea of talking to online strangers. Developed by Leif K. Brooks, the website used to get upto 66 million monthly visits before it shut down in 2023 due to numerous lawsuits involving groomed minors.</p>
-            <p>“In some ways, what we feared has happened - a Hydra effect, where closing a popular webcam platform like Omegle leads to the problem becoming more diffuse,” said researcher Paul Bleakley.</p>
+            <p>It was 11:30 am when Adeen Asad Mirza opened her iPad and decided to talk to online strangers from her bedroom in Dubai. Mirza who is now an 18-year-old woman preparing to go to college used to speak with anonymous strangers online with her friends since she was 10-years-old through websites like umingle.com which is one of the newer video chatting platform started in 2024 that randomly connected strangers for online conversations.</p>
+
+            <div class="article-quote">“Tons of weird experiences. I can write you an essay on the shit I have seen,” said Mirza as she talked with me on the website.</div>
+
+            <p>Often known by different names these roulette-styled chatting platforms allowed users to speak with strangers of any age without an account. Mirza had first found out about such websites from her friends from school who were already using them even before they had their own phones.</p>
+
+            <p>The number of random video chatting websites on the internet like umingle.com that provides services where children can openly connect and speak with adult strangers without any oversight or regulation has increased. These platforms that favors the anonymity of the user, makes it easy for people to connect with strangers and have conversations about any subject.</p>
+
+            <p>These websites that are often known for having explicit online sexual conversations and cyberflashing are also frequented by children who can easily access them without restrictions. Child protection agencies and online child safety groups around the world have been continuously pushing awareness about these online spaces as many such websites were reported on for connecting sexual predators with children. But as there are large number of websites that work on the same principles, identifying online harm against children on these platforms have become increasingly difficult.</p>
+
+            <p>Omegle.com was the first few websites that popularised the idea of talking to online strangers. Developed by Leif K. Brooks an 18-years-old software programmer in Oregon, the website used to get upto 66 million monthly visits and was a cultural moment as social media influencers and YouTubers began streaming content from the conversations they have, making the space even more popular.</p>
+
+            <div class="article-quote">“If the Internet is a manifestation of the “global village”, Omegle was meant to be a way of strolling down a street in that village, striking up conversations with the people you ran into along the way,” Brooks said on his website that shut down in 2023 due to numerous lawsuits.</div>
+
+            <p>The National Center for Missing and Exploited Children that records reports of online exploitation of children, received 6,08,601 reports against Omegle in 2022 alone. The website that gained even more popularity during the pandemic was finally declared bankrupt and was shutdown by Brooks after a case where a 11-year-old was paired on the website with a man in his late 30’s who groomed the child for three years.</p>
+
+            <p>“In some ways, what we feared has happened - a Hydra effect, where closing a popular webcam platform like Omegle leads to the problem becoming more diffuse, and harder to contain,” said Paul Bleakley a researcher at the Middlesex University in London, who conducted a study about adult users who had sexual interactions with children on these chatrooms.</p>
+
+            <p>Teenagers like Mirza who keeps coming back to use such websites out of boredom, shares how easy it is to find people flashing themselves, masterbating or saying racist and sexist slurs as they can stay anonymous.</p>
+
+            <p>According to Naomi Leeds, an attorney from Brooklyn who represented the case against Omegle, one of the major legal difficulty of dealing with online child sexual abuse in websites like Omegle were that these spaces did not hold liability until a large enough harm took place on the platform.</p>
+
+            <p>In the US, there are currently very few regulations that prevent children from online sexual abuse. There are multiple laws that criminalize and prohibit exploiting minors but not many that prevents...</p>
         </div>
     </section>
 
     <section class="globe-container">
-        <div class="globe-sticky" id="globeOuter">
+        <div class="globe-sticky">
             <div id="globeViz"></div>
             <div class="scrolly-text-overlay">
                 <div class="step" data-step="0"><div class="step-card"><h3>Global Handshakes</h3><p>Tracing connections that jump from US residential IPs to unregulated servers in seconds.</p></div></div>
-                <div class="step" data-step="1"><div class="step-card"><h3>No Liability</h3><p>When data is peer-to-peer, many platforms claim they aren't responsible for the content of the stream.</p></div></div>
+                <div class="step" data-step="1"><div class="step-card"><h3>Digital Borders</h3><p>When data is peer-to-peer, physical jurisdiction becomes a legal vacuum for minors.</p></div></div>
             </div>
         </div>
     </section>
@@ -135,94 +155,24 @@
     </section>
 
     <script>
-        // --- BUBBLES ---
+        // --- SMOKY BUBBLES REVEAL ---
         const phrases = ["asl?", "m/f", "hello", "show face", "typing...", "connected", "where u from?", "disconnect"];
         const hero = document.getElementById('heroBase');
-        for(let i=0; i<50; i++) {
+        // We create 3 distinct "waves" of bubbles
+        for(let i=0; i<45; i++) {
             const b = document.createElement('div');
             b.className = 'whisper';
             b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
             let x, y;
-            do { x = Math.random()*85 + 5; y = Math.random()*85 + 5; } while(x > 25 && x < 75 && y > 35 && y < 65);
+            // Spread around the central title
+            do { x = Math.random()*90 + 5; y = Math.random()*90 + 5; } while(x > 20 && x < 80 && y > 35 && y < 65);
             b.style.left = x+"%"; b.style.top = y+"%";
-            b.setAttribute('data-reveal', (i * 30));
+            // Mapping them to finish appearing within 3 scrolls (approx 300vh)
+            b.setAttribute('data-reveal', (i * 60));
             hero.appendChild(b);
         }
 
-        // --- CHAT ---
+        // --- CHAT INTERACTION ---
         function chat(msg) {
             const log = document.getElementById('chat-log');
-            log.innerHTML += `<div class="msg"><span class="you">You:</span> ${msg}</div>`;
-            setTimeout(() => {
-                const replies = ["r u alone?", "where u from?", "hahaha", "connected..."];
-                log.innerHTML += `<div class="msg"><span class="stranger">Stranger:</span> ${replies[Math.floor(Math.random()*replies.length)]}</div>`;
-                log.scrollTop = log.scrollHeight;
-            }, 1000);
-        }
-
-        // --- SCROLL LOGIC ---
-        window.addEventListener('scroll', () => {
-            const s = window.scrollY;
-
-            // Bubbles
-            document.querySelectorAll('.whisper').forEach(w => {
-                if(s > w.getAttribute('data-reveal')) w.classList.add('visible');
-                else w.classList.remove('visible');
-            });
-
-            // BG Transition
-            if(s > 1500) document.body.style.backgroundColor = "var(--deep-blue-dull)";
-            else document.body.style.backgroundColor = "#000";
-
-            // Globe Scrolly
-            const steps = document.querySelectorAll('.step');
-            const gViz = document.getElementById('globeViz');
-            let any = false;
-            steps.forEach(st => {
-                const r = st.getBoundingClientRect();
-                if(r.top < window.innerHeight/2 && r.bottom > window.innerHeight/2) {
-                    st.classList.add('active');
-                    any = true;
-                } else st.classList.remove('active');
-            });
-            gViz.style.transform = any ? "translateX(-20%)" : "translateX(0)";
-
-            // Video Zoom to Full Screen
-            const vidSection = document.querySelector('.video-section');
-            const vidWrapper = document.getElementById('vidWrapper');
-            const rect = vidSection.getBoundingClientRect();
-            if(rect.top < window.innerHeight && rect.bottom > 0) {
-                // Calculate progress (0 to 1) as the video section passes
-                let progress = Math.min(Math.max((window.innerHeight - rect.top) / window.innerHeight, 0), 1);
-                vidWrapper.style.width = (60 + (progress * 40)) + "%";
-                vidWrapper.style.height = (50 + (progress * 50)) + "%";
-                if(progress > 0.1) document.getElementById('explainerVid').play();
-            }
-        });
-
-        // --- GLOBE RECONSTRUCTION ---
-        const world = Globe()(document.getElementById('globeViz'))
-            .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
-            .backgroundColor('rgba(0,0,0,0)')
-            .showAtmosphere(true).atmosphereColor("#4a8b5c")
-            .arcColor(() => 'rgba(184, 61, 61, 0.4)')
-            .arcDashLength(0.4).arcDashGap(2).arcDashAnimateTime(1500);
-
-        world.controls().enableZoom = false;
-
-        fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson')
-            .then(res => res.json()).then(countries => {
-                world.polygonsData(countries.features)
-                    .polygonCapColor(() => 'rgba(0,0,0,0)')
-                    .polygonStrokeColor(() => 'rgba(74, 139, 92, 0.15)');
-
-                setInterval(() => {
-                    const randomCountry = countries.features[Math.floor(Math.random()*countries.features.length)];
-                    const coords = randomCountry.geometry.coordinates[0][0];
-                    const [lng, lat] = Array.isArray(coords[0]) ? coords[0] : coords;
-                    world.arcsData([{ startLat: 37.09, startLng: -95.7, endLat: lat, endLng: lng }]);
-                }, 2000);
-            });
-    </script>
-</body>
-</html>
+            log.innerHTML += `<div
