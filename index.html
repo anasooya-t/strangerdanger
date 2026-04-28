@@ -30,13 +30,24 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             overflow: hidden;
         }
-        .hero-overlay { z-index: 10; text-align: center; pointer-events: none; }
+        .hero-overlay { z-index: 10; text-align: center; pointer-events: none; width: 80%; }
         .hero-overlay h1 { font-size: 5rem; color: var(--text-white-dull); text-transform: uppercase; margin: 0; }
-        .hero-overlay p { font-size: 1.6rem; margin-top: 10px; color: var(--main-green-dull); transition: opacity 1s; }
         
-        /* The subheading that appears later */
-        .reveal-sub { opacity: 0; transform: translateY(20px); transition: all 1.5s ease; font-style: italic; color: var(--text-white-dull); }
-        .reveal-sub.visible { opacity: 0.6; transform: translateY(0); }
+        /* SCROLLY SUBHEADING STYLE */
+        .scrolly-sub { 
+            font-size: 1.6rem; 
+            margin-top: 20px; 
+            color: var(--main-green-dull); 
+            opacity: 0; 
+            filter: blur(20px);
+            transform: translateY(20px);
+            transition: opacity 2s ease, filter 2.5s ease, transform 2s ease;
+        }
+        .scrolly-sub.visible { 
+            opacity: 0.8; 
+            filter: blur(0px); 
+            transform: translateY(0);
+        }
 
         .whisper {
             position: absolute; background: rgba(0, 4, 26, 0.95); color: var(--main-green-dull);
@@ -46,18 +57,19 @@
         }
         .whisper.visible { opacity: 1; filter: blur(0px); transform: scale(1.05); }
 
-        /* --- 2. CENTERED CHAT SECTION --- */
+        /* --- 2. CENTERED & FULL-WIDTH CHAT SECTION --- */
         .chat-section { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; }
         .chat-box {
-            width: 70%; max-width: 800px; background: rgba(255,255,255,0.02); backdrop-filter: blur(20px);
-            padding: 50px; border-radius: 20px; border: 1px solid rgba(74, 139, 92, 0.2);
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8); text-align: center;
+            width: 80%; max-width: 900px; background: rgba(255,255,255,0.02); backdrop-filter: blur(25px);
+            padding: 60px; border-radius: 20px; border: 1px solid rgba(74, 139, 92, 0.2);
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.9); text-align: center;
         }
-        #chat-log { height: 200px; overflow-y: auto; margin-bottom: 20px; text-align: left; padding-right: 10px; }
-        .msg { margin-bottom: 15px; font-size: 1.3rem; color: var(--text-white-dull); }
+        #chat-log { height: 250px; overflow-y: auto; margin-bottom: 30px; text-align: left; padding-right: 15px; }
+        .msg { margin-bottom: 20px; font-size: 1.4rem; color: var(--text-white-dull); }
         .stranger { color: var(--alert-red-dull); font-weight: bold; }
         .you { color: #4385cc; font-weight: bold; }
-        .reply-btn { background:none; border:1px solid var(--main-green-dull); color:var(--main-green-dull); padding:15px 30px; cursor:pointer; font-size: 1.1rem; }
+        .reply-btn { background:none; border: 1px solid var(--main-green-dull); color: var(--main-green-dull); padding: 18px 40px; cursor: pointer; font-size: 1.2rem; transition: 0.3s; }
+        .reply-btn:hover { background: var(--main-green-dull); color: #000; }
 
         /* --- 3. ARTICLE --- */
         .article-section { padding: 100px 20px; display: flex; justify-content: center; position: relative; z-index: 20; }
@@ -74,10 +86,10 @@
         #globeViz { width: 100%; height: 100%; transition: transform 1.5s ease-in-out; }
         .globe-sticky.slide-left #globeViz { transform: translateX(-20%); }
 
-        .scrolly-text-overlay { position: absolute; right: 10%; width: 35%; z-index: 50; pointer-events: none; }
-        .step { height: 100vh; display: flex; align-items: center; opacity: 0; transition: 1s; }
+        .scrolly-text-overlay { position: absolute; right: 10%; width: 35%; z-index: 100; pointer-events: none; }
+        .step { height: 100vh; display: flex; align-items: center; opacity: 0; transition: 1.2s; }
         .step.active { opacity: 1; }
-        .step-card { background: rgba(0, 0, 0, 0.9); padding: 35px; border-left: 4px solid var(--main-green-dull); color: var(--text-white-dull); pointer-events: auto; }
+        .step-card { background: rgba(0, 0, 0, 0.95); padding: 35px; border-left: 4px solid var(--main-green-dull); color: var(--text-white-dull); pointer-events: auto; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
 
         /* --- 5. VIDEO --- */
         .video-section { height: 150vh; position: relative; z-index: 20; }
@@ -92,8 +104,7 @@
         <div class="hero-fixed" id="heroBase">
             <div class="hero-overlay">
                 <h1>Stranger Danger</h1>
-                <p class="reveal-sub" id="initial-p">How Random Video Chatting Websites Impact Children’s Online Safety</p>
-            
+                <p id="subheading" class="scrolly-sub">How Random Video Chatting Websites Impact Children’s Online Safety</p>
             </div>
         </div>
     </div>
@@ -154,9 +165,10 @@
             b.className = 'whisper';
             b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
             let x, y;
-            do { x = Math.random()*90; y = Math.random()*90; } while(x > 20 && x < 80 && y > 30 && y < 70);
+            do { x = Math.random()*90; y = Math.random()*90; } while(x > 15 && x < 85 && y > 25 && y < 75);
             b.style.left = x+"%"; b.style.top = y+"%";
-            b.setAttribute('data-reveal', (i / 45) * 400); 
+            // Reveal spread across 350vh
+            b.setAttribute('data-reveal', (i / 45) * 350); 
             hero.appendChild(b);
         }
 
@@ -180,9 +192,9 @@
                 else w.classList.remove('visible');
             });
 
-            // Subheading appearance (Triggered during second "scroll wave")
-            if (s > 800) document.getElementById('secondary-sub').classList.add('visible');
-            else document.getElementById('secondary-sub').classList.remove('visible');
+            // SUBHEADING SCROLL REVEAL (Triggers around 800px scroll)
+            if (s > 800) document.getElementById('subheading').classList.add('visible');
+            else document.getElementById('subheading').classList.remove('visible');
 
             // BG Transition
             if (s > heroHeight - 1000) document.body.style.backgroundColor = "var(--deep-blue-dull)";
@@ -203,7 +215,7 @@
             else globeSticky.classList.remove('slide-left');
         });
 
-        // --- GLOBE INIT ---
+        // --- GLOBE RECONSTRUCTION ---
         const world = Globe()(document.getElementById('globeViz'))
             .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
             .backgroundColor('rgba(0,0,0,0)')
@@ -220,7 +232,6 @@
                 
                 setInterval(() => {
                     const randomCountry = countries.features[Math.floor(Math.random() * countries.features.length)];
-                    // Fix: Handle Nested multi-polygons
                     let coords = randomCountry.geometry.coordinates[0];
                     while(Array.isArray(coords[0])) coords = coords[0];
                     const [lng, lat] = coords;
