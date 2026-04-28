@@ -7,67 +7,75 @@
     <script src="//unpkg.com/globe.gl"></script>
     
     <style>
-        :root { --main-green: #5eaf73; --deep-blue: #00072d; --alert-red: #ff4e4e; }
+        /* --- DULL & SMOKY PALETTE --- */
+        :root { 
+            --main-green-dull: #4a8b5c; /* Muted, less saturated green */
+            --deep-blue-dull: #00041a; /* Darker, slightly desaturated blue */
+            --alert-red-dull: #b83d3d; /* Desaturated, brick-like red */
+            --text-white-dull: #d0d0d0; /* Muted white */
+        }
 
         body {
             margin: 0; padding: 0;
             font-family: 'Helvetica', Arial, sans-serif;
             background-color: #000;
-            color: var(--main-green);
-            transition: background-color 1.5s cubic-bezier(0.4, 0, 0.2, 1); /* For the Deep Blue transition */
+            color: var(--main-green-dull);
+            transition: background-color 1.8s cubic-bezier(0.4, 0, 0.2, 1); /* Slower blend for smoky feel */
             overflow-x: hidden;
         }
 
         /* --- 1. HERO SECTION & SMOKY BUBBLES --- */
-        .hero-container { height: 250vh; position: relative; background: #000; }
+        .hero-container { height: 350vh; position: relative; background: #000; }
         .hero-fixed {
             position: sticky; top: 0; height: 100vh;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             overflow: hidden;
         }
         .hero-overlay { z-index: 10; text-align: center; pointer-events: none; }
-        .hero-overlay h1 { font-size: 4rem; color: white; text-transform: uppercase; margin: 0; line-height: 1.1; letter-spacing: -1px; }
-        .hero-overlay p { font-size: 1.4rem; margin-top: 20px; }
+        .hero-overlay h1 { font-size: 4rem; color: var(--text-white-dull); text-transform: uppercase; margin: 0; line-height: 1.1; letter-spacing: -1px; }
+        .hero-overlay p { font-size: 1.4rem; margin-top: 20px; color: var(--main-green-dull); opacity: 0.8; }
 
         .whisper {
             position: absolute;
-            background: rgba(0, 7, 45, 0.9);
-            color: var(--main-green);
+            background: rgba(0, 4, 26, 0.95); /* Using dull blue base */
+            color: var(--main-green-dull);
             padding: 12px 22px;
             border-radius: 40px;
             font-size: 1rem;
             white-space: nowrap;
             pointer-events: none;
             opacity: 0;
-            filter: blur(15px); /* The "Smoky" start */
-            transition: opacity 0.8s ease, filter 1.2s ease, transform 1s ease;
-            box-shadow: 0 0 25px 10px rgba(0, 7, 45, 1), 0 0 10px rgba(94, 175, 115, 0.2);
-            border: 1px solid rgba(94, 175, 115, 0.15);
+            filter: blur(20px); /* Heavy initial blur for smoky feel */
+            transition: opacity 1.2s ease, filter 1.8s ease, transform 1.5s ease; /* Slower transitions */
+            box-shadow: 0 0 30px 10px rgba(0, 0, 0, 1), 0 0 15px rgba(74, 139, 92, 0.1);
+            border: 1px solid rgba(74, 139, 92, 0.1);
             z-index: 8;
         }
         .whisper.visible { 
             opacity: 1; 
             filter: blur(0px); 
-            transform: scale(1.05); 
+            transform: scale(1.05) translateY(0); 
         }
 
         /* --- 2. CHAT SECTION --- */
         .chat-section { height: 120vh; padding: 100px 5%; display: flex; align-items: flex-start; position: relative; z-index: 20; }
         .chat-box {
-            width: 400px; background: rgba(255,255,255,0.05); backdrop-filter: blur(15px);
-            padding: 25px; border-radius: 15px; border: 1px solid var(--main-green);
-            position: sticky; top: 150px; box-shadow: 0 0 30px rgba(94, 175, 115, 0.2);
+            width: 400px; background: rgba(255,255,255,0.02); backdrop-filter: blur(20px);
+            padding: 25px; border-radius: 15px; border: 1px solid rgba(74, 139, 92, 0.15);
+            position: sticky; top: 150px; box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
         }
-        .msg { margin-bottom: 10px; font-size: 1.1rem; color: white; }
-        .stranger { color: var(--alert-red); font-weight: bold; }
-        .you { color: #51a2ff; font-weight: bold; }
+        .msg { margin-bottom: 10px; font-size: 1.1rem; color: var(--text-white-dull); }
+        .stranger { color: var(--alert-red-dull); font-weight: bold; }
+        .you { color: #4385cc; /* Desaturated blue for you */ font-weight: bold; }
+        .reply-btn { margin-top:15px; background:none; border:1px solid rgba(74, 139, 92, 0.3); color:var(--main-green-dull); padding:10px; cursor:pointer; }
+        .reply-btn:hover { border-color: var(--main-green-dull); color: var(--text-white-dull); }
 
         /* --- 3. STATIONARY ARTICLE --- */
         .article-section { padding: 100px 20px; display: flex; justify-content: center; position: relative; z-index: 20; }
-        .article-content { max-width: 800px; line-height: 1.8; font-size: 1.25rem; color: var(--main-green); }
-        .article-content h2 { color: white; font-size: 2.2rem; margin-bottom: 30px; border-bottom: 1px solid var(--main-green); padding-bottom: 10px; }
+        .article-content { max-width: 800px; line-height: 1.8; font-size: 1.25rem; color: var(--main-green-dull); opacity: 0.9; }
+        .article-content h2 { color: var(--text-white-dull); font-size: 2.2rem; margin-bottom: 30px; border-bottom: 1px solid rgba(74, 139, 92, 0.2); padding-bottom: 10px; }
         .article-content p { margin-bottom: 25px; }
-        .article-quote { font-style: italic; border-left: 4px solid white; padding-left: 20px; margin: 35px 0; color: #fff; font-size: 1.4rem; }
+        .article-quote { font-style: italic; border-left: 3px solid rgba(255,255,255,0.3); padding-left: 20px; margin: 35px 0; color: #fff; font-size: 1.4rem; opacity: 0.8; }
 
         /* --- 4. GLOBE SECTION --- */
         .globe-container { position: relative; height: 400vh; }
@@ -77,14 +85,15 @@
         }
         #globeViz {
             width: 100%; height: 100%;
-            transition: transform 1s ease-in-out;
+            transition: transform 1.5s ease-in-out;
+            filter: grayscale(0.3) contrast(0.9); /* Dull down the globe texture */
         }
         .globe-sticky.slide-left #globeViz { transform: translateX(-25%); }
 
         .scrolly-text-overlay { position: absolute; right: 10%; width: 35%; pointer-events: none; }
-        .step { height: 100vh; display: flex; align-items: center; opacity: 0; transition: 0.8s; }
+        .step { height: 100vh; display: flex; align-items: center; opacity: 0; transition: 1.2s; }
         .step.active { opacity: 1; }
-        .step-card { background: rgba(0, 0, 0, 0.95); padding: 30px; border-left: 4px solid var(--main-green); color: white; pointer-events: auto; }
+        .step-card { background: rgba(0, 0, 0, 0.98); padding: 30px; border-left: 4px solid var(--main-green-dull); color: var(--text-white-dull); pointer-events: auto; box-shadow: 0 0 30px rgba(0, 0, 0, 0.8); }
 
         /* --- 5. VIDEO SECTION --- */
         .video-section { height: 150vh; position: relative; }
@@ -92,10 +101,11 @@
             position: sticky; top: 0; height: 100vh; width: 100%;
             display: flex; align-items: center; justify-content: center;
         }
-        .video-frame { width: 85%; height: 75%; border: 2px solid var(--main-green); background: #111; }
-        video { width: 100%; height: 100%; object-fit: cover; }
+        .video-frame { width: 85%; height: 75%; border: 2px solid rgba(74, 139, 92, 0.2); background: #111; }
+        video { width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.2) contrast(0.95); }
 
-        #data-popup { position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: black; border: 1px solid var(--main-green); padding: 20px; z-index: 1000; display: none; text-align: center; }
+        #data-popup { position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: #000; border: 1px solid rgba(74, 139, 92, 0.3); padding: 20px; z-index: 1000; display: none; text-align: center; box-shadow: 0 0 50px rgba(0,0,0,1); }
+        #data-popup button { background:none; color:white; border:1px solid rgba(255,255,255,0.3); cursor:pointer; padding: 5px 15px; margin-top:15px; }
     </style>
 </head>
 <body>
@@ -103,7 +113,7 @@
     <div id="data-popup">
         <h3 id="pop-country"></h3>
         <p id="pop-text"></p>
-        <button onclick="this.parentElement.style.display='none'" style="background:none; color:white; border:1px solid white; cursor:pointer; padding: 5px 15px;">Close</button>
+        <button onclick="this.parentElement.style.display='none'">Close</button>
     </div>
 
     <div class="hero-container">
@@ -120,7 +130,7 @@
             <div id="chat-log">
                 <div class="msg"><span class="stranger">Stranger:</span> hello?</div>
             </div>
-            <button onclick="reply()" style="margin-top:15px; background:none; border:1px solid #5eaf73; color:#5eaf73; padding:10px; cursor:pointer;">"Who is this?"</button>
+            <button class="reply-btn" onclick="reply()">"Who is this?"</button>
         </div>
     </section>
 
@@ -141,8 +151,6 @@
             <p>In the US, there are currently very few regulations that prevent children from online sexual abuse. There are multiple laws that criminalize and prohibit exploiting minors but not many that prevents...</p>
         </div>
     </section>
-
-    
 
     <section class="globe-container">
         <div class="globe-sticky" id="globeSticky">
@@ -168,7 +176,12 @@
         // --- 1. HERO SMOKY BUBBLES ---
         const hero = document.getElementById('heroBase');
         const phrases = ["asl?", "m/f", "hello", "where u from?", "typing...", "connected", "show face", "u there?", "disconnected"];
-        for(let i=0; i<45; i++) {
+        const bubbleCount = 45;
+        
+        // Calculate spread over 3 visual 'scrolls' (approx height of the hero-container)
+        const totalRevealSpread = 350; 
+
+        for(let i=0; i<bubbleCount; i++) {
             const b = document.createElement('div');
             b.className = 'whisper';
             b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
@@ -176,7 +189,12 @@
             // Keep bubbles away from central title
             do { x = Math.random()*90; y = Math.random()*90; } while(x > 20 && x < 80 && y > 30 && y < 70);
             b.style.left = x+"%"; b.style.top = y+"%";
-            b.setAttribute('data-reveal', i * 55); 
+            
+            // Add a slight initial downward transform that transitions up
+            b.style.transform = "translateY(20px) scale(0.9)";
+            
+            // Map reveal over the spread based on bubble index
+            b.setAttribute('data-reveal', (i / bubbleCount) * totalRevealSpread); 
             hero.appendChild(b);
         }
 
@@ -200,8 +218,8 @@
                 else w.classList.remove('visible');
             });
 
-            // BG Transition to Deep Blue
-            if (s > heroHeight - 800) { document.body.style.backgroundColor = "var(--deep-blue)"; } 
+            // BG Transition to Deep Blue (Muted)
+            if (s > heroHeight - 1200) { document.body.style.backgroundColor = "var(--deep-blue-dull)"; } 
             else { document.body.style.backgroundColor = "#000000"; }
 
             // Globe Scrollytelling
@@ -232,7 +250,8 @@
             .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
             .backgroundColor('rgba(0,0,0,0)')
             .showAtmosphere(true)
-            .atmosphereColor("#5eaf73");
+            .atmosphereColor("#4a8b5c") /* Dull Green Atmosphere */
+            .atmosphereAltitude(0.15);
 
         world.controls().enableZoom = false;
 
@@ -242,7 +261,11 @@
         fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson')
             .then(res => res.json())
             .then(countries => {
-                world.polygonsData(countries.features);
+                // Style polygons (dull green outlines)
+                world.polygonsData(countries.features)
+                    .polygonCapColor(() => 'rgba(0,0,0,0)')
+                    .polygonStrokeColor(() => 'rgba(74, 139, 92, 0.15)');
+
                 countriesList = countries.features;
                 
                 setInterval(() => {
@@ -254,7 +277,8 @@
                     world.arcsData([{
                         startLat: US_COORDS.lat, startLng: US_COORDS.lng,
                         endLat: lat, endLng: lng,
-                        color: ['#ff4e4e', '#5eaf73']
+                        // Colors (brick red and muted green)
+                        color: ['#b83d3d', '#4a8b5c']
                     }]);
                 }, 2000);
             });
