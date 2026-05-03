@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stranger Danger: Online Safety Report</title>
-    <script src="//unpkg.com/globe.gl"></script>
+    <script src="https://unpkg.com/globe.gl"></script>
     
     <style>
         :root { 
@@ -33,7 +33,6 @@
         .hero-overlay { z-index: 10; text-align: center; pointer-events: none; width: 80%; }
         .hero-overlay h1 { font-size: 5rem; color: var(--text-white-dull); text-transform: uppercase; margin: 0; }
         
-        /* SCROLLY SUBHEADING STYLE */
         .scrolly-sub { 
             font-size: 1.6rem; 
             margin-top: 20px; 
@@ -57,7 +56,7 @@
         }
         .whisper.visible { opacity: 1; filter: blur(0px); transform: scale(1.05); }
 
-        /* --- 2. CENTERED & FULL-WIDTH CHAT SECTION --- */
+        /* --- 2. CHAT SECTION --- */
         .chat-section { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; }
         .chat-box {
             width: 80%; max-width: 900px; background: rgba(255,255,255,0.02); backdrop-filter: blur(25px);
@@ -83,8 +82,26 @@
             position: sticky; top: 0; height: 100vh; width: 100%;
             display: flex; align-items: center; justify-content: center; overflow: hidden;
         }
-        #globeViz { width: 100%; height: 100%; transition: transform 1.5s ease-in-out; }
+        #globeViz { width: 100%; height: 100%; transition: transform 1.5s ease-in-out; cursor: crosshair; }
         .globe-sticky.slide-left #globeViz { transform: translateX(-20%); }
+
+        /* --- NEW: COUNTRY NAME DISPLAY --- */
+        #country-label {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            color: var(--alert-red-dull);
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 110;
+            text-shadow: 0 0 10px rgba(184, 61, 61, 0.5);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
 
         .scrolly-text-overlay { position: absolute; right: 10%; width: 35%; z-index: 100; pointer-events: none; }
         .step { height: 100vh; display: flex; align-items: center; opacity: 0; transition: 1.2s; }
@@ -124,23 +141,18 @@
             <p>It was 11:30 am when Adeen Asad Mirza opened her iPad and decided to talk to online strangers from her bedroom in Dubai. Mirza who is now an 18-year-old woman preparing to go to college used to speak with anonymous strangers online with her friends since she was 10-years-old through websites like umingle.com...</p>
             <div class="article-quote">“Tons of weird experiences. I can write you an essay on the shit I have seen,” said Mirza as she talked with me on the website.</div>
             <p>Often known by different names these roulette-styled chatting platforms allowed users to speak with strangers of any age without an account. Mirza had first found out about such websites from her friends from school who were already using them even before they had their own phones.</p>
-            <p>The number of random video chatting websites on the internet like umingle.com that provides services where children can openly connect and speak with adult strangers without any oversight or regulation has increased. These platforms that favors the anonymity of the user, makes it easy for people to connect with strangers and have conversations about any subject.</p>
-            <p>These websites that are often known for having explicit online sexual conversations and cyberflashing are also frequented by children who can easily access them without restrictions. Child protection agencies and online child safety groups around the world have been continuously pushing awareness about these online spaces as many such websites were reported on for connecting sexual predators with children. But as there are large number of websites that work on the same principles, identifying online harm against children on these platforms have become increasingly difficult.</p>
-            <p>Omegle.com was the first few websites that popularised the idea of talking to online strangers. Developed by Leif K. Brooks an 18-years-old software programmer in Oregon, the website used to get upto 66 million monthly visits and was a cultural moment as social media influencers and YouTubers began streaming content from the conversations they have, making the space even more popular.</p>
-            <div class="article-quote">“If the Internet is a manifestation of the “global village”, Omegle was meant to be a way of strolling down a street in that village, striking up conversations with the people you ran into along the way,” Brooks said on his website that shut down in 2023 due to numerous lawsuits.</div>
-            <p>The National Center for Missing and Exploited Children that records reports of online exploitation of children, received 6,08,601 reports against Omegle in 2022 alone. The website that gained even more popularity during the pandemic was finally declared bankrupt and was shutdown by Brooks after a case where a 11-year-old was paired on the website with a man in his late 30’s who groomed the child for three years.</p>
-            <p>“In some ways, what we feared has happened - a Hydra effect, where closing a popular webcam platform like Omegle leads to the problem becoming more diffuse, and harder to contain,” said Paul Bleakley a researcher at the Middlesex University in London, who conducted a study about adult users who had sexual interactions with children on these chatrooms.</p>
-            <p>Teenagers like Mirza who keeps coming back to use such websites out of boredom, shares how easy it is to find people flashing themselves, masterbating or saying racist and sexist slurs as they can stay anonymous.</p>
-            <p>According to Naomi Leeds, an attorney from Brooklyn who represented the case against Omegle, one of the major legal difficulty of dealing with online child sexual abuse in websites like Omegle were that these spaces did not hold liability until a large enough harm took place on the platform.</p>
-            <p>In the US, there are currently very few regulations that prevent children from online sexual abuse. There are multiple laws that criminalize and prohibit exploiting minors but not many that prevents...</p>
+            <p>The number of random video chatting websites on the internet like umingle.com that provides services where children can openly connect and speak with adult strangers without any oversight or regulation has increased.</p>
+            <p>Omegle.com was the first few websites that popularised the idea of talking to online strangers. Developed by Leif K. Brooks an 18-years-old software programmer in Oregon, the website used to get upto 66 million monthly visits...</p>
         </div>
     </section>
 
     <section class="globe-container">
         <div class="globe-sticky" id="globeSticky">
             <div id="globeViz"></div>
+            <div id="country-label">Select Country</div>
+            
             <div class="scrolly-text-overlay">
-                <div class="step" data-step="0"><div class="step-card"><h3>Global Reach</h3><p>Connections on these sites are immediate and borderless. Watch as the data jumps randomly between the US and the rest of the world.</p></div></div>
+                <div class="step" data-step="0"><div class="step-card"><h3>Global Reach</h3><p>Connections on these sites are immediate and borderless. Click on any region to see the origin of the connection.</p></div></div>
                 <div class="step" data-step="1"><div class="step-card"><h3>Jurisdictional Chaos</h3><p>One second a child is in a US-regulated session; the next, they are peer-to-peer with a server in a country with no data oversight.</p></div></div>
             </div>
         </div>
@@ -167,7 +179,6 @@
             let x, y;
             do { x = Math.random()*90; y = Math.random()*90; } while(x > 15 && x < 85 && y > 25 && y < 75);
             b.style.left = x+"%"; b.style.top = y+"%";
-            // Reveal spread across 350vh
             b.setAttribute('data-reveal', (i / 45) * 350); 
             hero.appendChild(b);
         }
@@ -186,21 +197,17 @@
             const s = window.scrollY;
             const heroHeight = document.querySelector('.hero-container').offsetHeight;
 
-            // Smoky Bubbles
             document.querySelectorAll('.whisper').forEach(w => {
                 if(s > parseInt(w.getAttribute('data-reveal'))) w.classList.add('visible');
                 else w.classList.remove('visible');
             });
 
-            // SUBHEADING SCROLL REVEAL (Triggers around 800px scroll)
             if (s > 800) document.getElementById('subheading').classList.add('visible');
             else document.getElementById('subheading').classList.remove('visible');
 
-            // BG Transition
             if (s > heroHeight - 1000) document.body.style.backgroundColor = "var(--deep-blue-dull)";
             else document.body.style.backgroundColor = "#000000";
 
-            // Globe Scrollytelling
             const steps = document.querySelectorAll('.step');
             const globeSticky = document.getElementById('globeSticky');
             let anyActive = false;
@@ -216,10 +223,19 @@
         });
 
         // --- GLOBE RECONSTRUCTION ---
+        const countryLabel = document.getElementById('country-label');
+
         const world = Globe()(document.getElementById('globeViz'))
             .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
             .backgroundColor('rgba(0,0,0,0)')
-            .showAtmosphere(true).atmosphereColor("#4a8b5c").atmosphereAltitude(0.15);
+            .showAtmosphere(true)
+            .atmosphereColor("#4a8b5c")
+            .atmosphereAltitude(0.15)
+            .onPolygonClick(({ properties: p }) => {
+                // When clicked, show the name in our label
+                countryLabel.innerText = p.NAME || p.ADMIN;
+                countryLabel.style.opacity = 1;
+            });
 
         world.controls().enableZoom = false;
 
@@ -227,8 +243,10 @@
             .then(res => res.json())
             .then(countries => {
                 world.polygonsData(countries.features)
-                    .polygonCapColor(() => 'rgba(0,0,0,0)')
-                    .polygonStrokeColor(() => 'rgba(74, 139, 92, 0.2)');
+                    .polygonCapColor(() => 'rgba(74, 139, 92, 0.05)') // Slight fill so it's clickable
+                    .polygonStrokeColor(() => 'rgba(74, 139, 92, 0.4)')
+                    .polygonSideColor(() => 'rgba(0, 0, 0, 0)')
+                    .polygonLabel(({ properties: p }) => `<b>${p.NAME}</b>`); // Tooltip on hover
                 
                 setInterval(() => {
                     const randomCountry = countries.features[Math.floor(Math.random() * countries.features.length)];
