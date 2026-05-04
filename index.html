@@ -12,7 +12,9 @@
             --deep-blue-dull: #00041a; 
             --alert-red-dull: #b83d3d; 
             --text-white-dull: #d0d0d0; 
-            --bubble-bg: rgba(25, 30, 45, 0.7); /* Distinct from pure black */
+            /* RESTORED PALETTE COLORS */
+            --bubble-bg: rgba(0, 4, 26, 0.8); 
+            --bubble-glow: rgba(74, 139, 92, 0.2);
         }
 
         body {
@@ -31,8 +33,7 @@
             position: sticky; top: 0; height: 100vh;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             overflow: hidden;
-            /* Dark vignette to center the focus */
-            background: radial-gradient(circle, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 90%);
+            background: radial-gradient(circle, var(--deep-blue-dull) 0%, rgba(0,0,0,1) 100%);
         }
 
         .hero-overlay { z-index: 100; text-align: center; pointer-events: none; width: 90%; }
@@ -42,7 +43,7 @@
             text-transform: uppercase; 
             margin: 0;
             letter-spacing: 12px;
-            text-shadow: 0 10px 30px rgba(0,0,0,1), 0 0 10px rgba(255,255,255,0.1);
+            text-shadow: 0 0 30px rgba(0,0,0,1), 0 0 15px var(--bubble-glow);
         }
         
         .scrolly-sub { 
@@ -58,33 +59,33 @@
             margin-right: auto;
             line-height: 1.5;
             letter-spacing: 1.5px;
+            font-weight: 300;
         }
         .scrolly-sub.visible { 
-            opacity: 0.9; 
+            opacity: 1; 
             filter: blur(0px); 
             transform: translateY(0);
         }
 
-        /* UPDATED SMOKY BUBBLE STYLE */
+        /* RESTORED BLUE/GREEN SMOKY BUBBLES */
         .whisper {
             position: absolute; 
-            background: var(--bubble-bg); /* Using the new tinted background color */
-            color: var(--text-white-dull); /* Brighter text for legibility */
+            background: var(--bubble-bg); 
+            color: var(--main-green-dull); /* Back to green text */
             padding: 15px 28px; 
             border-radius: 60px; 
-            font-size: 0.9rem; 
+            font-size: 0.95rem; 
             opacity: 0;
-            filter: blur(30px); 
+            filter: blur(25px); 
             transition: opacity 1.5s ease, filter 2s ease, transform 2s ease;
             
-            /* Enhanced smoky border and shadow */
             box-shadow: 
-                0 15px 35px rgba(0, 0, 0, 0.8), 
-                0 0 15px rgba(74, 139, 92, 0.15); 
-            border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle rim light */
+                0 10px 40px rgba(0, 0, 0, 0.9), 
+                0 0 20px var(--bubble-glow); 
             
+            border: 1px solid rgba(74, 139, 92, 0.15); /* Greenish border light */
             z-index: 8;
-            backdrop-filter: blur(12px); /* Distorts the background like smoke */
+            backdrop-filter: blur(15px);
             white-space: nowrap;
         }
 
@@ -96,8 +97,8 @@
         /* --- 2. CHAT SECTION --- */
         .chat-section { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; }
         .chat-box {
-            width: 80%; max-width: 900px; background: rgba(15,15,20,0.8); backdrop-filter: blur(25px);
-            padding: 60px; border-radius: 20px; border: 1px solid rgba(74, 139, 92, 0.2);
+            width: 80%; max-width: 900px; background: rgba(0, 4, 26, 0.85); backdrop-filter: blur(25px);
+            padding: 60px; border-radius: 20px; border: 1px solid rgba(74, 139, 92, 0.3);
             box-shadow: 0 0 60px rgba(0, 0, 0, 0.9); text-align: center;
         }
         #chat-log { height: 250px; overflow-y: auto; margin-bottom: 30px; text-align: left; padding-right: 15px; }
@@ -191,7 +192,7 @@
     </section>
 
     <script>
-        // --- HERO WHISPERS ---
+        // --- HERO WHISPERS LOGIC ---
         const hero = document.getElementById('heroBase');
         const phrases = ["asl?", "m/f", "hello", "where u from?", "typing...", "connected", "show face", "u there?", "disconnected"];
         
@@ -201,16 +202,16 @@
             b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
             
             let x, y;
-            // Exclusion zone for Heading (roughly center 15%-85% horizontal, 20%-75% vertical)
+            // STRICT CLEARANCE: No bubbles in center text area
             do { 
                 x = Math.random() * 92; 
                 y = Math.random() * 92; 
-            } while(x > 12 && x < 88 && y > 18 && y < 78); 
+            } while(x > 12 && x < 88 && y > 15 && y < 80); 
             
             b.style.left = x+"%"; 
             b.style.top = y+"%";
             
-            const scale = 0.7 + Math.random() * 0.5;
+            const scale = 0.7 + Math.random() * 0.4;
             b.style.fontSize = (0.8 + Math.random() * 0.4) + "rem";
             b.setAttribute('data-reveal', (i / 45) * 350); 
             hero.appendChild(b);
@@ -232,7 +233,7 @@
             document.querySelectorAll('.whisper').forEach(w => {
                 if(s > parseInt(w.getAttribute('data-reveal'))) {
                     w.classList.add('visible');
-                    w.style.transform = `translateY(${-s * 0.08}px)`; 
+                    w.style.transform = `translateY(${-s * 0.1}px)`; 
                 } else {
                     w.classList.remove('visible');
                 }
