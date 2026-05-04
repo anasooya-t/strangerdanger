@@ -7,83 +7,103 @@
 <script src="https://unpkg.com/globe.gl"></script>
 <style>
 :root {
-    --bg-blue: #00041a;
-    --main-green: #4a8b5c;
-    --alert-red: #b83d3d;
-    --quote-white: #ffffff;
+--main-green-dull: #4a8b5c;
+--deep-blue-dull: #00041a;
+--alert-red-dull: #b83d3d;
+--text-white-dull: #d0d0d0;
 }
 
 body {
-    margin: 0; padding: 0;
-    font-family: 'Helvetica', Arial, sans-serif;
-    background-color: var(--bg-blue);
-    color: var(--main-green);
-    overflow-x: hidden;
+margin: 0; padding: 0;
+font-family: 'Helvetica', Arial, sans-serif;
+background-color: #000;
+color: var(--main-green-dull);
+transition: background-color 1.8s ease;
+overflow-x: hidden;
 }
 
-/* --- HERO (FASTER SCROLL) --- */
-.hero-container { height: 160vh; position: relative; background: #000; }
+/* --- HERO --- */
+.hero-container { height: 300vh; position: relative; background: #000; }
 .hero-fixed {
-    position: sticky; top: 0; height: 100vh;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    overflow: hidden;
+position: sticky; top: 0; height: 100vh;
+display: flex; flex-direction: column; align-items: center; justify-content: center;
+overflow: hidden;
 }
-.hero-overlay h1 { font-size: 5rem; color: #fff; text-transform: uppercase; margin: 0; }
+.hero-overlay { z-index: 10; text-align: center; pointer-events: none; width: 80%; }
+.hero-overlay h1 { font-size: 5rem; color: var(--text-white-dull); text-transform: uppercase; margin: 0; }
 .scrolly-sub {
-    font-size: 1.6rem; margin-top: 20px; color: var(--main-green);
-    opacity: 0; transition: 0.6s;
+font-size: 1.6rem; margin-top: 20px; color: var(--main-green-dull);
+opacity: 0; filter: blur(20px); transform: translateY(20px);
+transition: opacity 2s ease, filter 2.5s ease, transform 2s ease;
 }
-.scrolly-sub.visible { opacity: 1; }
+.scrolly-sub.visible { opacity: 0.8; filter: blur(0px); transform: translateY(0); }
+
+.whisper {
+position: absolute; background: rgba(0, 4, 26, 0.95); color: var(--main-green-dull);
+padding: 12px 22px; border-radius: 40px; font-size: 1rem; opacity: 0;
+filter: blur(20px); transition: opacity 1.2s, filter 1.8s, transform 1.5s;
+box-shadow: 0 0 30px 10px rgba(0, 0, 0, 1); border: 1px solid rgba(74, 139, 92, 0.1); z-index: 8;
+}
+.whisper.visible { opacity: 1; filter: blur(0px); transform: scale(1.05); }
 
 /* --- CHAT --- */
-.chat-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+.chat-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; padding: 50px 0; }
 .chat-box {
-    width: 80%; max-width: 800px; background: rgba(255,255,255,0.02);
-    padding: 40px; border-radius: 15px; border: 1px solid var(--main-green);
+width: 80%; max-width: 900px; background: rgba(255,255,255,0.02); backdrop-filter: blur(25px);
+padding: 60px; border-radius: 20px; border: 1px solid rgba(74, 139, 92, 0.2);
+box-shadow: 0 0 60px rgba(0, 0, 0, 0.9); text-align: center;
 }
-#chat-log { height: 200px; overflow-y: auto; margin-bottom: 20px; }
-.stranger { color: var(--alert-red); font-weight: bold; }
+#chat-log { height: 250px; overflow-y: auto; margin-bottom: 30px; text-align: left; padding-right: 15px; }
+.msg { margin-bottom: 20px; font-size: 1.4rem; color: var(--text-white-dull); }
+.stranger { color: var(--alert-red-dull); font-weight: bold; }
 .you { color: #4385cc; font-weight: bold; }
-.reply-btn { background:none; border: 1px solid var(--main-green); color: var(--main-green); padding: 10px 25px; cursor: pointer; }
+.reply-btn { background:none; border: 1px solid var(--main-green-dull); color: var(--main-green-dull); padding: 18px 40px; cursor: pointer; font-size: 1.2rem; transition: 0.3s; }
+.reply-btn:hover { background: var(--main-green-dull); color: #000; }
 
 /* --- ARTICLE --- */
-.article-section { padding: 60px 20px; display: flex; flex-direction: column; align-items: center; }
-.article-content { max-width: 800px; line-height: 1.8; font-size: 1.3rem; }
-.article-quote { font-style: italic; border-left: 4px solid var(--alert-red); padding-left: 20px; margin: 40px 0; color: var(--quote-white); font-size: 1.5rem; }
+.article-section { padding: 100px 20px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 30; background: transparent; }
+.article-content { max-width: 800px; line-height: 1.8; font-size: 1.35rem; color: var(--text-white-dull); }
+.article-content p { margin-bottom: 30px; }
+.article-quote { font-style: italic; border-left: 3px solid var(--alert-red-dull); padding-left: 20px; margin: 40px 0; color: #fff; font-size: 1.5rem; }
 
-/* --- GLOBE SECTION --- */
-.globe-container { position: relative; height: 300vh; }
+/* --- GLOBE --- */
+.globe-container { position: relative; height: 350vh; z-index: 5; background-color: #000; }
 .globe-sticky {
-    position: sticky; top: 0; height: 100vh; width: 100%;
-    display: flex; align-items: center; justify-content: center; overflow: hidden;
+position: sticky; top: 0; height: 100vh; width: 100%;
+display: flex; align-items: center; overflow: hidden;
 }
-#globeViz { width: 100%; height: 100%; transition: transform 1.2s; }
-.globe-container.active #globeViz { transform: translateX(-15%); }
-
-.scrolly-text-right { 
-    position: absolute; right: 5%; width: 35%; z-index: 100; pointer-events: none; 
-}
-.step { height: 100vh; display: flex; align-items: center; opacity: 0; transition: 0.8s; }
-.step.active { opacity: 1; }
-.step-card { 
-    background: rgba(0, 0, 0, 0.9); padding: 30px; border: 1px solid var(--main-green); 
-    color: #fff; font-size: 1.2rem; pointer-events: auto;
-}
+#globeViz { width: 100%; height: 100%; cursor: crosshair; }
 
 #country-label {
-    position: absolute; bottom: 80px; left: 35%; font-size: 2.5rem; 
-    color: var(--alert-red); font-weight: bold; opacity: 0; transition: 0.5s;
+position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%);
+font-size: 2rem; color: var(--alert-red-dull); text-transform: uppercase;
+letter-spacing: 5px; font-weight: bold; pointer-events: none; z-index: 110;
+text-shadow: 0 0 10px rgba(184, 61, 61, 0.5); opacity: 0; transition: opacity 0.5s ease;
+}
+
+.scrolly-text-overlay { 
+position: absolute; left: 5%; width: 35%; z-index: 100; pointer-events: none; 
+top: 0; height: 100%; display: flex; flex-direction: column;
+}
+.step { height: 100vh; display: flex; align-items: center; opacity: 0; transition: 1s; padding-bottom: 20vh;}
+.step.active { opacity: 1; }
+.step-card { 
+background: rgba(0, 4, 26, 0.9); padding: 35px; border-left: 3px solid var(--alert-red-dull); 
+color: var(--text-white-dull); pointer-events: auto; box-shadow: 0 0 40px rgba(0,0,0,0.8); 
+font-size: 1.25rem; line-height: 1.6;
 }
 
 /* --- VIDEO --- */
-.video-section { height: 100vh; display: flex; align-items: center; justify-content: center; }
-.video-frame { width: 80%; height: 70%; border: 1px solid var(--main-green); }
+.video-section { height: 120vh; position: relative; z-index: 20; }
+.video-sticky { position: sticky; top: 0; height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; }
+.video-frame { width: 85%; height: 75%; border: 1px solid rgba(74, 139, 92, 0.2); }
+video { width: 100%; height: 100%; object-fit: cover; }
 </style>
 </head>
 <body>
 
 <div class="hero-container">
-    <div class="hero-fixed">
+    <div class="hero-fixed" id="heroBase">
         <div class="hero-overlay">
             <h1>Stranger Danger</h1>
             <p id="subheading" class="scrolly-sub">How Random Video Chatting Websites Impact Children’s Online Safety</p>
@@ -93,7 +113,9 @@ body {
 
 <section class="chat-section">
     <div class="chat-box">
-        <div id="chat-log"><div class="msg"><span class="stranger">Stranger:</span> hello?</div></div>
+        <div id="chat-log">
+            <div class="msg"><span class="stranger">Stranger:</span> hello?</div>
+        </div>
         <button class="reply-btn" onclick="reply()">"Who is this?"</button>
     </div>
 </section>
@@ -113,17 +135,17 @@ body {
     </div>
 </section>
 
-<section class="globe-container" id="globeParent">
+<section class="globe-container">
     <div class="globe-sticky">
         <div id="globeViz"></div>
-        <div id="country-label">...</div>
-        <div class="scrolly-text-right">
-            <div class="step">
+        <div id="country-label">Select Country</div>
+        <div class="scrolly-text-overlay">
+            <div class="step" data-step="0">
                 <div class="step-card">
                     <p>For 12 minutes from, 6:00 a.m. - 6:12 a.m. Pacific time, the website Umingle.com was monitored to know the demographics of its users.</p>
                 </div>
             </div>
-            <div class="step">
+            <div class="step" data-step="1">
                 <div class="step-card">
                     <p>These are the countries that it connected the video call to from the US in a span of 12 minutes during this time frame.</p>
                 </div>
@@ -139,7 +161,7 @@ body {
         <div class="article-quote">A study conducted at Middlesex University in 2024 revealed that only 2% of adult users expressed regret for interacting with an underage person, while 89% blamed the child.</div>
         <p>As Mirza shared her experiences, she said how her exposure to sexually explicit conversations desensitized her from sending nudes photos to people on Snapchat as a child.</p>
         <div class="article-quote">“I was a minor and they were not,” said Mirza.</div>
-        <p>Child protection agencies and Facebook parent groups across the world are raising alarms about this internet rabbit hole. But identifying online harm against children has become increasingly difficult.</p>
+        <p>Child protection agencies and Facebook parent groups across the world are raising alarms about this internet rabbit hole. But as there are a large number of websites that work on the same principles, identifying online harm against children has become increasingly difficult.</p>
         <div class="article-quote">“We have a list of twenty or even thirty alternatives who use the same basic system,[where] predatory behaviour is a common sight,” said Niels Van Paemel.</div>
         <p>Omegle.com developed in 2009 by Leif K. Brooks used to get up to 66 million monthly visits. Along with similar websites like Chatroulette, it became a cultural moment as influencers posted their interactions online.</p>
         <div class="article-quote">“Omegle was meant to be a way of strolling down a street in that village, striking up conversations with the people you ran into,” Brooks wrote.</div>
@@ -161,30 +183,65 @@ body {
     </div>
 </section>
 
-<div class="video-section">
-    <div class="video-frame"><video id="explainerVid" controls><source src="your-video.mp4" type="video/mp4"></video></div>
-</div>
+<section class="video-section">
+    <div class="video-sticky">
+        <div class="video-frame">
+            <video id="explainerVid" controls>
+                <source src="your-video.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+</section>
 
 <script>
+const hero = document.getElementById('heroBase');
+const phrases = ["asl?", "m/f", "hello", "where u from?", "typing...", "connected", "show face", "u there?", "disconnected"];
+for(let i=0; i<45; i++) {
+    const b = document.createElement('div');
+    b.className = 'whisper';
+    b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
+    let x, y;
+    do { x = Math.random()*90; y = Math.random()*90; } while(x > 15 && x < 85 && y > 25 && y < 75);
+    b.style.left = x+"%"; b.style.top = y+"%";
+    b.setAttribute('data-reveal', (i / 45) * 600);
+    hero.appendChild(b);
+}
+
 function reply() {
     const log = document.getElementById('chat-log');
     log.innerHTML += `<div class="msg"><span class="you">You:</span> Who is this?</div>`;
+    setTimeout(() => {
+        log.innerHTML += `<div class="msg"><span class="stranger">Stranger:</span> Just a stranger monitoring the grid.</div>`;
+        log.scrollTop = log.scrollHeight;
+    }, 1000);
 }
 
 window.addEventListener('scroll', () => {
     const s = window.scrollY;
-    if (s > 200) document.getElementById('subheading').classList.add('visible');
-    
-    const gParent = document.getElementById('globeParent');
-    const gTop = gParent.getBoundingClientRect().top;
-    if (gTop < 300) gParent.classList.add('active');
-    else gParent.classList.remove('active');
+    document.querySelectorAll('.whisper').forEach(w => {
+        if(s > parseInt(w.getAttribute('data-reveal'))) w.classList.add('visible');
+        else w.classList.remove('visible');
+    });
+    if (s > 800) document.getElementById('subheading').classList.add('visible');
+    else document.getElementById('subheading').classList.remove('visible');
 
-    document.querySelectorAll('.step').forEach(step => {
+    const steps = document.querySelectorAll('.step');
+    steps.forEach(step => {
         const rect = step.getBoundingClientRect();
-        if(rect.top < window.innerHeight * 0.7) step.classList.add('active');
+        if(rect.top < window.innerHeight * 0.7 && rect.bottom > window.innerHeight * 0.3) step.classList.add('active');
+        else step.classList.remove('active');
     });
 });
+
+const countryLabel = document.getElementById('country-label');
+const world = Globe()(document.getElementById('globeViz'))
+    .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
+    .backgroundColor('rgba(0,0,0,0)')
+    .showAtmosphere(true)
+    .atmosphereColor("#4a8b5c")
+    .atmosphereAltitude(0.2);
+
+world.controls().enableZoom = false;
 
 const sequence = [
     "Singapore", "Switzerland", "New Zealand", "Australia", "Germany", 
@@ -192,51 +249,57 @@ const sequence = [
     "South Africa", "Qatar", "Ireland", "Israel", "Portugal"
 ];
 
-const world = Globe()(document.getElementById('globeViz'))
-    .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
-    .backgroundColor('rgba(0,0,0,0)')
-    .showAtmosphere(true)
-    .atmosphereColor("#4a8b5c");
-
 fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson')
     .then(res => res.json())
     .then(countries => {
         world.polygonsData(countries.features)
-            .polygonCapColor(() => 'rgba(74, 139, 92, 0.08)')
-            .polygonStrokeColor(() => 'rgba(74, 139, 92, 0.2)');
+            .polygonCapColor(() => 'rgba(74, 139, 92, 0.05)')
+            .polygonStrokeColor(() => 'rgba(74, 139, 92, 0.3)')
+            .polygonSideColor(() => 'rgba(0, 0, 0, 0)');
 
-        world.pointOfView({ lat: 37.09, lng: -95.71, altitude: 2.2 });
+        world.pointOfView({ lat: 37.09, lng: -95.71, altitude: 2.5 }, 1000);
 
         let i = 0;
-        function runJourney() {
+        function nextConnection() {
             const countryName = sequence[i % sequence.length];
-            const country = countries.features.find(c => c.properties.NAME === countryName || c.properties.ADMIN === countryName);
+            const country = countries.features.find(c => 
+                c.properties.NAME === countryName || c.properties.ADMIN === countryName
+            );
 
             if (country) {
                 let coords = country.geometry.coordinates[0];
                 while(Array.isArray(coords[0])) coords = coords[0];
                 const [lng, lat] = coords;
 
-                world.arcsData([{ startLat: 37.09, startLng: -95.71, endLat: lat, endLng: lng, color: ['#b83d3d', '#4a8b5c'] }]);
+                // Arc logic - Red to Green
+                world.arcsData([{
+                    startLat: 37.09, startLng: -95.71,
+                    endLat: lat, endLng: lng,
+                    color: ['#b83d3d', '#4a8b5c']
+                }]);
+
+                // Wait 500ms for line to start, then glide
+                setTimeout(() => {
+                    world.pointOfView({ lat, lng, altitude: 1.8 }, 1400);
+                    countryLabel.innerText = countryName;
+                    countryLabel.style.opacity = 1;
+                    world.polygonCapColor(d => 
+                        (d.properties.NAME === countryName || d.properties.ADMIN === countryName) 
+                        ? 'rgba(184, 61, 61, 0.6)' : 'rgba(74, 139, 92, 0.05)'
+                    );
+                }, 500);
 
                 setTimeout(() => {
-                    world.pointOfView({ lat, lng, altitude: 1.8 }, 1200);
-                    const label = document.getElementById('country-label');
-                    label.innerText = countryName;
-                    label.style.opacity = 1;
-                }, 400);
-
-                setTimeout(() => {
-                    document.getElementById('country-label').style.opacity = 0;
+                    countryLabel.style.opacity = 0;
                     i++;
-                    runJourney();
-                }, 4000);
+                    nextConnection();
+                }, 3500); 
             }
         }
-        setTimeout(runJourney, 3000);
+        setTimeout(nextConnection, 2000);
     });
 
-world.arcDashLength(0.5).arcDashGap(1).arcDashAnimateTime(1500).arcStroke(1);
+world.arcDashLength(0.4).arcDashGap(2).arcDashAnimateTime(1500).arcStroke(0.8);
 </script>
 </body>
 </html>
