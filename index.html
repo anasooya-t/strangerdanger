@@ -40,20 +40,21 @@ body {
 .scrolly-sub.visible { opacity: 0.8; filter: blur(0px); transform: translateY(0); }
 
 .whisper {
-    position: absolute; background: rgba(0, 4, 26, 0.95); color: var(--main-green-dull);
+    position: absolute; 
+    background: rgba(0, 4, 26, 0.95); /* Restored Opaque Color */
+    color: var(--main-green-dull);
     padding: 12px 22px; border-radius: 40px; font-size: 1rem; opacity: 0;
     filter: blur(20px); transition: opacity 1.2s, filter 1.8s, transform 1.5s;
     box-shadow: 0 0 30px 10px rgba(0, 0, 0, 1); border: 1px solid rgba(74, 139, 92, 0.1); z-index: 8;
     
-    /* Subconscious floating */
+    /* Stationary somber motion */
     animation: somberFloat var(--float-duration) ease-in-out var(--float-delay) infinite;
 }
-.whisper.visible { opacity: 0.75; filter: blur(0px); }
+.whisper.visible { opacity: 1; filter: blur(0px); }
 
-/* Somber Floating: Tiny movement, incredibly slow */
 @keyframes somberFloat {
     0% { transform: translate(0, 0) scale(1.05); }
-    50% { transform: translate(2px, -5px) scale(1.04); }
+    50% { transform: translate(6px, -12px) scale(1.05); }
     100% { transform: translate(0, 0) scale(1.05); }
 }
 
@@ -219,7 +220,7 @@ const videoObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 videoObserver.observe(graveVid);
 
-// --- REVERTED HERO WHISPERS WITH SLOW MOTION ---
+// --- HERO WHISPERS: SOMBER MOVEMENT ---
 const hero = document.getElementById('heroBase');
 const phrases = ["asl?", "m/f", "hello", "where u from?", "connected", "show face", "disconnected"];
 for(let i=0; i<45; i++) {
@@ -227,8 +228,8 @@ for(let i=0; i<45; i++) {
     b.className = 'whisper';
     b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
     
-    // Duration set to 15-25 seconds for extremely slow movement
-    const duration = 15 + Math.random() * 10;
+    // Duration set to 12-20 seconds
+    const duration = 12 + Math.random() * 8;
     const delay = Math.random() * -20; 
     b.style.setProperty('--float-duration', `${duration}s`);
     b.style.setProperty('--float-delay', `${delay}s`);
