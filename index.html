@@ -30,6 +30,7 @@ body {
     overflow: hidden;
     background: #000; 
 }
+.hero-overlay { z-index: 10; position: relative; pointer-events: none; }
 .hero-overlay h1 { font-size: 5rem; color: var(--text-white-dull); text-transform: uppercase; margin: 0; text-align: center; }
 .scrolly-sub {
     font-size: 1.6rem; margin-top: 20px; color: var(--main-green-dull);
@@ -40,12 +41,21 @@ body {
 .scrolly-sub.visible { opacity: 0.8; filter: blur(0px); transform: translateY(0); }
 
 .whisper {
-    position: absolute; background: rgba(0, 4, 26, 0.95); color: var(--main-green-dull);
+    position: absolute; 
+    background: rgba(0, 4, 26, 0.95); 
+    color: var(--main-green-dull);
     padding: 12px 22px; border-radius: 40px; font-size: 1rem; opacity: 0;
     filter: blur(20px); transition: opacity 1.2s, filter 1.8s, transform 1.5s;
-    box-shadow: 0 0 30px 10px rgba(0, 0, 0, 1); border: 1px solid rgba(74, 139, 92, 0.1); z-index: 8;
+    box-shadow: 0 0 30px 10px rgba(0, 0, 0, 1); border: 1px solid rgba(74, 139, 92, 0.1); z-index: 5;
+    animation: somberFloat var(--float-duration) ease-in-out var(--float-delay) infinite;
 }
-.whisper.visible { opacity: 1; filter: blur(0px); transform: scale(1.05); }
+.whisper.visible { opacity: 1; filter: blur(0px); }
+
+@keyframes somberFloat {
+    0% { transform: translate(0, 0) scale(1.05); }
+    50% { transform: translate(6px, -12px) scale(1.05); }
+    100% { transform: translate(0, 0) scale(1.05); }
+}
 
 /* --- CHAT SECTION --- */
 .chat-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; }
@@ -209,15 +219,26 @@ const videoObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 videoObserver.observe(graveVid);
 
-// --- REVERTED HERO WHISPERS ---
+// --- HERO WHISPERS: AVOIDING CENTER ---
 const hero = document.getElementById('heroBase');
 const phrases = ["asl?", "m/f", "hello", "where u from?", "connected", "show face", "disconnected"];
 for(let i=0; i<45; i++) {
     const b = document.createElement('div');
     b.className = 'whisper';
     b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
+    
+    const duration = 12 + Math.random() * 8;
+    const delay = Math.random() * -20; 
+    b.style.setProperty('--float-duration', `${duration}s`);
+    b.style.setProperty('--float-delay', `${delay}s`);
+
     let x, y;
-    do { x = Math.random()*90; y = Math.random()*90; } while(x > 15 && x < 85 && y > 25 && y < 75);
+    // logic to keep bubbles out of the center (30% to 70% range)
+    do { 
+        x = Math.random()*90; 
+        y = Math.random()*90; 
+    } while(x > 25 && x < 75 && y > 35 && y < 65);
+    
     b.style.left = x+"%"; b.style.top = y+"%";
     b.setAttribute('data-reveal', (i / 45) * 600);
     hero.appendChild(b);
