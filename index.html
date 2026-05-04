@@ -1,233 +1,263 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stranger Danger: Online Safety Report</title>
-    <script src="https://unpkg.com/globe.gl"></script>
-    
-    <style>
-        :root { 
-            --main-green-dull: #4a8b5c; 
-            --deep-blue-dull: #00041a; 
-            --alert-red-dull: #b83d3d; 
-            --text-white-dull: #d0d0d0; 
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stranger Danger: Online Safety Report</title>
+<script src="https://unpkg.com/globe.gl"></script>
+<style>
+:root {
+--main-green-dull: #4a8b5c;
+--deep-blue-dull: #00041a;
+--alert-red-dull: #b83d3d;
+--text-white-dull: #d0d0d0;
+}
 
-        body {
-            margin: 0; padding: 0;
-            font-family: 'Helvetica', Arial, sans-serif;
-            background-color: #000;
-            color: var(--main-green-dull);
-            transition: background-color 1.8s ease;
-            overflow-x: hidden;
-        }
+body {
+margin: 0; padding: 0;
+font-family: 'Helvetica', Arial, sans-serif;
+background-color: #000;
+color: var(--main-green-dull);
+transition: background-color 1.8s ease;
+overflow-x: hidden;
+}
 
-        /* --- 1. HERO SECTION & SMOKY BUBBLES --- */
-        .hero-container { height: 400vh; position: relative; background: #000; }
-        .hero-fixed {
-            position: sticky; top: 0; height: 100vh;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            overflow: hidden;
-        }
-        .hero-overlay { z-index: 10; text-align: center; pointer-events: none; width: 80%; }
-        .hero-overlay h1 { font-size: 5rem; color: var(--text-white-dull); text-transform: uppercase; margin: 0; }
-        
-        .scrolly-sub { 
-            font-size: 1.6rem; 
-            margin-top: 20px; 
-            color: var(--main-green-dull); 
-            opacity: 0; 
-            filter: blur(20px);
-            transform: translateY(20px);
-            transition: opacity 1.5s ease, filter 2s ease, transform 1.5s ease;
-        }
-        .scrolly-sub.visible { 
-            opacity: 0.8; 
-            filter: blur(0px); 
-            transform: translateY(0);
-        }
+/* --- 1. HERO SECTION & SMOKY BUBBLES --- */
+.hero-container { height: 400vh; position: relative; background: #000; }
+.hero-fixed {
+position: sticky; top: 0; height: 100vh;
+display: flex; flex-direction: column; align-items: center; justify-content: center;
+overflow: hidden;
+}
+.hero-overlay { z-index: 10; text-align: center; pointer-events: none; width: 80%; }
+.hero-overlay h1 { font-size: 5rem; color: var(--text-white-dull); text-transform: uppercase; margin: 0; }
+.scrolly-sub {
+font-size: 1.6rem;
+margin-top: 20px;
+color: var(--main-green-dull);
+opacity: 0;
+filter: blur(20px);
+transform: translateY(20px);
+transition: opacity 2s ease, filter 2.5s ease, transform 2s ease;
+}
+.scrolly-sub.visible {
+opacity: 0.8;
+filter: blur(0px);
+transform: translateY(0);
+}
 
-        .whisper {
-            position: absolute; background: rgba(0, 4, 26, 0.95); color: var(--main-green-dull);
-            padding: 12px 22px; border-radius: 40px; font-size: 1rem; opacity: 0;
-            filter: blur(20px); transition: opacity 1s ease, filter 1.5s ease, transform 1.2s ease;
-            box-shadow: 0 0 30px 10px rgba(0, 0, 0, 1); border: 1px solid rgba(74, 139, 92, 0.1); z-index: 8;
-        }
-        .whisper.visible { opacity: 1; filter: blur(0px); transform: scale(1.05); }
+.whisper {
+position: absolute; background: rgba(0, 4, 26, 0.95); color: var(--main-green-dull);
+padding: 12px 22px; border-radius: 40px; font-size: 1rem; opacity: 0;
+filter: blur(20px); transition: opacity 1.2s, filter 1.8s, transform 1.5s;
+box-shadow: 0 0 30px 10px rgba(0, 0, 0, 1); border: 1px solid rgba(74, 139, 92, 0.1); z-index: 8;
+}
+.whisper.visible { opacity: 1; filter: blur(0px); transform: scale(1.05); }
 
-        /* --- 2. CHAT SECTION --- */
-        .chat-section { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; }
-        .chat-box {
-            width: 80%; max-width: 900px; background: rgba(255,255,255,0.02); backdrop-filter: blur(25px);
-            padding: 60px; border-radius: 20px; border: 1px solid rgba(74, 139, 92, 0.2);
-            box-shadow: 0 0 60px rgba(0, 0, 0, 0.9); text-align: center;
-        }
-        #chat-log { height: 250px; overflow-y: auto; margin-bottom: 30px; text-align: left; padding-right: 15px; }
-        .msg { margin-bottom: 20px; font-size: 1.4rem; color: var(--text-white-dull); }
-        .stranger { color: var(--alert-red-dull); font-weight: bold; }
-        .you { color: #4385cc; font-weight: bold; }
-        .reply-btn { background:none; border: 1px solid var(--main-green-dull); color: var(--main-green-dull); padding: 18px 40px; cursor: pointer; font-size: 1.2rem; transition: 0.3s; }
-        .reply-btn:hover { background: var(--main-green-dull); color: #000; }
+/* --- 2. CHAT SECTION --- */
+.chat-section { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; }
+.chat-box {
+width: 80%; max-width: 900px; background: rgba(255,255,255,0.02); backdrop-filter: blur(25px);
+padding: 60px; border-radius: 20px; border: 1px solid rgba(74, 139, 92, 0.2);
+box-shadow: 0 0 60px rgba(0, 0, 0, 0.9); text-align: center;
+}
+#chat-log { height: 250px; overflow-y: auto; margin-bottom: 30px; text-align: left; padding-right: 15px; }
+.msg { margin-bottom: 20px; font-size: 1.4rem; color: var(--text-white-dull); }
+.stranger { color: var(--alert-red-dull); font-weight: bold; }
+.you { color: #4385cc; font-weight: bold; }
+.reply-btn { background:none; border: 1px solid var(--main-green-dull); color: var(--main-green-dull); padding: 18px 40px; cursor: pointer; font-size: 1.2rem; transition: 0.3s; }
+.reply-btn:hover { background: var(--main-green-dull); color: #000; }
 
-        /* --- 3. ARTICLE --- */
-        .article-section { padding: 100px 20px; display: flex; justify-content: center; position: relative; z-index: 20; }
-        .article-content { max-width: 800px; line-height: 1.8; font-size: 1.35rem; color: var(--main-green-dull); }
-        .article-content h2 { color: var(--text-white-dull); font-size: 2.5rem; margin-bottom: 40px; border-bottom: 1px solid rgba(74, 139, 92, 0.2); }
-        .article-quote { font-style: italic; border-left: 3px solid rgba(255,255,255,0.3); padding-left: 20px; margin: 40px 0; color: #fff; font-size: 1.5rem; }
+/* --- 3. ARTICLE --- */
+.article-section { padding: 100px 20px; display: flex; justify-content: center; position: relative; z-index: 20; }
+.article-content { max-width: 800px; line-height: 1.8; font-size: 1.35rem; color: var(--main-green-dull); }
+.article-content h2 { color: var(--text-white-dull); font-size: 2.5rem; margin-bottom: 40px; border-bottom: 1px solid rgba(74, 139, 92, 0.2); }
+.article-quote { font-style: italic; border-left: 3px solid rgba(255,255,255,0.3); padding-left: 20px; margin: 40px 0; color: #fff; font-size: 1.5rem; }
 
-        /* --- 4. GLOBE SECTION --- */
-        .globe-container { position: relative; height: 400vh; z-index: 5; }
-        .globe-sticky {
-            position: sticky; top: 0; height: 100vh; width: 100%;
-            display: flex; align-items: center; justify-content: center; overflow: hidden;
-        }
-        #globeViz { width: 100%; height: 100%; transition: transform 1.5s ease-in-out; cursor: crosshair; }
+/* --- 4. GLOBE SECTION --- */
+.globe-container { position: relative; height: 400vh; z-index: 5; }
+.globe-sticky {
+position: sticky; top: 0; height: 100vh; width: 100%;
+display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+#globeViz { width: 100%; height: 100%; transition: transform 1.5s ease-in-out; cursor: crosshair; }
+.globe-sticky.slide-left #globeViz { transform: translateX(-20%); }
 
-        #country-label {
-            position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%);
-            font-size: 2rem; color: var(--alert-red-dull); text-transform: uppercase;
-            letter-spacing: 5px; font-weight: bold; pointer-events: none; z-index: 110;
-            text-shadow: 0 0 10px rgba(184, 61, 61, 0.5); opacity: 0; transition: opacity 0.5s ease;
-        }
+/* --- NEW: COUNTRY NAME DISPLAY --- */
+#country-label {
+position: absolute;
+bottom: 50px;
+left: 50%;
+transform: translateX(-50%);
+font-size: 2rem;
+color: var(--alert-red-dull);
+text-transform: uppercase;
+letter-spacing: 5px;
+font-weight: bold;
+pointer-events: none;
+z-index: 110;
+text-shadow: 0 0 10px rgba(184, 61, 61, 0.5);
+opacity: 0;
+transition: opacity 0.5s ease;
+}
 
-        /* --- 5. VIDEO --- */
-        .video-section { height: 150vh; position: relative; z-index: 20; }
-        .video-sticky { position: sticky; top: 0; height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; }
-        .video-frame { width: 85%; height: 75%; border: 1px solid rgba(74, 139, 92, 0.2); }
-        video { width: 100%; height: 100%; object-fit: cover; }
-    </style>
+.scrolly-text-overlay { position: absolute; right: 10%; width: 35%; z-index: 100; pointer-events: none; }
+.step { height: 100vh; display: flex; align-items: center; opacity: 0; transition: 1.2s; }
+.step.active { opacity: 1; }
+.step-card { background: rgba(0, 0, 0, 0.95); padding: 35px; border-left: 4px solid var(--main-green-dull); color: var(--text-white-dull); pointer-events: auto; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+
+/* --- 5. VIDEO --- */
+.video-section { height: 150vh; position: relative; z-index: 20; }
+.video-sticky { position: sticky; top: 0; height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; }
+.video-frame { width: 85%; height: 75%; border: 1px solid rgba(74, 139, 92, 0.2); }
+video { width: 100%; height: 100%; object-fit: cover; }
+</style>
 </head>
 <body>
 
-    <div class="hero-container">
-        <div class="hero-fixed" id="heroBase">
-            <div class="hero-overlay">
-                <h1>Stranger Danger</h1>
-                <p id="subheading" class="scrolly-sub">How Random Video Chatting Websites Impact Children’s Online Safety</p>
-            </div>
-        </div>
-    </div>
+<div class="hero-container">
+<div class="hero-fixed" id="heroBase">
+<div class="hero-overlay">
+<h1>Stranger Danger</h1>
+<p id="subheading" class="scrolly-sub">How Random Video Chatting Websites Impact Children’s Online Safety</p>
+</div>
+</div>
+</div>
 
-    <section class="chat-section">
-        <div class="chat-box">
-            <div id="chat-log">
-                <div class="msg"><span class="stranger">Stranger:</span> hello?</div>
-            </div>
-            <button class="reply-btn" onclick="reply()">"Who is this?"</button>
-        </div>
-    </section>
+<section class="chat-section">
+<div class="chat-box">
+<div id="chat-log">
+<div class="msg"><span class="stranger">Stranger:</span> hello?</div>
+</div>
+<button class="reply-btn" onclick="reply()">"Who is this?"</button>
+</div>
+</section>
 
-    <section class="article-section">
-        <div class="article-content">
-            <h2>I Want to Talk to Strangers</h2>
-            <p>It was 11:30 am when Adeen Asad Mirza opened her iPad and decided to talk to online strangers from her bedroom in Dubai. Mirza who is now an 18-year-old woman preparing to go to college used to speak with anonymous strangers online with her friends since she was 10-years-old through websites like umingle.com...</p>
-            <div class="article-quote">“Tons of weird experiences. I can write you an essay on the shit I have seen,” said Mirza as she talked with me on the website.</div>
-            <p>Often known by different names these roulette-styled chatting platforms allowed users to speak with strangers of any age without an account.</p>
-        </div>
-    </section>
+<section class="article-section">
+<div class="article-content">
+<h2>I Want to Talk to Strangers</h2>
+<p>It was 11:30 am when Adeen Asad Mirza opened her iPad and decided to talk to online strangers from her bedroom in Dubai. Mirza who is now an 18-year-old woman preparing to go to college used to speak with anonymous strangers online with her friends since she was 10-years-old through websites like umingle.com...</p>
+<div class="article-quote">“Tons of weird experiences. I can write you an essay on the shit I have seen,” said Mirza as she talked with me on the website.</div>
+<p>Often known by different names these roulette-styled chatting platforms allowed users to speak with strangers of any age without an account. Mirza had first found out about such websites from her friends from school who were already using them even before they had their own phones.</p>
+<p>The number of random video chatting websites on the internet like umingle.com that provides services where children can openly connect and speak with adult strangers without any oversight or regulation has increased.</p>
+<p>Omegle.com was the first few websites that popularised the idea of talking to online strangers. Developed by Leif K. Brooks an 18-years-old software programmer in Oregon, the website used to get upto 66 million monthly visits...</p>
+</div>
+</section>
 
-    <section class="globe-container">
-        <div class="globe-sticky" id="globeSticky">
-            <div id="globeViz"></div>
-            <div id="country-label">Select Country</div>
-        </div>
-    </section>
+<section class="globe-container">
+<div class="globe-sticky" id="globeSticky">
+<div id="globeViz"></div>
+<div id="country-label">Select Country</div>
+<div class="scrolly-text-overlay">
+<div class="step" data-step="0"><div class="step-card"><h3>Global Reach</h3><p>Connections on these sites are immediate and borderless. Click on any region to see the origin of the connection.</p></div></div>
+<div class="step" data-step="1"><div class="step-card"><h3>Jurisdictional Chaos</h3><p>One second a child is in a US-regulated session; the next, they are peer-to-peer with a server in a country with no data oversight.</p></div></div>
+</div>
+</div>
+</section>
 
-    <section class="video-section">
-        <div class="video-sticky">
-            <div class="video-frame">
-                <video id="explainerVid" controls>
-                    <source src="your-video.mp4" type="video/mp4">
-                </video>
-            </div>
-        </div>
-    </section>
+<section class="video-section">
+<div class="video-sticky">
+<div class="video-frame">
+<video id="explainerVid" controls>
+<source src="your-video.mp4" type="video/mp4">
+</video>
+</div>
+</div>
+</section>
 
-    <script>
-        // --- 1. HERO WHISPERS ---
-        const hero = document.getElementById('heroBase');
-        const phrases = ["asl?", "m/f", "hello", "where u from?", "typing...", "connected", "show face", "u there?", "disconnected"];
-        for(let i=0; i<45; i++) {
-            const b = document.createElement('div');
-            b.className = 'whisper';
-            b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
-            let x, y;
-            do { x = Math.random()*90; y = Math.random()*90; } while(x > 15 && x < 85 && y > 25 && y < 75);
-            b.style.left = x+"%"; b.style.top = y+"%";
-            
-            // All bubbles reveal within the first 1500px of scroll
-            b.setAttribute('data-reveal', (i / 45) * 1500); 
-            hero.appendChild(b);
-        }
+<script>
+// --- 1. HERO WHISPERS ---
+const hero = document.getElementById('heroBase');
+const phrases = ["asl?", "m/f", "hello", "where u from?", "typing...", "connected", "show face", "u there?", "disconnected"];
+for(let i=0; i<45; i++) {
+const b = document.createElement('div');
+b.className = 'whisper';
+b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
+let x, y;
+do { x = Math.random()*90; y = Math.random()*90; } while(x > 15 && x < 85 && y > 25 && y < 75);
+b.style.left = x+"%"; b.style.top = y+"%";
+b.setAttribute('data-reveal', (i / 45) * 350);
+hero.appendChild(b);
+}
 
-        function reply() {
-            const log = document.getElementById('chat-log');
-            log.innerHTML += `<div class="msg"><span class="you">You:</span> Who is this?</div>`;
-            setTimeout(() => {
-                log.innerHTML += `<div class="msg"><span class="stranger">Stranger:</span> Just a stranger monitoring the grid.</div>`;
-                log.scrollTop = log.scrollHeight;
-            }, 1000);
-        }
+function reply() {
+const log = document.getElementById('chat-log');
+log.innerHTML += `<div class="msg"><span class="you">You:</span> Who is this?</div>`;
+setTimeout(() => {
+log.innerHTML += `<div class="msg"><span class="stranger">Stranger:</span> Just a stranger monitoring the grid.</div>`;
+log.scrollTop = log.scrollHeight;
+}, 1000);
+}
 
-        // --- SCROLL HANDLER ---
-        window.addEventListener('scroll', () => {
-            const s = window.scrollY;
-            const heroHeight = document.querySelector('.hero-container').offsetHeight;
+// --- SCROLL HANDLER ---
+window.addEventListener('scroll', () => {
+const s = window.scrollY;
+const heroHeight = document.querySelector('.hero-container').offsetHeight;
 
-            // Whisper bubbles appear in phase 1
-            document.querySelectorAll('.whisper').forEach(w => {
-                if(s > parseInt(w.getAttribute('data-reveal'))) w.classList.add('visible');
-                else w.classList.remove('visible');
-            });
+document.querySelectorAll('.whisper').forEach(w => {
+if(s > parseInt(w.getAttribute('data-reveal'))) w.classList.add('visible');
+else w.classList.remove('visible');
+});
 
-            // Subheading appears in phase 2 (after bubbles start filling in)
-            if (s > 1800) document.getElementById('subheading').classList.add('visible');
-            else document.getElementById('subheading').classList.remove('visible');
+if (s > 800) document.getElementById('subheading').classList.add('visible');
+else document.getElementById('subheading').classList.remove('visible');
 
-            if (s > heroHeight - 1000) document.body.style.backgroundColor = "var(--deep-blue-dull)";
-            else document.body.style.backgroundColor = "#000000";
-        });
+if (s > heroHeight - 1000) document.body.style.backgroundColor = "var(--deep-blue-dull)";
+else document.body.style.backgroundColor = "#000000";
 
-        // --- GLOBE RECONSTRUCTION ---
-        const countryLabel = document.getElementById('country-label');
-        const world = Globe()(document.getElementById('globeViz'))
-            .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
-            .backgroundColor('rgba(0,0,0,0)')
-            .showAtmosphere(true)
-            .atmosphereColor("#4a8b5c")
-            .atmosphereAltitude(0.15)
-            .onPolygonClick(({ properties: p }) => {
-                countryLabel.innerText = p.NAME || p.ADMIN;
-                countryLabel.style.opacity = 1;
-            });
+const steps = document.querySelectorAll('.step');
+const globeSticky = document.getElementById('globeSticky');
+let anyActive = false;
+steps.forEach(step => {
+const rect = step.getBoundingClientRect();
+if(rect.top < window.innerHeight*0.6 && rect.bottom > window.innerHeight*0.2) {
+step.classList.add('active');
+anyActive = true;
+} else { step.classList.remove('active'); }
+});
+if(anyActive) globeSticky.classList.add('slide-left');
+else globeSticky.classList.remove('slide-left');
+});
 
-        world.controls().enableZoom = false;
+// --- GLOBE RECONSTRUCTION ---
+const countryLabel = document.getElementById('country-label');
 
-        fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson')
-            .then(res => res.json())
-            .then(countries => {
-                world.polygonsData(countries.features)
-                    .polygonCapColor(() => 'rgba(74, 139, 92, 0.05)')
-                    .polygonStrokeColor(() => 'rgba(74, 139, 92, 0.4)')
-                    .polygonSideColor(() => 'rgba(0, 0, 0, 0)')
-                    .polygonLabel(({ properties: p }) => `<b>${p.NAME}</b>`);
-                
-                setInterval(() => {
-                    const randomCountry = countries.features[Math.floor(Math.random() * countries.features.length)];
-                    let coords = randomCountry.geometry.coordinates[0];
-                    while(Array.isArray(coords[0])) coords = coords[0];
-                    const [lng, lat] = coords;
-                    
-                    world.arcsData([{
-                        startLat: 37.09, startLng: -95.71,
-                        endLat: lat, endLng: lng,
-                        color: ['#b83d3d', '#4a8b5c']
-                    }]);
-                }, 2000);
-            });
+const world = Globe()(document.getElementById('globeViz'))
+.globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
+.backgroundColor('rgba(0,0,0,0)')
+.showAtmosphere(true)
+.atmosphereColor("#4a8b5c")
+.atmosphereAltitude(0.15)
+.onPolygonClick(({ properties: p }) => {
+// When clicked, show the name in our label
+countryLabel.innerText = p.NAME || p.ADMIN;
+countryLabel.style.opacity = 1;
+});
 
-        world.arcDashLength(0.5).arcDashGap(1).arcDashAnimateTime(1000).arcStroke(0.5);
-    </script>
+world.controls().enableZoom = false;
+
+fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson')
+.then(res => res.json())
+.then(countries => {
+world.polygonsData(countries.features)
+.polygonCapColor(() => 'rgba(74, 139, 92, 0.05)') // Slight fill so it's clickable
+.polygonStrokeColor(() => 'rgba(74, 139, 92, 0.4)')
+.polygonSideColor(() => 'rgba(0, 0, 0, 0)')
+.polygonLabel(({ properties: p }) => `<b>${p.NAME}</b>`); // Tooltip on hover
+setInterval(() => {
+const randomCountry = countries.features[Math.floor(Math.random() * countries.features.length)];
+let coords = randomCountry.geometry.coordinates[0];
+while(Array.isArray(coords[0])) coords = coords[0];
+const [lng, lat] = coords;
+world.arcsData([{
+startLat: 37.09, startLng: -95.71,
+endLat: lat, endLng: lng,
+color: ['#b83d3d', '#4a8b5c']
+}]);
+}, 2000);
+});
+
+world.arcDashLength(0.5).arcDashGap(1).arcDashAnimateTime(1000).arcStroke(0.5);
+</script>
 </body>
 </html>
