@@ -186,7 +186,6 @@ function reply() {
 window.addEventListener('scroll', () => {
     const s = window.scrollY;
     
-    // Transition background to blue only after reaching the first article section
     if (s > 1800) {
         document.body.style.backgroundColor = "var(--deep-blue-dull)";
     } else {
@@ -212,8 +211,17 @@ window.addEventListener('scroll', () => {
     });
 });
 
-// --- GLOBE (FILTERED TO YOUR SCREENSHOT COUNTRIES) ---
-const targetCountryNames = ["United Arab Emirates", "India", "United Kingdom", "Netherlands", "United States of America", "Qatar", "Oman", "Turkey", "Germany", "France", "Canada"];
+// --- GLOBE (FILTERED TO YOUR SPECIFIC LIST) ---
+const targetCountryNames = [
+    "United Arab Emirates", 
+    "India", 
+    "United Kingdom", 
+    "Netherlands", 
+    "United States of America", 
+    "Qatar", 
+    "Oman"
+];
+
 const countryLabel = document.getElementById('country-label');
 const world = Globe()(document.getElementById('globeViz'))
     .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
@@ -226,15 +234,27 @@ world.controls().enableZoom = false;
 fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson')
     .then(res => res.json())
     .then(countries => {
-        const filteredFeatures = countries.features.filter(f => targetCountryNames.includes(f.properties.NAME) || targetCountryNames.includes(f.properties.NAME_EN));
-        world.polygonsData(countries.features).polygonCapColor(() => 'rgba(74, 139, 92, 0.05)').polygonStrokeColor(() => 'rgba(74, 139, 92, 0.4)');
+        // Matches the GeoJSON properties to ensure correct filtering
+        const filteredFeatures = countries.features.filter(f => 
+            targetCountryNames.includes(f.properties.NAME) || 
+            targetCountryNames.includes(f.properties.NAME_EN) ||
+            targetCountryNames.includes(f.properties.ADMIN)
+        );
+
+        world.polygonsData(countries.features)
+            .polygonCapColor(() => 'rgba(74, 139, 92, 0.05)')
+            .polygonStrokeColor(() => 'rgba(74, 139, 92, 0.4)');
+
         setInterval(() => {
             const country = filteredFeatures[Math.floor(Math.random() * filteredFeatures.length)];
             let coords = country.geometry.coordinates[0];
             while(Array.isArray(coords[0])) coords = coords[0];
             const [lng, lat] = coords;
+            
+            // Connects the target to the US (37, -95) with red/green arcs
             world.arcsData([{ startLat: 37, startLng: -95, endLat: lat, endLng: lng, color: ['#b83d3d', '#4a8b5c'] }]);
             world.pointOfView({ lat: lat, lng: lng, altitude: 2.0 }, 1500); 
+            
             countryLabel.innerText = country.properties.NAME;
             countryLabel.style.opacity = 1;
             setTimeout(() => { countryLabel.style.opacity = 0; }, 2000);
