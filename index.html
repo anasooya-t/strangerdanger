@@ -18,79 +18,79 @@ margin: 0; padding: 0;
 font-family: 'Helvetica', Arial, sans-serif;
 background-color: #000;
 color: var(--main-green-dull);
-transition: background-color 1.2s ease;
+transition: background-color 1.8s ease;
 overflow-x: hidden;
 }
 
-/* --- HERO (FASTER SCROLL) --- */
-.hero-container { height: 220vh; position: relative; background: #000; }
+/* --- HERO --- */
+.hero-container { height: 300vh; position: relative; background: #000; }
 .hero-fixed {
 position: sticky; top: 0; height: 100vh;
 display: flex; flex-direction: column; align-items: center; justify-content: center;
 overflow: hidden;
 }
 .hero-overlay { z-index: 10; text-align: center; pointer-events: none; width: 80%; }
-.hero-overlay h1 { font-size: 5rem; color: var(--text-white-dull); text-transform: uppercase; margin: 0; letter-spacing: 5px; }
+.hero-overlay h1 { font-size: 5rem; color: var(--text-white-dull); text-transform: uppercase; margin: 0; }
 .scrolly-sub {
 font-size: 1.6rem; margin-top: 20px; color: var(--main-green-dull);
 opacity: 0; filter: blur(20px); transform: translateY(20px);
-transition: opacity 1s ease, filter 1.2s ease, transform 1s ease;
+transition: opacity 2s ease, filter 2.5s ease, transform 2s ease;
 }
 .scrolly-sub.visible { opacity: 0.8; filter: blur(0px); transform: translateY(0); }
 
 .whisper {
-position: absolute; color: var(--main-green-dull); font-size: 1rem; opacity: 0;
-filter: blur(20px); transition: opacity 0.8s, filter 1s, transform 0.8s;
-z-index: 8;
+position: absolute; background: rgba(0, 4, 26, 0.95); color: var(--main-green-dull);
+padding: 12px 22px; border-radius: 40px; font-size: 1rem; opacity: 0;
+filter: blur(20px); transition: opacity 1.2s, filter 1.8s, transform 1.5s;
+box-shadow: 0 0 30px 10px rgba(0, 0, 0, 1); border: 1px solid rgba(74, 139, 92, 0.1); z-index: 8;
 }
-.whisper.visible { opacity: 0.6; filter: blur(0px); }
+.whisper.visible { opacity: 1; filter: blur(0px); transform: scale(1.05); }
 
 /* --- CHAT --- */
-.chat-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; }
+.chat-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; padding: 50px 0; }
 .chat-box {
 width: 80%; max-width: 900px; background: rgba(255,255,255,0.02); backdrop-filter: blur(25px);
 padding: 60px; border-radius: 20px; border: 1px solid rgba(74, 139, 92, 0.2);
 box-shadow: 0 0 60px rgba(0, 0, 0, 0.9); text-align: center;
 }
-#chat-log { height: 250px; overflow-y: auto; margin-bottom: 30px; text-align: left; }
+#chat-log { height: 250px; overflow-y: auto; margin-bottom: 30px; text-align: left; padding-right: 15px; }
 .msg { margin-bottom: 20px; font-size: 1.4rem; color: var(--text-white-dull); }
 .stranger { color: var(--alert-red-dull); font-weight: bold; }
 .you { color: #4385cc; font-weight: bold; }
-.reply-btn { background:none; border: 1px solid var(--main-green-dull); color: var(--main-green-dull); padding: 18px 40px; cursor: pointer; font-size: 1.2rem; }
+.reply-btn { background:none; border: 1px solid var(--main-green-dull); color: var(--main-green-dull); padding: 18px 40px; cursor: pointer; font-size: 1.2rem; transition: 0.3s; }
+.reply-btn:hover { background: var(--main-green-dull); color: #000; }
 
 /* --- ARTICLE --- */
-.article-section { padding: 100px 20px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 30; }
-.article-content { max-width: 800px; line-height: 1.8; font-size: 1.35rem; color: var(--main-green-dull); }
+.article-section { padding: 100px 20px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 30; background: transparent; }
+.article-content { max-width: 800px; line-height: 1.8; font-size: 1.35rem; color: var(--text-white-dull); }
 .article-content p { margin-bottom: 30px; }
 .article-quote { font-style: italic; border-left: 3px solid var(--alert-red-dull); padding-left: 20px; margin: 40px 0; color: #fff; font-size: 1.5rem; }
 
-/* --- GLOBE (SIDE-BY-SIDE LAYOUT) --- */
+/* --- GLOBE --- */
 .globe-container { position: relative; height: 350vh; z-index: 5; background-color: #000; }
 .globe-sticky {
 position: sticky; top: 0; height: 100vh; width: 100%;
-display: flex; align-items: center; justify-content: center; overflow: hidden;
+display: flex; align-items: center; overflow: hidden;
 }
-#globeViz { 
-width: 100%; height: 100%; transition: transform 1.5s ease-in-out; 
-transform: translateX(0); /* Default centered */
-}
-.globe-container.active #globeViz { transform: translateX(-20%); } /* Shift left when active */
+#globeViz { width: 100%; height: 100%; cursor: crosshair; }
 
 #country-label {
-position: absolute; bottom: 80px; left: 30%; transform: translateX(-50%);
+position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%);
 font-size: 2rem; color: var(--alert-red-dull); text-transform: uppercase;
-letter-spacing: 5px; font-weight: bold; opacity: 0; transition: 0.5s;
+letter-spacing: 5px; font-weight: bold; pointer-events: none; z-index: 110;
+text-shadow: 0 0 10px rgba(184, 61, 61, 0.5); opacity: 0; transition: opacity 0.5s ease;
 }
 
 .scrolly-text-overlay { 
-position: absolute; right: 8%; width: 35%; z-index: 100; pointer-events: none; 
-height: 100%; display: flex; flex-direction: column;
+position: absolute; left: 5%; width: 35%; z-index: 100; pointer-events: none; 
+top: 0; height: 100%; display: flex; flex-direction: column;
 }
-.step { height: 100vh; display: flex; align-items: center; opacity: 0; transition: 1s; }
+.step { height: 100vh; display: flex; align-items: center; opacity: 0; transition: 1s; padding-bottom: 20vh;}
 .step.active { opacity: 1; }
 .step-card { 
-background: rgba(0, 4, 26, 0.95); padding: 35px; border-left: 3px solid var(--alert-red-dull); 
-color: var(--text-white-dull); pointer-events: auto; font-size: 1.25rem; line-height: 1.6;
+background: rgba(0, 4, 26, 0.9); padding: 35px; border-left: 3px solid var(--alert-red-dull); 
+color: var(--text-white-dull); pointer-events: auto; box-shadow: 0 0 40px rgba(0,0,0,0.8); 
+font-size: 1.25rem; line-height: 1.6;
 }
 
 /* --- VIDEO --- */
@@ -113,7 +113,9 @@ video { width: 100%; height: 100%; object-fit: cover; }
 
 <section class="chat-section">
     <div class="chat-box">
-        <div id="chat-log"><div class="msg"><span class="stranger">Stranger:</span> hello?</div></div>
+        <div id="chat-log">
+            <div class="msg"><span class="stranger">Stranger:</span> hello?</div>
+        </div>
         <button class="reply-btn" onclick="reply()">"Who is this?"</button>
     </div>
 </section>
@@ -133,7 +135,7 @@ video { width: 100%; height: 100%; object-fit: cover; }
     </div>
 </section>
 
-<section class="globe-container" id="globeParent">
+<section class="globe-container">
     <div class="globe-sticky">
         <div id="globeViz"></div>
         <div id="country-label">Select Country</div>
@@ -183,19 +185,25 @@ video { width: 100%; height: 100%; object-fit: cover; }
 
 <section class="video-section">
     <div class="video-sticky">
-        <div class="video-frame"><video id="explainerVid" controls><source src="your-video.mp4" type="video/mp4"></video></div>
+        <div class="video-frame">
+            <video id="explainerVid" controls>
+                <source src="your-video.mp4" type="video/mp4">
+            </video>
+        </div>
     </div>
 </section>
 
 <script>
 const hero = document.getElementById('heroBase');
-const phrases = ["asl?", "m/f", "hello", "where u from?", "typing...", "connected", "show face", "disconnected"];
-for(let i=0; i<30; i++) {
+const phrases = ["asl?", "m/f", "hello", "where u from?", "typing...", "connected", "show face", "u there?", "disconnected"];
+for(let i=0; i<45; i++) {
     const b = document.createElement('div');
     b.className = 'whisper';
     b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
-    b.style.left = Math.random()*90+"%"; b.style.top = Math.random()*90+"%";
-    b.setAttribute('data-reveal', (i / 30) * 400);
+    let x, y;
+    do { x = Math.random()*90; y = Math.random()*90; } while(x > 15 && x < 85 && y > 25 && y < 75);
+    b.style.left = x+"%"; b.style.top = y+"%";
+    b.setAttribute('data-reveal', (i / 45) * 600);
     hero.appendChild(b);
 }
 
@@ -212,19 +220,16 @@ window.addEventListener('scroll', () => {
     const s = window.scrollY;
     document.querySelectorAll('.whisper').forEach(w => {
         if(s > parseInt(w.getAttribute('data-reveal'))) w.classList.add('visible');
+        else w.classList.remove('visible');
     });
-    if (s > 400) document.getElementById('subheading').classList.add('visible');
-    
-    // Globe Shift Logic
-    const globeParent = document.getElementById('globeParent');
-    const gTop = globeParent.getBoundingClientRect().top;
-    if(gTop < 300) globeParent.classList.add('active');
-    else globeParent.classList.remove('active');
+    if (s > 800) document.getElementById('subheading').classList.add('visible');
+    else document.getElementById('subheading').classList.remove('visible');
 
     const steps = document.querySelectorAll('.step');
     steps.forEach(step => {
         const rect = step.getBoundingClientRect();
-        if(rect.top < window.innerHeight * 0.7) step.classList.add('active');
+        if(rect.top < window.innerHeight * 0.7 && rect.bottom > window.innerHeight * 0.3) step.classList.add('active');
+        else step.classList.remove('active');
     });
 });
 
@@ -233,7 +238,10 @@ const world = Globe()(document.getElementById('globeViz'))
     .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
     .backgroundColor('rgba(0,0,0,0)')
     .showAtmosphere(true)
-    .atmosphereColor("#4a8b5c");
+    .atmosphereColor("#4a8b5c")
+    .atmosphereAltitude(0.2);
+
+world.controls().enableZoom = false;
 
 const sequence = [
     "Singapore", "Switzerland", "New Zealand", "Australia", "Germany", 
@@ -246,39 +254,52 @@ fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/data
     .then(countries => {
         world.polygonsData(countries.features)
             .polygonCapColor(() => 'rgba(74, 139, 92, 0.05)')
-            .polygonStrokeColor(() => 'rgba(74, 139, 92, 0.2)');
+            .polygonStrokeColor(() => 'rgba(74, 139, 92, 0.3)')
+            .polygonSideColor(() => 'rgba(0, 0, 0, 0)');
 
-        world.pointOfView({ lat: 37.09, lng: -95.71, altitude: 2.2 }, 1000);
+        world.pointOfView({ lat: 37.09, lng: -95.71, altitude: 2.5 }, 1000);
 
         let i = 0;
-        function runSequence() {
+        function nextConnection() {
             const countryName = sequence[i % sequence.length];
-            const country = countries.features.find(c => c.properties.NAME === countryName || c.properties.ADMIN === countryName);
+            const country = countries.features.find(c => 
+                c.properties.NAME === countryName || c.properties.ADMIN === countryName
+            );
 
             if (country) {
                 let coords = country.geometry.coordinates[0];
                 while(Array.isArray(coords[0])) coords = coords[0];
                 const [lng, lat] = coords;
 
-                world.arcsData([{ startLat: 37.09, startLng: -95.71, endLat: lat, endLng: lng, color: ['#b83d3d', '#4a8b5c'] }]);
+                // Arc logic - Red to Green
+                world.arcsData([{
+                    startLat: 37.09, startLng: -95.71,
+                    endLat: lat, endLng: lng,
+                    color: ['#b83d3d', '#4a8b5c']
+                }]);
 
+                // Wait 500ms for line to start, then glide
                 setTimeout(() => {
-                    world.pointOfView({ lat, lng, altitude: 1.8 }, 1200);
+                    world.pointOfView({ lat, lng, altitude: 1.8 }, 1400);
                     countryLabel.innerText = countryName;
                     countryLabel.style.opacity = 1;
-                }, 400);
+                    world.polygonCapColor(d => 
+                        (d.properties.NAME === countryName || d.properties.ADMIN === countryName) 
+                        ? 'rgba(184, 61, 61, 0.6)' : 'rgba(74, 139, 92, 0.05)'
+                    );
+                }, 500);
 
                 setTimeout(() => {
                     countryLabel.style.opacity = 0;
                     i++;
-                    runSequence();
-                }, 4000);
+                    nextConnection();
+                }, 3500); 
             }
         }
-        setTimeout(runSequence, 3000);
+        setTimeout(nextConnection, 2000);
     });
 
-world.arcDashLength(0.5).arcDashGap(1).arcDashAnimateTime(1500).arcStroke(1);
+world.arcDashLength(0.4).arcDashGap(2).arcDashAnimateTime(1500).arcStroke(0.8);
 </script>
 </body>
 </html>
