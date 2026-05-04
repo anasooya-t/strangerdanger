@@ -7,103 +7,85 @@
 <script src="https://unpkg.com/globe.gl"></script>
 <style>
 :root {
---main-green-dull: #4a8b5c;
---deep-blue-dull: #00041a;
---alert-red-dull: #b83d3d;
---text-white-dull: #d0d0d0;
+/* Restoring the original requested palette */
+--bg-blue-deep: #00041a; 
+--main-green: #4a8b5c; 
+--alert-red: #b83d3d; 
+--quote-white: #ffffff;
 }
 
 body {
 margin: 0; padding: 0;
 font-family: 'Helvetica', Arial, sans-serif;
-background-color: #000;
-color: var(--main-green-dull);
-transition: background-color 1.2s ease;
+background-color: var(--bg-blue-deep); /* Force the blue theme */
+color: var(--main-green);
+transition: background-color 0.8s ease;
 overflow-x: hidden;
 }
 
-/* --- HERO (FASTER SCROLL) --- */
-.hero-container { height: 220vh; position: relative; background: #000; }
+/* --- HERO (FASTER TRANSITION) --- */
+.hero-container { height: 180vh; position: relative; background: #000; }
 .hero-fixed {
 position: sticky; top: 0; height: 100vh;
 display: flex; flex-direction: column; align-items: center; justify-content: center;
 overflow: hidden;
 }
-.hero-overlay { z-index: 10; text-align: center; pointer-events: none; width: 80%; }
-.hero-overlay h1 { font-size: 5rem; color: var(--text-white-dull); text-transform: uppercase; margin: 0; letter-spacing: 5px; }
+.hero-overlay h1 { font-size: 5rem; color: #fff; text-transform: uppercase; margin: 0; }
 .scrolly-sub {
-font-size: 1.6rem; margin-top: 20px; color: var(--main-green-dull);
-opacity: 0; filter: blur(20px); transform: translateY(20px);
-transition: opacity 1s ease, filter 1.2s ease, transform 1s ease;
+font-size: 1.6rem; margin-top: 20px; color: var(--main-green);
+opacity: 0; transform: translateY(20px); transition: 0.8s;
 }
-.scrolly-sub.visible { opacity: 0.8; filter: blur(0px); transform: translateY(0); }
-
-.whisper {
-position: absolute; color: var(--main-green-dull); font-size: 1rem; opacity: 0;
-filter: blur(20px); transition: opacity 0.8s, filter 1s, transform 0.8s;
-z-index: 8;
-}
-.whisper.visible { opacity: 0.6; filter: blur(0px); }
+.scrolly-sub.visible { opacity: 0.8; transform: translateY(0); }
 
 /* --- CHAT --- */
-.chat-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; }
+.chat-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--bg-blue-deep); }
 .chat-box {
-width: 80%; max-width: 900px; background: rgba(255,255,255,0.02); backdrop-filter: blur(25px);
-padding: 60px; border-radius: 20px; border: 1px solid rgba(74, 139, 92, 0.2);
-box-shadow: 0 0 60px rgba(0, 0, 0, 0.9); text-align: center;
+width: 80%; max-width: 800px; background: rgba(255,255,255,0.02);
+padding: 40px; border-radius: 15px; border: 1px solid var(--main-green);
 }
-#chat-log { height: 250px; overflow-y: auto; margin-bottom: 30px; text-align: left; }
-.msg { margin-bottom: 20px; font-size: 1.4rem; color: var(--text-white-dull); }
-.stranger { color: var(--alert-red-dull); font-weight: bold; }
+#chat-log { height: 200px; overflow-y: auto; color: #fff; margin-bottom: 20px; }
+.stranger { color: var(--alert-red); font-weight: bold; }
 .you { color: #4385cc; font-weight: bold; }
-.reply-btn { background:none; border: 1px solid var(--main-green-dull); color: var(--main-green-dull); padding: 18px 40px; cursor: pointer; font-size: 1.2rem; }
+.reply-btn { background:none; border: 1px solid var(--main-green); color: var(--main-green); padding: 10px 25px; cursor: pointer; }
 
 /* --- ARTICLE --- */
-.article-section { padding: 100px 20px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 30; }
-.article-content { max-width: 800px; line-height: 1.8; font-size: 1.35rem; color: var(--main-green-dull); }
-.article-content p { margin-bottom: 30px; }
-.article-quote { font-style: italic; border-left: 3px solid var(--alert-red-dull); padding-left: 20px; margin: 40px 0; color: #fff; font-size: 1.5rem; }
+.article-section { padding: 80px 20px; display: flex; flex-direction: column; align-items: center; background: var(--bg-blue-deep); }
+.article-content { max-width: 800px; line-height: 1.8; font-size: 1.3rem; color: var(--main-green); }
+.article-quote { font-style: italic; border-left: 4px solid var(--alert-red); padding-left: 20px; margin: 40px 0; color: var(--quote-white); font-size: 1.5rem; }
 
-/* --- GLOBE (SIDE-BY-SIDE LAYOUT) --- */
-.globe-container { position: relative; height: 350vh; z-index: 5; background-color: #000; }
+/* --- GLOBE (LAYOUT FIX) --- */
+.globe-container { position: relative; height: 300vh; background-color: var(--bg-blue-deep); }
 .globe-sticky {
 position: sticky; top: 0; height: 100vh; width: 100%;
-display: flex; align-items: center; justify-content: center; overflow: hidden;
+display: flex; align-items: center; justify-content: space-between; overflow: hidden;
 }
 #globeViz { 
-width: 100%; height: 100%; transition: transform 1.5s ease-in-out; 
-transform: translateX(0); /* Default centered */
+width: 60%; height: 100%; transition: transform 1s; 
 }
-.globe-container.active #globeViz { transform: translateX(-20%); } /* Shift left when active */
-
-#country-label {
-position: absolute; bottom: 80px; left: 30%; transform: translateX(-50%);
-font-size: 2rem; color: var(--alert-red-dull); text-transform: uppercase;
-letter-spacing: 5px; font-weight: bold; opacity: 0; transition: 0.5s;
-}
-
 .scrolly-text-overlay { 
-position: absolute; right: 8%; width: 35%; z-index: 100; pointer-events: none; 
-height: 100%; display: flex; flex-direction: column;
+width: 35%; padding-right: 5%; z-index: 100; pointer-events: none; 
 }
-.step { height: 100vh; display: flex; align-items: center; opacity: 0; transition: 1s; }
+.step { height: 100vh; display: flex; align-items: center; opacity: 0; transition: 0.5s; }
 .step.active { opacity: 1; }
 .step-card { 
-background: rgba(0, 4, 26, 0.95); padding: 35px; border-left: 3px solid var(--alert-red-dull); 
-color: var(--text-white-dull); pointer-events: auto; font-size: 1.25rem; line-height: 1.6;
+background: rgba(0, 0, 0, 0.8); padding: 30px; border: 1px solid var(--main-green); 
+color: #fff; font-size: 1.2rem;
+}
+
+#country-label {
+position: absolute; bottom: 50px; left: 30%; font-size: 2rem; 
+color: var(--alert-red); font-weight: bold; opacity: 0; transition: 0.5s;
 }
 
 /* --- VIDEO --- */
-.video-section { height: 120vh; position: relative; z-index: 20; }
-.video-sticky { position: sticky; top: 0; height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; }
-.video-frame { width: 85%; height: 75%; border: 1px solid rgba(74, 139, 92, 0.2); }
-video { width: 100%; height: 100%; object-fit: cover; }
+.video-section { height: 100vh; background: #000; display: flex; align-items: center; justify-content: center; }
+.video-frame { width: 80%; height: 70%; border: 1px solid var(--main-green); }
 </style>
 </head>
 <body>
 
 <div class="hero-container">
-    <div class="hero-fixed" id="heroBase">
+    <div class="hero-fixed">
         <div class="hero-overlay">
             <h1>Stranger Danger</h1>
             <p id="subheading" class="scrolly-sub">How Random Video Chatting Websites Impact Children’s Online Safety</p>
@@ -133,17 +115,17 @@ video { width: 100%; height: 100%; object-fit: cover; }
     </div>
 </section>
 
-<section class="globe-container" id="globeParent">
+<section class="globe-container">
     <div class="globe-sticky">
         <div id="globeViz"></div>
-        <div id="country-label">Select Country</div>
+        <div id="country-label">...</div>
         <div class="scrolly-text-overlay">
-            <div class="step" data-step="0">
+            <div class="step" id="step1">
                 <div class="step-card">
                     <p>For 12 minutes from, 6:00 a.m. - 6:12 a.m. Pacific time, the website Umingle.com was monitored to know the demographics of its users.</p>
                 </div>
             </div>
-            <div class="step" data-step="1">
+            <div class="step" id="step2">
                 <div class="step-card">
                     <p>These are the countries that it connected the video call to from the US in a span of 12 minutes during this time frame.</p>
                 </div>
@@ -159,7 +141,7 @@ video { width: 100%; height: 100%; object-fit: cover; }
         <div class="article-quote">A study conducted at Middlesex University in 2024 revealed that only 2% of adult users expressed regret for interacting with an underage person, while 89% blamed the child.</div>
         <p>As Mirza shared her experiences, she said how her exposure to sexually explicit conversations desensitized her from sending nudes photos to people on Snapchat as a child.</p>
         <div class="article-quote">“I was a minor and they were not,” said Mirza.</div>
-        <p>Child protection agencies and Facebook parent groups across the world are raising alarms about this internet rabbit hole. But as there are a large number of websites that work on the same principles, identifying online harm against children has become increasingly difficult.</p>
+        <p>Child protection agencies and Facebook parent groups across the world are raising alarms about this internet rabbit hole. But identifying online harm against children has become increasingly difficult.</p>
         <div class="article-quote">“We have a list of twenty or even thirty alternatives who use the same basic system,[where] predatory behaviour is a common sight,” said Niels Van Paemel.</div>
         <p>Omegle.com developed in 2009 by Leif K. Brooks used to get up to 66 million monthly visits. Along with similar websites like Chatroulette, it became a cultural moment as influencers posted their interactions online.</p>
         <div class="article-quote">“Omegle was meant to be a way of strolling down a street in that village, striking up conversations with the people you ran into,” Brooks wrote.</div>
@@ -181,59 +163,33 @@ video { width: 100%; height: 100%; object-fit: cover; }
     </div>
 </section>
 
-<section class="video-section">
-    <div class="video-sticky">
-        <div class="video-frame"><video id="explainerVid" controls><source src="your-video.mp4" type="video/mp4"></video></div>
-    </div>
-</section>
-
 <script>
-const hero = document.getElementById('heroBase');
-const phrases = ["asl?", "m/f", "hello", "where u from?", "typing...", "connected", "show face", "disconnected"];
-for(let i=0; i<30; i++) {
-    const b = document.createElement('div');
-    b.className = 'whisper';
-    b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
-    b.style.left = Math.random()*90+"%"; b.style.top = Math.random()*90+"%";
-    b.setAttribute('data-reveal', (i / 30) * 400);
-    hero.appendChild(b);
-}
-
 function reply() {
     const log = document.getElementById('chat-log');
     log.innerHTML += `<div class="msg"><span class="you">You:</span> Who is this?</div>`;
-    setTimeout(() => {
-        log.innerHTML += `<div class="msg"><span class="stranger">Stranger:</span> Just a stranger monitoring the grid.</div>`;
-        log.scrollTop = log.scrollHeight;
-    }, 1000);
 }
 
+// Scroll detection for text visibility
 window.addEventListener('scroll', () => {
     const s = window.scrollY;
-    document.querySelectorAll('.whisper').forEach(w => {
-        if(s > parseInt(w.getAttribute('data-reveal'))) w.classList.add('visible');
-    });
-    if (s > 400) document.getElementById('subheading').classList.add('visible');
+    if (s > 300) document.getElementById('subheading').classList.add('visible');
     
-    // Globe Shift Logic
-    const globeParent = document.getElementById('globeParent');
-    const gTop = globeParent.getBoundingClientRect().top;
-    if(gTop < 300) globeParent.classList.add('active');
-    else globeParent.classList.remove('active');
-
-    const steps = document.querySelectorAll('.step');
-    steps.forEach(step => {
+    document.querySelectorAll('.step').forEach(step => {
         const rect = step.getBoundingClientRect();
-        if(rect.top < window.innerHeight * 0.7) step.classList.add('active');
+        if(rect.top < window.innerHeight * 0.5) step.classList.add('active');
     });
 });
 
-const countryLabel = document.getElementById('country-label');
+// GLOBE LOGIC
 const world = Globe()(document.getElementById('globeViz'))
     .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
     .backgroundColor('rgba(0,0,0,0)')
     .showAtmosphere(true)
-    .atmosphereColor("#4a8b5c");
+    .atmosphereColor("#4a8b5c")
+    .arcDashLength(0.5)
+    .arcDashGap(1)
+    .arcDashAnimateTime(1500)
+    .arcStroke(1);
 
 const sequence = [
     "Singapore", "Switzerland", "New Zealand", "Australia", "Germany", 
@@ -245,13 +201,13 @@ fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/data
     .then(res => res.json())
     .then(countries => {
         world.polygonsData(countries.features)
-            .polygonCapColor(() => 'rgba(74, 139, 92, 0.05)')
-            .polygonStrokeColor(() => 'rgba(74, 139, 92, 0.2)');
+            .polygonCapColor(() => 'rgba(74, 139, 92, 0.1)')
+            .polygonStrokeColor(() => 'rgba(74, 139, 92, 0.4)');
 
-        world.pointOfView({ lat: 37.09, lng: -95.71, altitude: 2.2 }, 1000);
+        world.pointOfView({ lat: 37.09, lng: -95.71, altitude: 2.2 });
 
         let i = 0;
-        function runSequence() {
+        function animate() {
             const countryName = sequence[i % sequence.length];
             const country = countries.features.find(c => c.properties.NAME === countryName || c.properties.ADMIN === countryName);
 
@@ -264,21 +220,20 @@ fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/data
 
                 setTimeout(() => {
                     world.pointOfView({ lat, lng, altitude: 1.8 }, 1200);
-                    countryLabel.innerText = countryName;
-                    countryLabel.style.opacity = 1;
+                    const label = document.getElementById('country-label');
+                    label.innerText = countryName;
+                    label.style.opacity = 1;
                 }, 400);
 
                 setTimeout(() => {
-                    countryLabel.style.opacity = 0;
+                    document.getElementById('country-label').style.opacity = 0;
                     i++;
-                    runSequence();
-                }, 4000);
+                    animate();
+                }, 4500);
             }
         }
-        setTimeout(runSequence, 3000);
+        setTimeout(animate, 2000);
     });
-
-world.arcDashLength(0.5).arcDashGap(1).arcDashAnimateTime(1500).arcStroke(1);
 </script>
 </body>
 </html>
