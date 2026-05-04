@@ -30,22 +30,38 @@ body {
     overflow: hidden;
     background: #000; 
 }
-.hero-overlay h1 { font-size: 5rem; color: var(--text-white-dull); text-transform: uppercase; margin: 0; text-align: center; }
+.hero-overlay h1 { font-size: 5rem; color: var(--text-white-dull); text-transform: uppercase; margin: 0; text-align: center; z-index: 10; position: relative; }
+
 .scrolly-sub {
     font-size: 1.6rem; margin-top: 20px; color: var(--main-green-dull);
     opacity: 0; filter: blur(20px); transform: translateY(20px);
-    transition: opacity 2s ease, filter 2.5s ease, transform 2s ease;
+    transition: opacity 0.8s ease, filter 1s ease, transform 0.8s ease; /* Sped up transitions */
     text-align: center;
+    z-index: 10;
+    position: relative;
 }
 .scrolly-sub.visible { opacity: 0.8; filter: blur(0px); transform: translateY(0); }
 
+/* --- UPDATED HERO WHISPERS --- */
 .whisper {
-    position: absolute; background: rgba(0, 4, 26, 0.95); color: var(--main-green-dull);
-    padding: 12px 22px; border-radius: 40px; font-size: 1rem; opacity: 0;
-    filter: blur(20px); transition: opacity 1.2s, filter 1.8s, transform 1.5s;
-    box-shadow: 0 0 30px 10px rgba(0, 0, 0, 1); border: 1px solid rgba(74, 139, 92, 0.1); z-index: 8;
+    position: absolute; 
+    background: rgba(0, 4, 26, 0.8); 
+    color: var(--main-green-dull);
+    padding: 8px 16px; 
+    border-radius: 40px; 
+    opacity: 0;
+    filter: blur(15px); 
+    transition: opacity 0.6s ease-out, filter 0.8s ease-out, transform 0.6s ease-out; /* Faster reveal */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8); 
+    border: 1px solid rgba(74, 139, 92, 0.2); 
+    z-index: 8;
+    white-space: nowrap;
 }
-.whisper.visible { opacity: 1; filter: blur(0px); transform: scale(1.05); }
+.whisper.visible { 
+    opacity: 0.7; 
+    filter: blur(0px); 
+    transform: scale(1) rotate(var(--rotation)); 
+}
 
 /* --- CHAT SECTION --- */
 .chat-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; }
@@ -75,24 +91,15 @@ body {
     gap: 30px;
     margin: 60px 0;
 }
-
-.grave-container {
-    flex: 0 0 300px; /* Adjust based on video aspect ratio */
-    height: auto;
-}
-
+.grave-container { flex: 0 0 300px; height: auto; }
 #omegle-grave {
     width: 100%;
     height: auto;
     display: block;
-    /* This ensures it starts invisible and fades in when the script triggers */
     opacity: 0; 
     transition: opacity 1.5s ease;
 }
-
-#omegle-grave.visible {
-    opacity: 1;
-}
+#omegle-grave.visible { opacity: 1; }
 
 /* --- GLOBE --- */
 .globe-container { position: relative; height: 300vh; z-index: 5; }
@@ -202,24 +209,78 @@ body {
 
 <script>
 // --- VIDEO CONTROLS ---
-const video = document.getElementById('omegle-grave');
-let hasPlayed = false;
+const graveVid = document.getElementById('omegle-grave');
+let gravePlayed = false;
 
 const videoObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if(entry.isIntersecting) {
-            video.classList.add('visible');
-            if(!hasPlayed) {
-                video.play();
-                hasPlayed = true; // Prevents the video from re-playing from the start
+            graveVid.classList.add('visible');
+            if(!gravePlayed) {
+                graveVid.play();
+                gravePlayed = true; 
             }
         }
     });
 }, { threshold: 0.5 });
+videoObserver.observe(graveVid);
 
-videoObserver.observe(video);
+// --- UPDATED HERO WHISPERS ---
+const hero = document.getElementById('heroBase');
+const phrases = ["asl?", "m/f", "hello", "where u from?", "connected", "show face", "disconnected", "hey", "18?", "snap?", "u there?"];
 
-// --- CONVERSATION DATA ---
+for(let i=0; i<60; i++) { // Spread text bubbles
+    const b = document.createElement('div');
+    b.className = 'whisper';
+    b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
+    
+    let x, y;
+    // Safety Zone logic: Avoid covering heading/subheading
+    do { 
+        x = Math.random() * 90; 
+        y = Math.random() * 90; 
+    } while(x > 30 && x < 70 && y > 35 && y < 65); 
+    
+    b.style.left = x + "%"; 
+    b.style.top = y + "%";
+    
+    // Randomized look for beauty
+    const randomRot = (Math.random() - 0.5) * 15; 
+    b.style.setProperty('--rotation', `${randomRot}deg`);
+    b.style.fontSize = (0.8 + Math.random() * 0.7) + "rem";
+    
+    // Threshold math for reveal
+    b.setAttribute('data-reveal', (i * 15)); 
+    hero.appendChild(b);
+}
+
+// --- UPDATED SCROLL HANDLER (FAST TRIGGERS) ---
+window.addEventListener('scroll', () => {
+    const s = window.scrollY;
+    
+    if (s > 1500) document.body.style.backgroundColor = "var(--deep-blue-dull)";
+    else document.body.style.backgroundColor = "#000000";
+
+    // Whispers reveal
+    document.querySelectorAll('.whisper').forEach(w => {
+        if(s > parseInt(w.getAttribute('data-reveal'))) w.classList.add('visible');
+        else w.classList.remove('visible');
+    });
+
+    // Faster Subheading trigger
+    if (s > 300) document.getElementById('subheading').classList.add('visible');
+    else document.getElementById('subheading').classList.remove('visible');
+
+    // Globe steps
+    const steps = document.querySelectorAll('.step');
+    steps.forEach(step => {
+        const rect = step.getBoundingClientRect();
+        if(rect.top < window.innerHeight * 0.8 && rect.bottom > window.innerHeight * 0.2) step.classList.add('active');
+        else step.classList.remove('active');
+    });
+});
+
+// --- CHAT LOGIC ---
 const conversation = [
     { options: ["Who are you?", "Hi"], responses: ["I am a person, u?", "How are you?"] },
     { options: ["What is this place?", "I am good, how are you?"], responses: ["A place to talk to random strangers I guess haha", "I am good, Where are you from?"] },
@@ -247,41 +308,8 @@ function nextStep(optionIdx, step) {
     }, 1000);
 }
 
-// --- HERO WHISPERS ---
-const hero = document.getElementById('heroBase');
-const phrases = ["asl?", "m/f", "hello", "where u from?", "connected", "show face", "disconnected"];
-for(let i=0; i<45; i++) {
-    const b = document.createElement('div');
-    b.className = 'whisper';
-    b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
-    let x, y;
-    do { x = Math.random()*90; y = Math.random()*90; } while(x > 15 && x < 85 && y > 25 && y < 75);
-    b.style.left = x+"%"; b.style.top = y+"%";
-    b.setAttribute('data-reveal', (i / 45) * 600);
-    hero.appendChild(b);
-}
-
-// --- SCROLL HANDLER ---
-window.addEventListener('scroll', () => {
-    const s = window.scrollY;
-    if (s > 1800) document.body.style.backgroundColor = "var(--deep-blue-dull)";
-    else document.body.style.backgroundColor = "#000000";
-    document.querySelectorAll('.whisper').forEach(w => {
-        if(s > parseInt(w.getAttribute('data-reveal'))) w.classList.add('visible');
-        else w.classList.remove('visible');
-    });
-    if (s > 800) document.getElementById('subheading').classList.add('visible');
-    else document.getElementById('subheading').classList.remove('visible');
-    const steps = document.querySelectorAll('.step');
-    steps.forEach(step => {
-        const rect = step.getBoundingClientRect();
-        if(rect.top < window.innerHeight * 0.7 && rect.bottom > window.innerHeight * 0.3) step.classList.add('active');
-        else step.classList.remove('active');
-    });
-});
-
-// --- GLOBE ---
-const targetCountryNames = ["United Arab Emirates", "India", "United Kingdom", "Netherlands", "United States of America", "Qatar", "Oman"];
+// --- GLOBE VISUALS ---
+const targetCountries = ["United Arab Emirates", "India", "United Kingdom", "Netherlands", "United States of America", "Qatar", "Oman"];
 const world = Globe()(document.getElementById('globeViz'))
     .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
     .backgroundColor('rgba(0,0,0,0)').showAtmosphere(true).atmosphereColor("#4a8b5c")
@@ -291,10 +319,10 @@ world.controls().enableZoom = false;
 fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson')
     .then(res => res.json())
     .then(countries => {
-        const filteredFeatures = countries.features.filter(f => targetCountryNames.includes(f.properties.NAME) || targetCountryNames.includes(f.properties.NAME_EN));
+        const filtered = countries.features.filter(f => targetCountries.includes(f.properties.NAME) || targetCountries.includes(f.properties.NAME_EN));
         world.polygonsData(countries.features).polygonCapColor(() => 'rgba(74, 139, 92, 0.05)').polygonStrokeColor(() => 'rgba(74, 139, 92, 0.4)');
         setInterval(() => {
-            const country = filteredFeatures[Math.floor(Math.random() * filteredFeatures.length)];
+            const country = filtered[Math.floor(Math.random() * filtered.length)];
             let coords = country.geometry.coordinates[0];
             while(Array.isArray(coords[0])) coords = coords[0];
             const [lng, lat] = coords;
