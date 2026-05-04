@@ -7,99 +7,89 @@
 <script src="https://unpkg.com/globe.gl"></script>
 <style>
 :root {
---main-green-dull: #4a8b5c;
---deep-blue-dull: #00041a; /* The blue you wanted */
---alert-red-dull: #b83d3d;
---text-white-dull: #d0d0d0;
+    --main-green: #4a8b5c;
+    --deep-blue: #00041a;
+    --alert-red: #b83d3d;
+    --text-white: #d0d0d0;
 }
 
 body {
-margin: 0; padding: 0;
-font-family: 'Helvetica', Arial, sans-serif;
-background-color: var(--deep-blue-dull);
-color: var(--main-green-dull);
-transition: background-color 1.2s ease;
-overflow-x: hidden;
+    margin: 0; padding: 0;
+    font-family: 'Helvetica', Arial, sans-serif;
+    background-color: var(--deep-blue);
+    color: var(--main-green);
+    overflow-x: hidden;
 }
 
-/* --- HERO (FASTER SCROLL) --- */
+/* --- HERO SECTION (MATCHING SCREENSHOT) --- */
 .hero-container { height: 160vh; position: relative; background: #000; }
 .hero-fixed {
-position: sticky; top: 0; height: 100vh;
-display: flex; flex-direction: column; align-items: center; justify-content: center;
-overflow: hidden;
+    position: sticky; top: 0; height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
 }
-.hero-overlay { z-index: 10; text-align: center; pointer-events: none; width: 80%; }
-.hero-overlay h1 { font-size: 5rem; color: var(--text-white-dull); text-transform: uppercase; margin: 0; letter-spacing: 5px; }
-.scrolly-sub {
-font-size: 1.6rem; margin-top: 20px; color: var(--main-green-dull);
-opacity: 0; filter: blur(20px); transform: translateY(20px);
-transition: opacity 1s ease, filter 1.2s ease, transform 1s ease;
+.hero-overlay h1 { 
+    font-size: 5rem; color: #fff; text-transform: uppercase; 
+    margin: 0; letter-spacing: 8px; z-index: 10; 
 }
-.scrolly-sub.visible { opacity: 0.8; filter: blur(0px); transform: translateY(0); }
-
+.scrolly-sub { 
+    font-size: 1.6rem; margin-top: 20px; color: var(--main-green); 
+    z-index: 10; opacity: 0.9;
+}
 .whisper {
-position: absolute; color: var(--main-green-dull); font-size: 1rem; opacity: 0;
-filter: blur(20px); transition: opacity 0.8s, filter 1s, transform 0.8s;
-z-index: 8;
+    position: absolute; color: var(--main-green); font-size: 1rem; 
+    opacity: 0.3; z-index: 5; pointer-events: none;
 }
-.whisper.visible { opacity: 0.6; filter: blur(0px); }
 
-/* --- CHAT --- */
-.chat-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; background-color: var(--deep-blue-dull);}
+/* --- CHAT SECTION --- */
+.chat-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--deep-blue); }
 .chat-box {
-width: 80%; max-width: 900px; background: rgba(255,255,255,0.02); backdrop-filter: blur(25px);
-padding: 60px; border-radius: 20px; border: 1px solid rgba(74, 139, 92, 0.2);
-box-shadow: 0 0 60px rgba(0, 0, 0, 0.9); text-align: center;
+    width: 80%; max-width: 800px; background: rgba(255,255,255,0.02);
+    padding: 50px; border-radius: 15px; border: 1px solid var(--main-green);
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
 }
-#chat-log { height: 250px; overflow-y: auto; margin-bottom: 30px; text-align: left; }
-.msg { margin-bottom: 20px; font-size: 1.4rem; color: var(--text-white-dull); }
-.stranger { color: var(--alert-red-dull); font-weight: bold; }
+#chat-log { height: 200px; overflow-y: auto; margin-bottom: 25px; text-align: left; }
+.msg { margin-bottom: 15px; font-size: 1.3rem; color: var(--text-white); }
+.stranger { color: var(--alert-red); font-weight: bold; }
 .you { color: #4385cc; font-weight: bold; }
-.reply-btn { background:none; border: 1px solid var(--main-green-dull); color: var(--main-green-dull); padding: 18px 40px; cursor: pointer; font-size: 1.2rem; }
+.reply-btn { background:none; border: 1px solid var(--main-green); color: var(--main-green); padding: 12px 30px; cursor: pointer; font-size: 1.1rem; }
 
-/* --- ARTICLE --- */
-.article-section { padding: 100px 20px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 30; background-color: var(--deep-blue-dull);}
-.article-content { max-width: 800px; line-height: 1.8; font-size: 1.35rem; color: var(--main-green-dull); }
-.article-content p { margin-bottom: 30px; }
-.article-quote { font-style: italic; border-left: 3px solid var(--alert-red-dull); padding-left: 20px; margin: 40px 0; color: #fff; font-size: 1.5rem; }
+/* --- FULL ARTICLE CONTENT --- */
+.article-section { padding: 80px 20px; display: flex; flex-direction: column; align-items: center; background: var(--deep-blue); }
+.article-content { max-width: 850px; line-height: 1.9; font-size: 1.35rem; color: var(--main-green); }
+.article-content p { margin-bottom: 35px; }
+.article-quote { 
+    font-style: italic; border-left: 4px solid var(--alert-red); 
+    padding-left: 25px; margin: 50px 0; color: #fff; font-size: 1.6rem; 
+    line-height: 1.5;
+}
 
-/* --- GLOBE (SIDE-BY-SIDE LAYOUT) --- */
-.globe-container { position: relative; height: 300vh; z-index: 5; background-color: var(--deep-blue-dull); }
+/* --- GLOBE SECTION (FIXED LAYOUT) --- */
+.globe-container { position: relative; height: 350vh; background: var(--deep-blue); }
 .globe-sticky {
-position: sticky; top: 0; height: 100vh; width: 100%;
-display: flex; align-items: center; justify-content: center; overflow: hidden;
+    position: sticky; top: 0; height: 100vh; width: 100%;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
 }
-#globeViz { 
-width: 100%; height: 100%; transition: transform 1.5s ease-in-out; 
-transform: translateX(0); 
-}
-/* Shift globe left only when scrolly starts appearing */
-.globe-container.active #globeViz { transform: translateX(-20%); } 
+#globeViz { width: 100%; height: 100%; transition: transform 1.2s ease-in-out; }
+.globe-container.active #globeViz { transform: translateX(-22%); }
 
-#country-label {
-position: absolute; bottom: 80px; left: 30%; transform: translateX(-50%);
-font-size: 2rem; color: var(--alert-red-dull); text-transform: uppercase;
-letter-spacing: 5px; font-weight: bold; opacity: 0; transition: 0.5s;
-z-index: 10;
+.scrolly-text-right { 
+    position: absolute; right: 6%; width: 35%; z-index: 100; pointer-events: none; 
 }
-
-.scrolly-text-overlay { 
-position: absolute; right: 8%; width: 35%; z-index: 100; pointer-events: none; 
-height: 100%; display: flex; flex-direction: column;
-}
-.step { height: 100vh; display: flex; align-items: center; opacity: 0; transition: 1s; }
+.step { height: 100vh; display: flex; align-items: center; opacity: 0; transition: 0.8s; }
 .step.active { opacity: 1; }
 .step-card { 
-background: rgba(0, 4, 26, 0.95); padding: 35px; border-left: 3px solid var(--alert-red-dull); 
-color: var(--text-white-dull); pointer-events: auto; font-size: 1.25rem; line-height: 1.6;
+    background: rgba(0, 4, 26, 0.95); padding: 35px; border-left: 3px solid var(--alert-red); 
+    color: #fff; font-size: 1.2rem; pointer-events: auto;
+}
+#country-label {
+    position: absolute; bottom: 12%; left: 28%; font-size: 2.2rem; 
+    color: var(--alert-red); font-weight: bold; opacity: 0; transition: 0.5s;
 }
 
 /* --- VIDEO --- */
-.video-section { height: 120vh; position: relative; z-index: 20; background-color: var(--deep-blue-dull);}
-.video-sticky { position: sticky; top: 0; height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; }
-.video-frame { width: 85%; height: 75%; border: 1px solid rgba(74, 139, 92, 0.2); }
-video { width: 100%; height: 100%; object-fit: cover; }
+.video-section { height: 100vh; display: flex; align-items: center; justify-content: center; background: #000; }
+.video-frame { width: 80%; height: 70%; border: 1px solid var(--main-green); }
 </style>
 </head>
 <body>
@@ -107,8 +97,8 @@ video { width: 100%; height: 100%; object-fit: cover; }
 <div class="hero-container">
     <div class="hero-fixed" id="heroBase">
         <div class="hero-overlay">
-            <h1>Stranger Danger</h1>
-            <p id="subheading" class="scrolly-sub">How Random Video Chatting Websites Impact Children’s Online Safety</p>
+            <h1>STRANGER DANGER</h1>
+            <p class="scrolly-sub">How Random Video Chatting Websites Impact Children’s Online Safety</p>
         </div>
     </div>
 </div>
@@ -129,6 +119,7 @@ video { width: 100%; height: 100%; object-fit: cover; }
         <p>It’s precursor, Omegle.com, was one of the most popular sites in this space until it shut down in 2023. The website closed down following numerous lawsuits that showed how they were used by online predators to sexually exploit children.</p>
         <p>Since then, many websites like Omegle have opened up in this space, including Umingle. Multiple users said they found Umingle while searching for alternatives or were introduced through social media.</p>
         <div class="article-quote">“People think that they can say whatever they want when they get online,” said @mallu_potato on Instagram, a 28-year-old content creator.</div>
+        <p>He appears on screen as a potato masking his face using a camera filter. He holds spontaneous conversations and has gained popularity within adults and children alike.</p>
         <div class="article-quote">“Do not point your camera toward screens...Your camera must remain focused on your face at all times.”</div>
         <p>But content creators like @mallu_potato have easily been able to bypass these regulations which highlights how ineffective they are.</p>
     </div>
@@ -137,18 +128,10 @@ video { width: 100%; height: 100%; object-fit: cover; }
 <section class="globe-container" id="globeParent">
     <div class="globe-sticky">
         <div id="globeViz"></div>
-        <div id="country-label">Select Country</div>
-        <div class="scrolly-text-overlay">
-            <div class="step" data-step="0">
-                <div class="step-card">
-                    <p>For 12 minutes from, 6:00 a.m. - 6:12 a.m. Pacific time, the website Umingle.com was monitored to know the demographics of its users.</p>
-                </div>
-            </div>
-            <div class="step" data-step="1">
-                <div class="step-card">
-                    <p>These are the countries that it connected the video call to from the US in a span of 12 minutes during this time frame.</p>
-                </div>
-            </div>
+        <div id="country-label">...</div>
+        <div class="scrolly-text-right">
+            <div class="step"><div class="step-card"><p>For 12 minutes from, 6:00 a.m. - 6:12 a.m. Pacific time, the website Umingle.com was monitored to know the demographics of its users.</p></div></div>
+            <div class="step"><div class="step-card"><p>These are the countries that it connected the video call to from the US in a span of 12 minutes during this time frame.</p></div></div>
         </div>
     </div>
 </section>
@@ -156,10 +139,14 @@ video { width: 100%; height: 100%; object-fit: cover; }
 <section class="article-section">
     <div class="article-content">
         <p>According to Umingle the website retains IP addresses of the users to enforce bans and prevent people that violate the rules. But a quick search on YouTube gives a list of results on different methods that users can do to get unbanned for free.</p>
+        <p>Among other interactions, these websites have been historically known for fostering a space for sexual conversations.</p>
         <div class="article-quote">A study conducted at Middlesex University in 2024 revealed that only 2% of adult users expressed regret for interacting with an underage person, while 89% blamed the child.</div>
+        <p>As Mirza shared her experiences, she said how her exposure to sexually explicit conversations desensitized her from sending nudes photos to people on Snapchat as a child.</p>
         <div class="article-quote">“I was a minor and they were not,” said Mirza.</div>
+        <p>Child protection agencies and Facebook parent groups across the world are raising alarms about this internet rabbit hole. But identifying online harm against children has become increasingly difficult.</p>
         <div class="article-quote">“We have a list of twenty or even thirty alternatives who use the same basic system,[where] predatory behaviour is a common sight,” said Niels Van Paemel.</div>
         <div class="article-quote">“Omegle was meant to be a way of strolling down a street in that village, striking up conversations with the people you ran into,” Brooks wrote.</div>
+        <p>The National Center for Missing and Exploited Children received 6,08,601 reports against Omegle in 2022 alone. The website finally shut down after a case where an 11-year-old was connected with a man who groomed the child for three years.</p>
         <div class="article-quote">“Hydra effect: closing a popular webcam platform like Omegle leads to the problem becoming more diffuse,” said Paul Bleakley.</div>
         <div class="article-quote">Harvard Law Review (2026): Social media companies compliance with COPPA “stretches credulity” and it’s clear the system is left to self policing.</div>
         <div class="article-quote">“It’s way worse than letting them out on the streets. It’s like you give the whole world access to them,” said Paresh Patel.</div>
@@ -167,135 +154,37 @@ video { width: 100%; height: 100%; object-fit: cover; }
     </div>
 </section>
 
-<section class="video-section">
-    <div class="video-sticky">
-        <div class="video-frame"><video id="explainerVid" controls><source src="your-video.mp4" type="video/mp4"></video></div>
-    </div>
-</section>
+<div class="video-section">
+    <div class="video-frame"><video id="explainerVid" controls><source src="your-video.mp4" type="video/mp4"></video></div>
+</div>
 
 <script>
-// Faster Hero Whisper Reveal
-const hero = document.getElementById('heroBase');
+// Hero Text Bubbles
+const heroBase = document.getElementById('heroBase');
 const phrases = ["asl?", "m/f", "hello", "where u from?", "typing...", "connected", "show face", "disconnected"];
-for(let i=0; i<30; i++) {
+for(let i=0; i<25; i++) {
     const b = document.createElement('div');
     b.className = 'whisper';
     b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
     b.style.left = Math.random()*90+"%"; b.style.top = Math.random()*90+"%";
-    b.setAttribute('data-reveal', (i / 30) * 300);
-    hero.appendChild(b);
+    heroBase.appendChild(b);
 }
 
 function reply() {
     const log = document.getElementById('chat-log');
     log.innerHTML += `<div class="msg"><span class="you">You:</span> Who is this?</div>`;
-    setTimeout(() => {
-        log.innerHTML += `<div class="msg"><span class="stranger">Stranger:</span> Just a stranger monitoring the grid.</div>`;
-        log.scrollTop = log.scrollHeight;
-    }, 1000);
 }
 
-// Scroll Handlers
-window.addEventListener('scroll', () => {
-    const s = window.scrollY;
-    document.querySelectorAll('.whisper').forEach(w => {
-        if(s > parseInt(w.getAttribute('data-reveal'))) w.classList.add('visible');
-    });
-    if (s > 250) document.getElementById('subheading').classList.add('visible');
-    
-    // Globe Transition Logic
-    const globeParent = document.getElementById('globeParent');
-    const gRect = globeParent.getBoundingClientRect();
-    
-    // Start shifting globe left when the section enters the view
-    if(gRect.top < window.innerHeight * 0.5 && gRect.bottom > 0) {
-        globeParent.classList.add('active');
-    } else {
-        globeParent.classList.remove('active');
-    }
-
-    const steps = document.querySelectorAll('.step');
-    steps.forEach(step => {
-        const rect = step.getBoundingClientRect();
-        if(rect.top < window.innerHeight * 0.6 && rect.bottom > window.innerHeight * 0.2) {
-            step.classList.add('active');
-        } else {
-            step.classList.remove('active');
-        }
-    });
-});
-
-// Globe Initialization - Fixed render issue
-const countryLabel = document.getElementById('country-label');
+// Globe Setup
 const world = Globe()(document.getElementById('globeViz'))
     .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
     .backgroundColor('rgba(0,0,0,0)')
     .showAtmosphere(true)
     .atmosphereColor("#4a8b5c")
-    .atmosphereAltitude(0.15);
+    .pointOfView({ lat: 20, lng: 0, altitude: 2.5 });
 
-const sequence = [
-    "Singapore", "Switzerland", "New Zealand", "Australia", "Germany", 
-    "Canada", "United Kingdom", "Netherlands", "United Arab Emirates", 
-    "South Africa", "Qatar", "Ireland", "Israel", "Portugal"
-];
+const sequence = ["Singapore", "Switzerland", "New Zealand", "Australia", "Germany", "Canada", "United Kingdom", "Netherlands", "United Arab Emirates", "South Africa", "Qatar", "Ireland", "Israel", "Portugal"];
 
-// Fetch data and start logic
 fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson')
     .then(res => res.json())
-    .then(countries => {
-        world.polygonsData(countries.features)
-            .polygonCapColor(() => 'rgba(74, 139, 92, 0.1)')
-            .polygonStrokeColor(() => 'rgba(74, 139, 92, 0.3)')
-            .polygonSideColor(() => 'rgba(0,0,0,0)');
-
-        // Initial View over US
-        world.pointOfView({ lat: 39.8, lng: -98.5, altitude: 2.5 }, 0);
-
-        let i = 0;
-        function runSequence() {
-            const countryName = sequence[i % sequence.length];
-            const country = countries.features.find(c => 
-                c.properties.NAME === countryName || c.properties.ADMIN === countryName
-            );
-
-            if (country) {
-                let coords = country.geometry.coordinates[0];
-                while(Array.isArray(coords[0])) coords = coords[0];
-                const [lng, lat] = coords;
-
-                // Simple smooth arc
-                world.arcsData([{ 
-                    startLat: 39.8, startLng: -98.5, 
-                    endLat: lat, endLng: lng, 
-                    color: ['#b83d3d', '#4a8b5c'] 
-                }]);
-
-                // Smoothly pan camera to target
-                world.pointOfView({ lat, lng, altitude: 1.8 }, 1500);
-                
-                setTimeout(() => {
-                    countryLabel.innerText = countryName;
-                    countryLabel.style.opacity = 1;
-                }, 1000);
-
-                setTimeout(() => {
-                    countryLabel.style.opacity = 0;
-                    i++;
-                    runSequence();
-                }, 4000);
-            }
-        }
-        
-        // Wait for page to settle then start
-        setTimeout(runSequence, 2000);
-    });
-
-world.arcDashLength(0.4)
-     .arcDashGap(2)
-     .arcDashAnimateTime(2000)
-     .arcStroke(0.5);
-
-</script>
-</body>
-</html>
+    .then
