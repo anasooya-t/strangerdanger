@@ -67,44 +67,17 @@ body {
 .article-content p { margin-bottom: 35px; }
 .article-quote { font-style: italic; border-left: 3px solid var(--alert-red-dull); padding-left: 20px; margin: 45px 0; color: #fff; font-size: 1.55rem; }
 
-/* --- GRAVESTONE SPECIFIC STYLES --- */
+/* --- GRAVE LAYOUT --- */
 .quote-with-grave {
     display: flex;
     align-items: center;
     gap: 40px;
     margin: 45px 0;
 }
-.grave-wrap {
+.grave-container {
     flex-shrink: 0;
-    perspective: 1000px;
+    width: 250px;
 }
-.grave-stone {
-    width: 140px;
-    height: 180px;
-    background: #2a2a2a;
-    border-radius: 70px 70px 5px 5px;
-    position: relative;
-    border: 2px solid #1a1a1a;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    box-shadow: inset -10px 0 20px rgba(0,0,0,0.5), 0 10px 20px rgba(0,0,0,0.8);
-}
-.grave-inscription {
-    color: #000;
-    font-family: 'Times New Roman', serif;
-    text-align: center;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 2s ease, transform 2s ease;
-}
-.grave-inscription.reveal {
-    opacity: 0.5;
-    transform: translateY(0);
-}
-.grave-name { font-weight: bold; font-size: 1.1rem; }
-.grave-date { font-size: 0.8rem; margin-top: 5px; }
 
 /* --- GLOBE --- */
 .globe-container { position: relative; height: 300vh; z-index: 5; }
@@ -172,7 +145,7 @@ body {
         <div id="country-label">Select Country</div>
         <div class="scrolly-text-overlay">
             <div class="step" data-step="0"><div class="step-card"><p>The website Umingle.com was used from the US for 1 hour...</p></div></div>
-            <div class="step" data-step="1"><div class="step-card"><p>...and these were the countries that the random video chatting platform connected to during this time period.</p></div></div>
+            <div class="step" data-step="1"><div class="step-card"><p>...and these were the countries that the random video chatting platform umingle.com connected to in 12 minutes.</p></div></div>
         </div>
     </div>
 </section>
@@ -187,17 +160,11 @@ body {
         <p>Omegle.com developed in 2009 by Leif K. Brooks a software programmer in Oregon used to get up to 66 million monthly visits when it was active. Along with similar websites like Chatroulette, it became a cultural moment on the internet as social media influencers picked up the trend and started posting their interactions online.</p>
         
         <div class="quote-with-grave">
-            <div class="article-quote" style="margin: 0; flex: 1;">
+            <div class="article-quote" style="margin:0; border-left: 3px solid var(--alert-red-dull); padding-left: 20px;">
                 “If the internet is a manifestation of the ‘global village,’ Omegle was meant to be a way of strolling down a street in that village, striking up conversations with the people you ran into along the way,” Brooks wrote on his website that is no longer active and holds an image of a tombstone.
             </div>
-            <div class="grave-wrap">
-                <div class="grave-stone">
-                    <div class="grave-inscription" id="omegleGrave">
-                        <div class="grave-name">Omegle</div>
-                        <div class="grave-date">2009-2023</div>
-                    </div>
+            <div class="grave-container" id="graveAnimation">
                 </div>
-            </div>
         </div>
 
         <p>The National Center for Missing and Exploited Children that records reports of online exploitation of children, received 6,08,601 reports against Omegle in 2022 alone. The website that gained even more popularity during the pandemic finally was shut down and declared bankrupt after a case where an 11-year-old was connected on the website with a man in his late 30s who was convicted of grooming the child for three years.</p>
@@ -261,16 +228,6 @@ for(let i=0; i<45; i++) {
 // --- SCROLL HANDLER ---
 window.addEventListener('scroll', () => {
     const s = window.scrollY;
-    
-    // Grave Animation Logic
-    const grave = document.getElementById('omegleGrave');
-    const graveRect = grave.getBoundingClientRect();
-    if(graveRect.top < window.innerHeight * 0.8) {
-        grave.classList.add('reveal');
-    } else {
-        grave.classList.remove('reveal');
-    }
-
     if (s > 1800) document.body.style.backgroundColor = "var(--deep-blue-dull)";
     else document.body.style.backgroundColor = "#000000";
     document.querySelectorAll('.whisper').forEach(w => {
