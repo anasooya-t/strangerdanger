@@ -67,6 +67,45 @@ body {
 .article-content p { margin-bottom: 35px; }
 .article-quote { font-style: italic; border-left: 3px solid var(--alert-red-dull); padding-left: 20px; margin: 45px 0; color: #fff; font-size: 1.55rem; }
 
+/* --- GRAVESTONE SPECIFIC STYLES --- */
+.quote-with-grave {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    margin: 45px 0;
+}
+.grave-wrap {
+    flex-shrink: 0;
+    perspective: 1000px;
+}
+.grave-stone {
+    width: 140px;
+    height: 180px;
+    background: #2a2a2a;
+    border-radius: 70px 70px 5px 5px;
+    position: relative;
+    border: 2px solid #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset -10px 0 20px rgba(0,0,0,0.5), 0 10px 20px rgba(0,0,0,0.8);
+}
+.grave-inscription {
+    color: #000;
+    font-family: 'Times New Roman', serif;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 2s ease, transform 2s ease;
+}
+.grave-inscription.reveal {
+    opacity: 0.5;
+    transform: translateY(0);
+}
+.grave-name { font-weight: bold; font-size: 1.1rem; }
+.grave-date { font-size: 0.8rem; margin-top: 5px; }
+
 /* --- GLOBE --- */
 .globe-container { position: relative; height: 300vh; z-index: 5; }
 .globe-sticky {
@@ -146,7 +185,21 @@ body {
         <p>Child protection agencies and Facebook parent groups across the world are raising alarms about this internet rabbit hole after reports surfaced of sexual predators using the sites to target children. But as there are a large number of websites that work on the same principles, identifying online harm against children on these platforms have become increasingly difficult.</p>
         <div class="article-quote">“We have a list of twenty or even thirty alternatives who use the same basic system,[where] you can chat/video call with a stranger and those are the platforms where we see a lot of predatory behaviour,” said Niels Van Paemel.</div>
         <p>Omegle.com developed in 2009 by Leif K. Brooks a software programmer in Oregon used to get up to 66 million monthly visits when it was active. Along with similar websites like Chatroulette, it became a cultural moment on the internet as social media influencers picked up the trend and started posting their interactions online.</p>
-        <p>“If the internet is a manifestation of the ‘global village,’ Omegle was meant to be a way of strolling down a street in that village, striking up conversations with the people you ran into along the way,” Brooks wrote on his website that is no longer active and holds an image of a tombstone.</p>
+        
+        <div class="quote-with-grave">
+            <div class="article-quote" style="margin: 0; flex: 1;">
+                “If the internet is a manifestation of the ‘global village,’ Omegle was meant to be a way of strolling down a street in that village, striking up conversations with the people you ran into along the way,” Brooks wrote on his website that is no longer active and holds an image of a tombstone.
+            </div>
+            <div class="grave-wrap">
+                <div class="grave-stone">
+                    <div class="grave-inscription" id="omegleGrave">
+                        <div class="grave-name">Omegle</div>
+                        <div class="grave-date">2009-2023</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <p>The National Center for Missing and Exploited Children that records reports of online exploitation of children, received 6,08,601 reports against Omegle in 2022 alone. The website that gained even more popularity during the pandemic finally was shut down and declared bankrupt after a case where an 11-year-old was connected on the website with a man in his late 30s who was convicted of grooming the child for three years.</p>
         <div class="article-quote">“In some ways, what we feared has happened - a Hydra effect, where closing a popular webcam platform like Omegle leads to the problem becoming more diffuse,” said Paul Bleakley.</div>
         <p>Youngsters like Mirza who keeps coming back to use such websites out of boredom, shares how easy it is to find people flashing themselves, masterbating or saying racist and sexist slurs.</p>
@@ -208,6 +261,16 @@ for(let i=0; i<45; i++) {
 // --- SCROLL HANDLER ---
 window.addEventListener('scroll', () => {
     const s = window.scrollY;
+    
+    // Grave Animation Logic
+    const grave = document.getElementById('omegleGrave');
+    const graveRect = grave.getBoundingClientRect();
+    if(graveRect.top < window.innerHeight * 0.8) {
+        grave.classList.add('reveal');
+    } else {
+        grave.classList.remove('reveal');
+    }
+
     if (s > 1800) document.body.style.backgroundColor = "var(--deep-blue-dull)";
     else document.body.style.backgroundColor = "#000000";
     document.querySelectorAll('.whisper').forEach(w => {
