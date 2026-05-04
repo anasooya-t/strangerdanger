@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stranger Danger: Online Safety Report</title>
-    <script src="//unpkg.com/globe.gl"></script>
+    <script src="https://unpkg.com/globe.gl"></script>
     
     <style>
         :root { 
@@ -23,71 +23,94 @@
             overflow-x: hidden;
         }
 
-        /* --- HERO SECTION --- */
-        .hero-container { height: 400vh; position: relative; z-index: 10; }
+        /* --- 1. HERO SECTION & SMOKY BUBBLES --- */
+        .hero-container { height: 400vh; position: relative; background: #000; }
         .hero-fixed {
             position: sticky; top: 0; height: 100vh;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             overflow: hidden;
         }
-        .hero-overlay { z-index: 100; text-align: center; pointer-events: none; width: 80%; }
+        .hero-overlay { z-index: 10; text-align: center; pointer-events: none; width: 80%; }
         .hero-overlay h1 { font-size: 5rem; color: var(--text-white-dull); text-transform: uppercase; margin: 0; }
         
         .scrolly-sub { 
-            font-size: 1.6rem; margin-top: 20px; color: var(--main-green-dull); 
-            opacity: 0; filter: blur(20px); transform: translateY(20px);
+            font-size: 1.6rem; 
+            margin-top: 20px; 
+            color: var(--main-green-dull); 
+            opacity: 0; 
+            filter: blur(20px);
+            transform: translateY(20px);
             transition: opacity 2s ease, filter 2.5s ease, transform 2s ease;
         }
-        .scrolly-sub.visible { opacity: 0.8; filter: blur(0px); transform: translateY(0); }
+        .scrolly-sub.visible { 
+            opacity: 0.8; 
+            filter: blur(0px); 
+            transform: translateY(0);
+        }
 
         .whisper {
             position: absolute; background: rgba(0, 4, 26, 0.95); color: var(--main-green-dull);
             padding: 12px 22px; border-radius: 40px; font-size: 1rem; opacity: 0;
             filter: blur(20px); transition: opacity 1.2s, filter 1.8s, transform 1.5s;
-            box-shadow: 0 0 30px 10px rgba(0, 0, 0, 1); border: 1px solid rgba(74, 139, 92, 0.1); z-index: 50;
+            box-shadow: 0 0 30px 10px rgba(0, 0, 0, 1); border: 1px solid rgba(74, 139, 92, 0.1); z-index: 8;
         }
         .whisper.visible { opacity: 1; filter: blur(0px); transform: scale(1.05); }
 
-        /* --- CHAT SECTION --- */
+        /* --- 2. CHAT SECTION --- */
         .chat-section { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; }
         .chat-box {
             width: 80%; max-width: 900px; background: rgba(255,255,255,0.02); backdrop-filter: blur(25px);
             padding: 60px; border-radius: 20px; border: 1px solid rgba(74, 139, 92, 0.2);
-            text-align: center;
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.9); text-align: center;
         }
-        #chat-log { height: 250px; overflow-y: auto; margin-bottom: 30px; text-align: left; }
+        #chat-log { height: 250px; overflow-y: auto; margin-bottom: 30px; text-align: left; padding-right: 15px; }
         .msg { margin-bottom: 20px; font-size: 1.4rem; color: var(--text-white-dull); }
         .stranger { color: var(--alert-red-dull); font-weight: bold; }
         .you { color: #4385cc; font-weight: bold; }
-        .reply-btn { background:none; border: 1px solid var(--main-green-dull); color: var(--main-green-dull); padding: 18px 40px; cursor: pointer; font-size: 1.2rem; }
+        .reply-btn { background:none; border: 1px solid var(--main-green-dull); color: var(--main-green-dull); padding: 18px 40px; cursor: pointer; font-size: 1.2rem; transition: 0.3s; }
+        .reply-btn:hover { background: var(--main-green-dull); color: #000; }
 
-        /* --- ARTICLE --- */
+        /* --- 3. ARTICLE --- */
         .article-section { padding: 100px 20px; display: flex; justify-content: center; position: relative; z-index: 20; }
         .article-content { max-width: 800px; line-height: 1.8; font-size: 1.35rem; color: var(--main-green-dull); }
+        .article-content h2 { color: var(--text-white-dull); font-size: 2.5rem; margin-bottom: 40px; border-bottom: 1px solid rgba(74, 139, 92, 0.2); }
         .article-quote { font-style: italic; border-left: 3px solid rgba(255,255,255,0.3); padding-left: 20px; margin: 40px 0; color: #fff; font-size: 1.5rem; }
 
-        /* --- GLOBE SECTION (FIXED VISIBILITY) --- */
-        .globe-container { position: relative; height: 400vh; background-color: #000; z-index: 30; }
+        /* --- 4. GLOBE SECTION --- */
+        .globe-container { position: relative; height: 400vh; z-index: 5; }
         .globe-sticky {
-            position: sticky; top: 0; height: 100vh; width: 100vw;
-            display: flex; align-items: center; justify-content: center;
-            overflow: hidden; background: #000;
+            position: sticky; top: 0; height: 100vh; width: 100%;
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
         }
-        #globeViz { 
-            width: 100%; height: 100%; 
-            min-height: 100vh; /* Force visibility */
-            transition: transform 1.5s ease-in-out; 
-        }
+        #globeViz { width: 100%; height: 100%; transition: transform 1.5s ease-in-out; cursor: crosshair; }
         .globe-sticky.slide-left #globeViz { transform: translateX(-20%); }
+
+        /* --- NEW: COUNTRY NAME DISPLAY --- */
+        #country-label {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            color: var(--alert-red-dull);
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 110;
+            text-shadow: 0 0 10px rgba(184, 61, 61, 0.5);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
 
         .scrolly-text-overlay { position: absolute; right: 10%; width: 35%; z-index: 100; pointer-events: none; }
         .step { height: 100vh; display: flex; align-items: center; opacity: 0; transition: 1.2s; }
         .step.active { opacity: 1; }
-        .step-card { background: rgba(0, 0, 0, 0.95); padding: 35px; border-left: 4px solid var(--main-green-dull); color: var(--text-white-dull); pointer-events: auto; }
+        .step-card { background: rgba(0, 0, 0, 0.95); padding: 35px; border-left: 4px solid var(--main-green-dull); color: var(--text-white-dull); pointer-events: auto; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
 
-        /* --- VIDEO --- */
-        .video-section { height: 150vh; position: relative; z-index: 40; }
-        .video-sticky { position: sticky; top: 0; height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; background: #000; }
+        /* --- 5. VIDEO --- */
+        .video-section { height: 150vh; position: relative; z-index: 20; }
+        .video-sticky { position: sticky; top: 0; height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; }
         .video-frame { width: 85%; height: 75%; border: 1px solid rgba(74, 139, 92, 0.2); }
         video { width: 100%; height: 100%; object-fit: cover; }
     </style>
@@ -117,16 +140,19 @@
             <h2>I Want to Talk to Strangers</h2>
             <p>It was 11:30 am when Adeen Asad Mirza opened her iPad and decided to talk to online strangers from her bedroom in Dubai. Mirza who is now an 18-year-old woman preparing to go to college used to speak with anonymous strangers online with her friends since she was 10-years-old through websites like umingle.com...</p>
             <div class="article-quote">“Tons of weird experiences. I can write you an essay on the shit I have seen,” said Mirza as she talked with me on the website.</div>
-            <p>Often known by different names these roulette-styled chatting platforms allowed users to speak with strangers of any age without an account...</p>
-            <p>The number of random video chatting websites on the internet like umingle.com that provides services where children can openly connect and speak with adult strangers without any oversight or regulation has increased...</p>
+            <p>Often known by different names these roulette-styled chatting platforms allowed users to speak with strangers of any age without an account. Mirza had first found out about such websites from her friends from school who were already using them even before they had their own phones.</p>
+            <p>The number of random video chatting websites on the internet like umingle.com that provides services where children can openly connect and speak with adult strangers without any oversight or regulation has increased.</p>
+            <p>Omegle.com was the first few websites that popularised the idea of talking to online strangers. Developed by Leif K. Brooks an 18-years-old software programmer in Oregon, the website used to get upto 66 million monthly visits...</p>
         </div>
     </section>
 
     <section class="globe-container">
         <div class="globe-sticky" id="globeSticky">
             <div id="globeViz"></div>
+            <div id="country-label">Select Country</div>
+            
             <div class="scrolly-text-overlay">
-                <div class="step" data-step="0"><div class="step-card"><h3>Global Reach</h3><p>Connections on these sites are immediate and borderless. Watch as the data jumps randomly between the US and the rest of the world.</p></div></div>
+                <div class="step" data-step="0"><div class="step-card"><h3>Global Reach</h3><p>Connections on these sites are immediate and borderless. Click on any region to see the origin of the connection.</p></div></div>
                 <div class="step" data-step="1"><div class="step-card"><h3>Jurisdictional Chaos</h3><p>One second a child is in a US-regulated session; the next, they are peer-to-peer with a server in a country with no data oversight.</p></div></div>
             </div>
         </div>
@@ -196,32 +222,45 @@
             else globeSticky.classList.remove('slide-left');
         });
 
-        // --- GLOBE INITIALIZATION (REPAIRED) ---
-        // We initialize the globe first, then try to load data
+        // --- GLOBE RECONSTRUCTION ---
+        const countryLabel = document.getElementById('country-label');
+
         const world = Globe()(document.getElementById('globeViz'))
             .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
             .backgroundColor('rgba(0,0,0,0)')
-            .showAtmosphere(true).atmosphereColor("#4a8b5c").atmosphereAltitude(0.15);
+            .showAtmosphere(true)
+            .atmosphereColor("#4a8b5c")
+            .atmosphereAltitude(0.15)
+            .onPolygonClick(({ properties: p }) => {
+                // When clicked, show the name in our label
+                countryLabel.innerText = p.NAME || p.ADMIN;
+                countryLabel.style.opacity = 1;
+            });
 
         world.controls().enableZoom = false;
 
-        // Fallback arcs in case fetch fails
-        setInterval(() => {
-            world.arcsData([{
-                startLat: 37.09, startLng: -95.71,
-                endLat: (Math.random() - 0.5) * 120, endLng: (Math.random() - 0.5) * 360,
-                color: ['#b83d3d', '#4a8b5c']
-            }]);
-        }, 2500);
-
-        // Try to fetch country borders
         fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson')
             .then(res => res.json())
             .then(countries => {
                 world.polygonsData(countries.features)
-                    .polygonCapColor(() => 'rgba(0,0,0,0)')
-                    .polygonStrokeColor(() => 'rgba(74, 139, 92, 0.2)');
-            }).catch(err => console.log("GeoData load delay - using fallback arcs."));
+                    .polygonCapColor(() => 'rgba(74, 139, 92, 0.05)') // Slight fill so it's clickable
+                    .polygonStrokeColor(() => 'rgba(74, 139, 92, 0.4)')
+                    .polygonSideColor(() => 'rgba(0, 0, 0, 0)')
+                    .polygonLabel(({ properties: p }) => `<b>${p.NAME}</b>`); // Tooltip on hover
+                
+                setInterval(() => {
+                    const randomCountry = countries.features[Math.floor(Math.random() * countries.features.length)];
+                    let coords = randomCountry.geometry.coordinates[0];
+                    while(Array.isArray(coords[0])) coords = coords[0];
+                    const [lng, lat] = coords;
+                    
+                    world.arcsData([{
+                        startLat: 37.09, startLng: -95.71,
+                        endLat: lat, endLng: lng,
+                        color: ['#b83d3d', '#4a8b5c']
+                    }]);
+                }, 2000);
+            });
 
         world.arcDashLength(0.5).arcDashGap(1).arcDashAnimateTime(1000).arcStroke(0.5);
     </script>
