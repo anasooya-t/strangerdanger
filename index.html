@@ -44,8 +44,18 @@ body {
     padding: 12px 22px; border-radius: 40px; font-size: 1rem; opacity: 0;
     filter: blur(20px); transition: opacity 1.2s, filter 1.8s, transform 1.5s;
     box-shadow: 0 0 30px 10px rgba(0, 0, 0, 1); border: 1px solid rgba(74, 139, 92, 0.1); z-index: 8;
+    
+    /* Subconscious floating */
+    animation: somberFloat var(--float-duration) ease-in-out var(--float-delay) infinite;
 }
-.whisper.visible { opacity: 1; filter: blur(0px); transform: scale(1.05); }
+.whisper.visible { opacity: 0.75; filter: blur(0px); }
+
+/* Somber Floating: Tiny movement, incredibly slow */
+@keyframes somberFloat {
+    0% { transform: translate(0, 0) scale(1.05); }
+    50% { transform: translate(2px, -5px) scale(1.04); }
+    100% { transform: translate(0, 0) scale(1.05); }
+}
 
 /* --- CHAT SECTION --- */
 .chat-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; }
@@ -209,13 +219,20 @@ const videoObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 videoObserver.observe(graveVid);
 
-// --- REVERTED HERO WHISPERS ---
+// --- REVERTED HERO WHISPERS WITH SLOW MOTION ---
 const hero = document.getElementById('heroBase');
 const phrases = ["asl?", "m/f", "hello", "where u from?", "connected", "show face", "disconnected"];
 for(let i=0; i<45; i++) {
     const b = document.createElement('div');
     b.className = 'whisper';
     b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
+    
+    // Duration set to 15-25 seconds for extremely slow movement
+    const duration = 15 + Math.random() * 10;
+    const delay = Math.random() * -20; 
+    b.style.setProperty('--float-duration', `${duration}s`);
+    b.style.setProperty('--float-delay', `${delay}s`);
+
     let x, y;
     do { x = Math.random()*90; y = Math.random()*90; } while(x > 15 && x < 85 && y > 25 && y < 75);
     b.style.left = x+"%"; b.style.top = y+"%";
