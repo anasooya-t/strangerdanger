@@ -12,9 +12,6 @@
             --deep-blue-dull: #00041a; 
             --alert-red-dull: #b83d3d; 
             --text-white-dull: #d0d0d0; 
-            /* RESTORED PALETTE COLORS */
-            --bubble-bg: rgba(0, 4, 26, 0.8); 
-            --bubble-glow: rgba(74, 139, 92, 0.2);
         }
 
         body {
@@ -29,76 +26,72 @@
         /* --- 1. HERO SECTION & DRAMATIC DEPTH --- */
         .hero-container { height: 400vh; position: relative; background: #000; }
         
+        /* Added a dark vignette to push the "emerging from darkness" look */
         .hero-fixed {
             position: sticky; top: 0; height: 100vh;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             overflow: hidden;
-            background: radial-gradient(circle, var(--deep-blue-dull) 0%, rgba(0,0,0,1) 100%);
+            background: radial-gradient(circle, rgba(0,4,26,0) 30%, rgba(0,0,0,1) 100%);
         }
 
-        .hero-overlay { z-index: 100; text-align: center; pointer-events: none; width: 90%; }
+        .hero-overlay { z-index: 100; text-align: center; pointer-events: none; width: 80%; }
         .hero-overlay h1 { 
-            font-size: 5.5rem; 
+            font-size: 5rem; 
             color: var(--text-white-dull); 
             text-transform: uppercase; 
             margin: 0;
-            letter-spacing: 12px;
-            text-shadow: 0 0 30px rgba(0,0,0,1), 0 0 15px var(--bubble-glow);
+            text-shadow: 0 0 20px rgba(0,0,0,1), 0 0 40px rgba(0,0,0,0.8); /* Depth for title */
         }
         
         .scrolly-sub { 
-            font-size: 1.4rem; 
-            margin-top: 25px; 
+            font-size: 1.6rem; 
+            margin-top: 20px; 
             color: var(--main-green-dull); 
             opacity: 0; 
             filter: blur(20px);
             transform: translateY(20px);
-            transition: opacity 2.5s ease, filter 3s ease, transform 2.5s ease;
-            max-width: 650px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.5;
-            letter-spacing: 1.5px;
-            font-weight: 300;
+            transition: opacity 2s ease, filter 2.5s ease, transform 2s ease;
         }
         .scrolly-sub.visible { 
-            opacity: 1; 
+            opacity: 0.8; 
             filter: blur(0px); 
             transform: translateY(0);
         }
 
-        /* RESTORED BLUE/GREEN SMOKY BUBBLES */
+        /* SMOKY BUBBLE MODIFICATIONS */
         .whisper {
             position: absolute; 
-            background: var(--bubble-bg); 
-            color: var(--main-green-dull); /* Back to green text */
-            padding: 15px 28px; 
-            border-radius: 60px; 
-            font-size: 0.95rem; 
+            background: rgba(0, 4, 26, 0.4); /* Lower opacity base */
+            color: var(--main-green-dull);
+            padding: 14px 26px; 
+            border-radius: 50px; 
+            font-size: 1rem; 
             opacity: 0;
-            filter: blur(25px); 
+            filter: blur(30px); 
             transition: opacity 1.5s ease, filter 2s ease, transform 2s ease;
             
+            /* The "Smoky" Effect: Multiple layered shadows */
             box-shadow: 
-                0 10px 40px rgba(0, 0, 0, 0.9), 
-                0 0 20px var(--bubble-glow); 
+                0 0 40px 15px rgba(0, 0, 0, 0.9), 
+                0 0 20px 5px rgba(74, 139, 92, 0.05),
+                inset 0 0 15px rgba(0,0,0,0.8);
             
-            border: 1px solid rgba(74, 139, 92, 0.15); /* Greenish border light */
+            border: 1px solid rgba(74, 139, 92, 0.08);
             z-index: 8;
-            backdrop-filter: blur(15px);
-            white-space: nowrap;
+            backdrop-filter: blur(8px); /* Subtle frosted glass look */
         }
 
         .whisper.visible { 
-            opacity: 0.8;
+            opacity: 0.7; /* Keeping them ghostly */
             filter: blur(0px); 
+            transform: scale(1) translateZ(0); 
         }
 
         /* --- 2. CHAT SECTION --- */
         .chat-section { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; }
         .chat-box {
-            width: 80%; max-width: 900px; background: rgba(0, 4, 26, 0.85); backdrop-filter: blur(25px);
-            padding: 60px; border-radius: 20px; border: 1px solid rgba(74, 139, 92, 0.3);
+            width: 80%; max-width: 900px; background: rgba(255,255,255,0.02); backdrop-filter: blur(25px);
+            padding: 60px; border-radius: 20px; border: 1px solid rgba(74, 139, 92, 0.2);
             box-shadow: 0 0 60px rgba(0, 0, 0, 0.9); text-align: center;
         }
         #chat-log { height: 250px; overflow-y: auto; margin-bottom: 30px; text-align: left; padding-right: 15px; }
@@ -165,8 +158,9 @@
     <section class="article-section">
         <div class="article-content">
             <h2>I Want to Talk to Strangers</h2>
-            <p>It was 11:30 am when Adeen Asad Mirza opened her iPad and decided to talk to online strangers from her bedroom in Dubai...</p>
-            <div class="article-quote">“Tons of weird experiences. I can write you an essay on the shit I have seen.”</div>
+            <p>It was 11:30 am when Adeen Asad Mirza opened her iPad and decided to talk to online strangers from her bedroom in Dubai. Mirza who is now an 18-year-old woman preparing to go to college used to speak with anonymous strangers online with her friends since she was 10-years-old through websites like umingle.com...</p>
+            <div class="article-quote">“Tons of weird experiences. I can write you an essay on the shit I have seen,” said Mirza as she talked with me on the website.</div>
+            <p>Often known by different names these roulette-styled chatting platforms allowed users to speak with strangers of any age without an account.</p>
         </div>
     </section>
 
@@ -174,9 +168,10 @@
         <div class="globe-sticky" id="globeSticky">
             <div id="globeViz"></div>
             <div id="country-label">Select Country</div>
+            
             <div class="scrolly-text-overlay">
-                <div class="step" data-step="0"><div class="step-card"><h3>Global Reach</h3><p>Connections on these sites are immediate and borderless.</p></div></div>
-                <div class="step" data-step="1"><div class="step-card"><h3>Jurisdictional Chaos</h3><p>Data oversight becomes difficult across borders.</p></div></div>
+                <div class="step" data-step="0"><div class="step-card"><h3>Global Reach</h3><p>Connections on these sites are immediate and borderless. Click on any region to see the origin of the connection.</p></div></div>
+                <div class="step" data-step="1"><div class="step-card"><h3>Jurisdictional Chaos</h3><p>One second a child is in a US-regulated session; the next, they are peer-to-peer with a server in a country with no data oversight.</p></div></div>
             </div>
         </div>
     </section>
@@ -192,7 +187,7 @@
     </section>
 
     <script>
-        // --- HERO WHISPERS LOGIC ---
+        // --- 1. HERO WHISPERS WITH DEPTH ---
         const hero = document.getElementById('heroBase');
         const phrases = ["asl?", "m/f", "hello", "where u from?", "typing...", "connected", "show face", "u there?", "disconnected"];
         
@@ -202,17 +197,17 @@
             b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
             
             let x, y;
-            // STRICT CLEARANCE: No bubbles in center text area
-            do { 
-                x = Math.random() * 92; 
-                y = Math.random() * 92; 
-            } while(x > 12 && x < 88 && y > 15 && y < 80); 
+            // Space out bubbles so they don't crowd the title
+            do { x = Math.random()*90; y = Math.random()*90; } while(x > 15 && x < 85 && y > 25 && y < 75);
             
             b.style.left = x+"%"; 
             b.style.top = y+"%";
             
-            const scale = 0.7 + Math.random() * 0.4;
-            b.style.fontSize = (0.8 + Math.random() * 0.4) + "rem";
+            // Randomize font size and scale slightly for a 3D perspective feeling
+            const scale = 0.8 + Math.random() * 0.5;
+            b.style.fontSize = (0.8 + Math.random() * 0.6) + "rem";
+            
+            // Staggered reveal
             b.setAttribute('data-reveal', (i / 45) * 350); 
             hero.appendChild(b);
         }
@@ -233,7 +228,8 @@
             document.querySelectorAll('.whisper').forEach(w => {
                 if(s > parseInt(w.getAttribute('data-reveal'))) {
                     w.classList.add('visible');
-                    w.style.transform = `translateY(${-s * 0.1}px)`; 
+                    // Add a slight parallax as you scroll for more depth
+                    w.style.transform = `translateY(${-s * 0.05}px)`;
                 } else {
                     w.classList.remove('visible');
                 }
@@ -287,6 +283,7 @@
                     let coords = randomCountry.geometry.coordinates[0];
                     while(Array.isArray(coords[0])) coords = coords[0];
                     const [lng, lat] = coords;
+                    
                     world.arcsData([{
                         startLat: 37.09, startLng: -95.71,
                         endLat: lat, endLng: lng,
@@ -294,6 +291,7 @@
                     }]);
                 }, 2000);
             });
+
         world.arcDashLength(0.5).arcDashGap(1).arcDashAnimateTime(1000).arcStroke(0.5);
     </script>
 </body>
