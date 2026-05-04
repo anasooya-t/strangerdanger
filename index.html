@@ -7,76 +7,78 @@
 <script src="https://unpkg.com/globe.gl"></script>
 <style>
 :root {
-    --bg-blue: #00041a;
-    --main-green: #4a8b5c;
-    --alert-red: #b83d3d;
-    --quote-white: #ffffff;
+/* Restoring the original requested palette */
+--bg-blue-deep: #00041a; 
+--main-green: #4a8b5c; 
+--alert-red: #b83d3d; 
+--quote-white: #ffffff;
 }
 
 body {
-    margin: 0; padding: 0;
-    font-family: 'Helvetica', Arial, sans-serif;
-    background-color: var(--bg-blue);
-    color: var(--main-green);
-    overflow-x: hidden;
+margin: 0; padding: 0;
+font-family: 'Helvetica', Arial, sans-serif;
+background-color: var(--bg-blue-deep); /* Force the blue theme */
+color: var(--main-green);
+transition: background-color 0.8s ease;
+overflow-x: hidden;
 }
 
-/* --- HERO (FASTER SCROLL) --- */
-.hero-container { height: 160vh; position: relative; background: #000; }
+/* --- HERO (FASTER TRANSITION) --- */
+.hero-container { height: 180vh; position: relative; background: #000; }
 .hero-fixed {
-    position: sticky; top: 0; height: 100vh;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    overflow: hidden;
+position: sticky; top: 0; height: 100vh;
+display: flex; flex-direction: column; align-items: center; justify-content: center;
+overflow: hidden;
 }
 .hero-overlay h1 { font-size: 5rem; color: #fff; text-transform: uppercase; margin: 0; }
 .scrolly-sub {
-    font-size: 1.6rem; margin-top: 20px; color: var(--main-green);
-    opacity: 0; transition: 0.6s;
+font-size: 1.6rem; margin-top: 20px; color: var(--main-green);
+opacity: 0; transform: translateY(20px); transition: 0.8s;
 }
-.scrolly-sub.visible { opacity: 1; }
+.scrolly-sub.visible { opacity: 0.8; transform: translateY(0); }
 
 /* --- CHAT --- */
-.chat-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+.chat-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--bg-blue-deep); }
 .chat-box {
-    width: 80%; max-width: 800px; background: rgba(255,255,255,0.02);
-    padding: 40px; border-radius: 15px; border: 1px solid var(--main-green);
+width: 80%; max-width: 800px; background: rgba(255,255,255,0.02);
+padding: 40px; border-radius: 15px; border: 1px solid var(--main-green);
 }
-#chat-log { height: 200px; overflow-y: auto; margin-bottom: 20px; }
+#chat-log { height: 200px; overflow-y: auto; color: #fff; margin-bottom: 20px; }
 .stranger { color: var(--alert-red); font-weight: bold; }
 .you { color: #4385cc; font-weight: bold; }
 .reply-btn { background:none; border: 1px solid var(--main-green); color: var(--main-green); padding: 10px 25px; cursor: pointer; }
 
 /* --- ARTICLE --- */
-.article-section { padding: 60px 20px; display: flex; flex-direction: column; align-items: center; }
-.article-content { max-width: 800px; line-height: 1.8; font-size: 1.3rem; }
+.article-section { padding: 80px 20px; display: flex; flex-direction: column; align-items: center; background: var(--bg-blue-deep); }
+.article-content { max-width: 800px; line-height: 1.8; font-size: 1.3rem; color: var(--main-green); }
 .article-quote { font-style: italic; border-left: 4px solid var(--alert-red); padding-left: 20px; margin: 40px 0; color: var(--quote-white); font-size: 1.5rem; }
 
-/* --- GLOBE SECTION --- */
-.globe-container { position: relative; height: 300vh; }
+/* --- GLOBE (LAYOUT FIX) --- */
+.globe-container { position: relative; height: 300vh; background-color: var(--bg-blue-deep); }
 .globe-sticky {
-    position: sticky; top: 0; height: 100vh; width: 100%;
-    display: flex; align-items: center; justify-content: center; overflow: hidden;
+position: sticky; top: 0; height: 100vh; width: 100%;
+display: flex; align-items: center; justify-content: space-between; overflow: hidden;
 }
-#globeViz { width: 100%; height: 100%; transition: transform 1.2s; }
-.globe-container.active #globeViz { transform: translateX(-15%); }
-
-.scrolly-text-right { 
-    position: absolute; right: 5%; width: 35%; z-index: 100; pointer-events: none; 
+#globeViz { 
+width: 60%; height: 100%; transition: transform 1s; 
 }
-.step { height: 100vh; display: flex; align-items: center; opacity: 0; transition: 0.8s; }
+.scrolly-text-overlay { 
+width: 35%; padding-right: 5%; z-index: 100; pointer-events: none; 
+}
+.step { height: 100vh; display: flex; align-items: center; opacity: 0; transition: 0.5s; }
 .step.active { opacity: 1; }
 .step-card { 
-    background: rgba(0, 0, 0, 0.9); padding: 30px; border: 1px solid var(--main-green); 
-    color: #fff; font-size: 1.2rem; pointer-events: auto;
+background: rgba(0, 0, 0, 0.8); padding: 30px; border: 1px solid var(--main-green); 
+color: #fff; font-size: 1.2rem;
 }
 
 #country-label {
-    position: absolute; bottom: 80px; left: 35%; font-size: 2.5rem; 
-    color: var(--alert-red); font-weight: bold; opacity: 0; transition: 0.5s;
+position: absolute; bottom: 50px; left: 30%; font-size: 2rem; 
+color: var(--alert-red); font-weight: bold; opacity: 0; transition: 0.5s;
 }
 
 /* --- VIDEO --- */
-.video-section { height: 100vh; display: flex; align-items: center; justify-content: center; }
+.video-section { height: 100vh; background: #000; display: flex; align-items: center; justify-content: center; }
 .video-frame { width: 80%; height: 70%; border: 1px solid var(--main-green); }
 </style>
 </head>
@@ -113,17 +115,17 @@ body {
     </div>
 </section>
 
-<section class="globe-container" id="globeParent">
+<section class="globe-container">
     <div class="globe-sticky">
         <div id="globeViz"></div>
         <div id="country-label">...</div>
-        <div class="scrolly-text-right">
-            <div class="step">
+        <div class="scrolly-text-overlay">
+            <div class="step" id="step1">
                 <div class="step-card">
                     <p>For 12 minutes from, 6:00 a.m. - 6:12 a.m. Pacific time, the website Umingle.com was monitored to know the demographics of its users.</p>
                 </div>
             </div>
-            <div class="step">
+            <div class="step" id="step2">
                 <div class="step-card">
                     <p>These are the countries that it connected the video call to from the US in a span of 12 minutes during this time frame.</p>
                 </div>
@@ -161,30 +163,33 @@ body {
     </div>
 </section>
 
-<div class="video-section">
-    <div class="video-frame"><video id="explainerVid" controls><source src="your-video.mp4" type="video/mp4"></video></div>
-</div>
-
 <script>
 function reply() {
     const log = document.getElementById('chat-log');
     log.innerHTML += `<div class="msg"><span class="you">You:</span> Who is this?</div>`;
 }
 
+// Scroll detection for text visibility
 window.addEventListener('scroll', () => {
     const s = window.scrollY;
-    if (s > 200) document.getElementById('subheading').classList.add('visible');
+    if (s > 300) document.getElementById('subheading').classList.add('visible');
     
-    const gParent = document.getElementById('globeParent');
-    const gTop = gParent.getBoundingClientRect().top;
-    if (gTop < 300) gParent.classList.add('active');
-    else gParent.classList.remove('active');
-
     document.querySelectorAll('.step').forEach(step => {
         const rect = step.getBoundingClientRect();
-        if(rect.top < window.innerHeight * 0.7) step.classList.add('active');
+        if(rect.top < window.innerHeight * 0.5) step.classList.add('active');
     });
 });
+
+// GLOBE LOGIC
+const world = Globe()(document.getElementById('globeViz'))
+    .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
+    .backgroundColor('rgba(0,0,0,0)')
+    .showAtmosphere(true)
+    .atmosphereColor("#4a8b5c")
+    .arcDashLength(0.5)
+    .arcDashGap(1)
+    .arcDashAnimateTime(1500)
+    .arcStroke(1);
 
 const sequence = [
     "Singapore", "Switzerland", "New Zealand", "Australia", "Germany", 
@@ -192,23 +197,17 @@ const sequence = [
     "South Africa", "Qatar", "Ireland", "Israel", "Portugal"
 ];
 
-const world = Globe()(document.getElementById('globeViz'))
-    .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
-    .backgroundColor('rgba(0,0,0,0)')
-    .showAtmosphere(true)
-    .atmosphereColor("#4a8b5c");
-
 fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson')
     .then(res => res.json())
     .then(countries => {
         world.polygonsData(countries.features)
-            .polygonCapColor(() => 'rgba(74, 139, 92, 0.08)')
-            .polygonStrokeColor(() => 'rgba(74, 139, 92, 0.2)');
+            .polygonCapColor(() => 'rgba(74, 139, 92, 0.1)')
+            .polygonStrokeColor(() => 'rgba(74, 139, 92, 0.4)');
 
         world.pointOfView({ lat: 37.09, lng: -95.71, altitude: 2.2 });
 
         let i = 0;
-        function runJourney() {
+        function animate() {
             const countryName = sequence[i % sequence.length];
             const country = countries.features.find(c => c.properties.NAME === countryName || c.properties.ADMIN === countryName);
 
@@ -229,14 +228,12 @@ fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/data
                 setTimeout(() => {
                     document.getElementById('country-label').style.opacity = 0;
                     i++;
-                    runJourney();
-                }, 4000);
+                    animate();
+                }, 4500);
             }
         }
-        setTimeout(runJourney, 3000);
+        setTimeout(animate, 2000);
     });
-
-world.arcDashLength(0.5).arcDashGap(1).arcDashAnimateTime(1500).arcStroke(1);
 </script>
 </body>
 </html>
