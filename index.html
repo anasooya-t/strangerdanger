@@ -18,7 +18,7 @@ body {
     font-family: 'Helvetica', Arial, sans-serif;
     background-color: #000; 
     color: var(--main-green-dull);
-    transition: background-color 1.8s ease;
+    transition: background-color(1.8s) ease;
     overflow-x: hidden;
 }
 
@@ -54,14 +54,13 @@ body {
     padding: 60px; border-radius: 20px; border: 1px solid rgba(74, 139, 92, 0.2);
     box-shadow: 0 0 60px rgba(0, 0, 0, 0.9); text-align: center;
 }
-#chat-log { height: 300px; overflow-y: auto; margin-bottom: 30px; text-align: left; padding-right: 10px; border-bottom: 1px solid rgba(74, 139, 92, 0.1); }
+#chat-log { height: 350px; overflow-y: auto; margin-bottom: 30px; text-align: left; padding-right: 10px; border-bottom: 1px solid rgba(74, 139, 92, 0.1); }
 .msg { margin-bottom: 20px; font-size: 1.4rem; color: var(--text-white-dull); line-height: 1.4; }
 .stranger { color: var(--alert-red-dull); font-weight: bold; }
 .you { color: #4385cc; font-weight: bold; }
 .button-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
 .reply-btn { background:none; border: 1px solid var(--main-green-dull); color: var(--main-green-dull); padding: 15px 30px; cursor: pointer; font-size: 1.1rem; transition: 0.3s ease; }
 .reply-btn:hover { background: var(--main-green-dull); color: #000; }
-.reply-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
 /* --- ARTICLE STYLING --- */
 .article-section { padding: 100px 20px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 30; }
@@ -158,63 +157,55 @@ body {
 </section>
 
 <script>
-// --- CHAT LOGIC ---
+// --- UPDATED DYNAMIC CHAT LOGIC ---
 const conversation = [
-    // Step 0 (Initial buttons are in HTML)
     {
         options: ["Who are you?", "Hi"],
         responses: ["I am a person, u?", "How are you?"]
     },
-    // Step 1
     {
         options: ["What is this place?", "I am good, how are you?"],
         responses: ["A place to talk to random strangers I guess haha", "I am good, Where are you from?"]
     },
-    // Step 2
     {
         options: ["Why would people do that?", "USA"],
         responses: ["Cuz they are bored I think", "How old are you?"]
     },
-    // Step 3
     {
         options: ["How can they trust anything over here?", "24"],
         responses: ["Idk they just try", "I'm kinda horny, is that ok?"]
     },
-    // Step 4
     {
-        options: ["What do you like to do here?", null], // Set 2 ends at step 3 essentially
+        options: ["What do you like to do here?", null], 
         responses: ["I'm kinda horny, is that ok?", null]
     }
 ];
-
-let currentStep = 0;
 
 function nextStep(optionIdx, step) {
     const log = document.getElementById('chat-log');
     const optContainer = document.getElementById('chat-options');
     
-    // 1. Show your choice
     const yourText = conversation[step].options[optionIdx];
     log.innerHTML += `<div class="msg"><span class="you">You:</span> ${yourText}</div>`;
-    optContainer.innerHTML = ''; // Clear buttons during "typing"
+    optContainer.innerHTML = ''; 
 
-    // 2. Stranger replies after delay
     setTimeout(() => {
         const strangerText = conversation[step].responses[optionIdx];
-        log.innerHTML += `<div class="msg"><span class="stranger">Stranger:</span> ${strangerText}</div>`;
-        log.scrollTop = log.scrollHeight;
+        if (strangerText) {
+            log.innerHTML += `<div class="msg"><span class="stranger">Stranger:</span> ${strangerText}</div>`;
+            log.scrollTop = log.scrollHeight;
 
-        // 3. Setup next buttons if available
-        const next = step + 1;
-        if (conversation[next] && (conversation[next].options[0] || conversation[next].options[1])) {
-            let btns = '';
-            if (conversation[next].options[0]) 
-                btns += `<button class="reply-btn" onclick="nextStep(0, ${next})">"${conversation[next].options[0]}"</button>`;
-            if (conversation[next].options[1]) 
-                btns += `<button class="reply-btn" onclick="nextStep(1, ${next})">"${conversation[next].options[1]}"</button>`;
-            optContainer.innerHTML = btns;
-        } else {
-            optContainer.innerHTML = '<span style="color:var(--alert-red-dull); font-style:italic;">Stranger has disconnected.</span>';
+            const next = step + 1;
+            if (conversation[next] && (conversation[next].options[0] || conversation[next].options[1])) {
+                let btns = '';
+                if (conversation[next].options[0]) 
+                    btns += `<button class="reply-btn" onclick="nextStep(0, ${next})">"${conversation[next].options[0]}"</button>`;
+                if (conversation[next].options[1]) 
+                    btns += `<button class="reply-btn" onclick="nextStep(1, ${next})">"${conversation[next].options[1]}"</button>`;
+                optContainer.innerHTML = btns;
+            } else {
+                optContainer.innerHTML = '<span style="color:var(--alert-red-dull); font-style:italic;">Stranger has disconnected.</span>';
+            }
         }
     }, 1000);
 }
