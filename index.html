@@ -12,6 +12,7 @@
             --deep-blue-dull: #00041a; 
             --alert-red-dull: #b83d3d; 
             --text-white-dull: #d0d0d0; 
+            --bubble-bg: rgba(25, 30, 45, 0.7); /* Distinct from pure black */
         }
 
         body {
@@ -30,7 +31,8 @@
             position: sticky; top: 0; height: 100vh;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             overflow: hidden;
-            background: radial-gradient(circle, rgba(0,4,26,0) 20%, rgba(0,0,0,1) 90%);
+            /* Dark vignette to center the focus */
+            background: radial-gradient(circle, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 90%);
         }
 
         .hero-overlay { z-index: 100; text-align: center; pointer-events: none; width: 90%; }
@@ -39,8 +41,8 @@
             color: var(--text-white-dull); 
             text-transform: uppercase; 
             margin: 0;
-            letter-spacing: 10px;
-            text-shadow: 0 0 30px rgba(0,0,0,1);
+            letter-spacing: 12px;
+            text-shadow: 0 10px 30px rgba(0,0,0,1), 0 0 10px rgba(255,255,255,0.1);
         }
         
         .scrolly-sub { 
@@ -51,45 +53,50 @@
             filter: blur(20px);
             transform: translateY(20px);
             transition: opacity 2.5s ease, filter 3s ease, transform 2.5s ease;
-            max-width: 600px;
+            max-width: 650px;
             margin-left: auto;
             margin-right: auto;
-            line-height: 1.4;
-            letter-spacing: 2px;
+            line-height: 1.5;
+            letter-spacing: 1.5px;
         }
         .scrolly-sub.visible { 
-            opacity: 0.7; 
+            opacity: 0.9; 
             filter: blur(0px); 
             transform: translateY(0);
         }
 
-        /* SMOKY BUBBLE STYLE */
+        /* UPDATED SMOKY BUBBLE STYLE */
         .whisper {
             position: absolute; 
-            background: rgba(0, 4, 26, 0.4);
-            color: var(--main-green-dull);
-            padding: 14px 26px; 
-            border-radius: 50px; 
+            background: var(--bubble-bg); /* Using the new tinted background color */
+            color: var(--text-white-dull); /* Brighter text for legibility */
+            padding: 15px 28px; 
+            border-radius: 60px; 
             font-size: 0.9rem; 
             opacity: 0;
             filter: blur(30px); 
             transition: opacity 1.5s ease, filter 2s ease, transform 2s ease;
-            box-shadow: 0 0 40px 15px rgba(0, 0, 0, 0.9), 0 0 20px 5px rgba(74, 139, 92, 0.05);
-            border: 1px solid rgba(74, 139, 92, 0.08);
+            
+            /* Enhanced smoky border and shadow */
+            box-shadow: 
+                0 15px 35px rgba(0, 0, 0, 0.8), 
+                0 0 15px rgba(74, 139, 92, 0.15); 
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle rim light */
+            
             z-index: 8;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(12px); /* Distorts the background like smoke */
             white-space: nowrap;
         }
 
         .whisper.visible { 
-            opacity: 0.6;
+            opacity: 0.8;
             filter: blur(0px); 
         }
 
         /* --- 2. CHAT SECTION --- */
         .chat-section { height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; }
         .chat-box {
-            width: 80%; max-width: 900px; background: rgba(255,255,255,0.02); backdrop-filter: blur(25px);
+            width: 80%; max-width: 900px; background: rgba(15,15,20,0.8); backdrop-filter: blur(25px);
             padding: 60px; border-radius: 20px; border: 1px solid rgba(74, 139, 92, 0.2);
             box-shadow: 0 0 60px rgba(0, 0, 0, 0.9); text-align: center;
         }
@@ -157,8 +164,8 @@
     <section class="article-section">
         <div class="article-content">
             <h2>I Want to Talk to Strangers</h2>
-            <p>It was 11:30 am when Adeen Asad Mirza opened her iPad and decided to talk to online strangers from her bedroom in Dubai. Mirza who is now an 18-year-old woman preparing to go to college used to speak with anonymous strangers online with her friends since she was 10-years-old through websites like umingle.com...</p>
-            <div class="article-quote">“Tons of weird experiences. I can write you an essay on the shit I have seen,” said Mirza as she talked with me on the website.</div>
+            <p>It was 11:30 am when Adeen Asad Mirza opened her iPad and decided to talk to online strangers from her bedroom in Dubai...</p>
+            <div class="article-quote">“Tons of weird experiences. I can write you an essay on the shit I have seen.”</div>
         </div>
     </section>
 
@@ -167,8 +174,8 @@
             <div id="globeViz"></div>
             <div id="country-label">Select Country</div>
             <div class="scrolly-text-overlay">
-                <div class="step" data-step="0"><div class="step-card"><h3>Global Reach</h3><p>Connections on these sites are immediate and borderless. Click on any region to see the origin of the connection.</p></div></div>
-                <div class="step" data-step="1"><div class="step-card"><h3>Jurisdictional Chaos</h3><p>One second a child is in a US-regulated session; the next, they are peer-to-peer with a server in a country with no data oversight.</p></div></div>
+                <div class="step" data-step="0"><div class="step-card"><h3>Global Reach</h3><p>Connections on these sites are immediate and borderless.</p></div></div>
+                <div class="step" data-step="1"><div class="step-card"><h3>Jurisdictional Chaos</h3><p>Data oversight becomes difficult across borders.</p></div></div>
             </div>
         </div>
     </section>
@@ -184,7 +191,7 @@
     </section>
 
     <script>
-        // --- 1. HERO WHISPERS WITH CLEARANCE ---
+        // --- HERO WHISPERS ---
         const hero = document.getElementById('heroBase');
         const phrases = ["asl?", "m/f", "hello", "where u from?", "typing...", "connected", "show face", "u there?", "disconnected"];
         
@@ -194,19 +201,17 @@
             b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
             
             let x, y;
-            // STRICT CLEARANCE: Avoid the center rectangle where text exists
-            // x between 20-80 and y between 30-70 is blocked
+            // Exclusion zone for Heading (roughly center 15%-85% horizontal, 20%-75% vertical)
             do { 
                 x = Math.random() * 92; 
                 y = Math.random() * 92; 
-            } while(x > 15 && x < 85 && y > 25 && y < 70); 
+            } while(x > 12 && x < 88 && y > 18 && y < 78); 
             
             b.style.left = x+"%"; 
             b.style.top = y+"%";
             
-            // Random visual depth
             const scale = 0.7 + Math.random() * 0.5;
-            b.style.fontSize = (0.7 + Math.random() * 0.5) + "rem";
+            b.style.fontSize = (0.8 + Math.random() * 0.4) + "rem";
             b.setAttribute('data-reveal', (i / 45) * 350); 
             hero.appendChild(b);
         }
@@ -227,13 +232,12 @@
             document.querySelectorAll('.whisper').forEach(w => {
                 if(s > parseInt(w.getAttribute('data-reveal'))) {
                     w.classList.add('visible');
-                    w.style.transform = `translateY(${-s * 0.08}px)`; // Faster parallax for smoke feel
+                    w.style.transform = `translateY(${-s * 0.08}px)`; 
                 } else {
                     w.classList.remove('visible');
                 }
             });
 
-            // Reveals subheading at 800px scroll
             if (s > 800) document.getElementById('subheading').classList.add('visible');
             else document.getElementById('subheading').classList.remove('visible');
 
