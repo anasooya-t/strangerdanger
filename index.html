@@ -22,7 +22,7 @@ transition: background-color 1.8s ease;
 overflow-x: hidden;
 }
 
-/* --- 1. HERO SECTION --- */
+/* --- HERO --- */
 .hero-container { height: 300vh; position: relative; background: #000; }
 .hero-fixed {
 position: sticky; top: 0; height: 100vh;
@@ -46,7 +46,7 @@ box-shadow: 0 0 30px 10px rgba(0, 0, 0, 1); border: 1px solid rgba(74, 139, 92, 
 }
 .whisper.visible { opacity: 1; filter: blur(0px); transform: scale(1.05); }
 
-/* --- 2. CHAT SECTION --- */
+/* --- CHAT --- */
 .chat-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; padding: 50px 0; }
 .chat-box {
 width: 80%; max-width: 900px; background: rgba(255,255,255,0.02); backdrop-filter: blur(25px);
@@ -60,22 +60,20 @@ box-shadow: 0 0 60px rgba(0, 0, 0, 0.9); text-align: center;
 .reply-btn { background:none; border: 1px solid var(--main-green-dull); color: var(--main-green-dull); padding: 18px 40px; cursor: pointer; font-size: 1.2rem; transition: 0.3s; }
 .reply-btn:hover { background: var(--main-green-dull); color: #000; }
 
-/* --- 3. ARTICLE SECTION --- */
+/* --- ARTICLE --- */
 .article-section { padding: 100px 20px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 30; background: transparent; }
 .article-content { max-width: 800px; line-height: 1.8; font-size: 1.35rem; color: var(--text-white-dull); }
 .article-content p { margin-bottom: 30px; }
-/* Quote styling unified */
 .article-quote { font-style: italic; border-left: 3px solid var(--alert-red-dull); padding-left: 20px; margin: 40px 0; color: #fff; font-size: 1.5rem; }
 
-/* --- 4. GLOBE SECTION (SCROLLEYTELLING MODIFIED) --- */
-.globe-container { position: relative; height: 300vh; z-index: 5; margin-top: 50px; background-color: #000; }
+/* --- GLOBE --- */
+.globe-container { position: relative; height: 350vh; z-index: 5; background-color: #000; }
 .globe-sticky {
 position: sticky; top: 0; height: 100vh; width: 100%;
 display: flex; align-items: center; overflow: hidden;
 }
 #globeViz { width: 100%; height: 100%; cursor: crosshair; }
 
-/* Fixed country label below globe */
 #country-label {
 position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%);
 font-size: 2rem; color: var(--alert-red-dull); text-transform: uppercase;
@@ -83,21 +81,19 @@ letter-spacing: 5px; font-weight: bold; pointer-events: none; z-index: 110;
 text-shadow: 0 0 10px rgba(184, 61, 61, 0.5); opacity: 0; transition: opacity 0.5s ease;
 }
 
-/* Scrollytelling Text Overlay (Modified for center globe context) */
 .scrolly-text-overlay { 
-position: absolute; left: 8%; width: 30%; z-index: 100; pointer-events: none; 
-top: 10%; /* Center vertically within sticky */
-height: 80%; display: flex; flex-direction: column; justify-content: center;
+position: absolute; left: 5%; width: 35%; z-index: 100; pointer-events: none; 
+top: 0; height: 100%; display: flex; flex-direction: column;
 }
-.step { height: 100vh; display: flex; align-items: center; opacity: 0; transition: 1s; padding-bottom: 50vh;} /* Spread out steps */
+.step { height: 100vh; display: flex; align-items: center; opacity: 0; transition: 1s; padding-bottom: 20vh;}
 .step.active { opacity: 1; }
 .step-card { 
-background: rgba(0, 4, 26, 0.9); padding: 30px; border-left: 3px solid var(--alert-red-dull); 
-color: var(--text-white-dull); pointer-events: auto; box-shadow: 0 0 30px rgba(0,0,0,0.5); 
-font-size: 1.2rem; line-height: 1.6;
+background: rgba(0, 4, 26, 0.9); padding: 35px; border-left: 3px solid var(--alert-red-dull); 
+color: var(--text-white-dull); pointer-events: auto; box-shadow: 0 0 40px rgba(0,0,0,0.8); 
+font-size: 1.25rem; line-height: 1.6;
 }
 
-/* --- 5. VIDEO --- */
+/* --- VIDEO --- */
 .video-section { height: 120vh; position: relative; z-index: 20; }
 .video-sticky { position: sticky; top: 0; height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; }
 .video-frame { width: 85%; height: 75%; border: 1px solid rgba(74, 139, 92, 0.2); }
@@ -127,23 +123,14 @@ video { width: 100%; height: 100%; object-fit: cover; }
 <section class="article-section">
     <div class="article-content">
         <p>Doomscrolling on Tik Tok was already starting to numb her senses. As her boredom hit a new peak, Adeen Asad Mirza, 18, started looking for a fresh outlet to distract herself. That’s when she started talking to strangers online.</p>
-        
-        <p>Born in the UAE, Mirza started talking to online strangers when she was 10-years-old. First introduced to this space by her friends, she got on a website that had no age verification system that allowed video calls and text chats with virtual strangers from across the world. All she had to do was to search the name of the website and click, start conversation.</p>
-        
-        <div class="article-quote">“Tons of weird experiences. I can write you an essay on the shit I have seen,” said Mirza as she talked through umingle.com, a newer video chatting website in this space.</div>
-        
+        <p>Born in the UAE, Mirza started talking to online strangers when she was 10-years-old. First introduced to this space by her friends, she got on a website that had no age verification system that allowed video calls and text chats with virtual strangers from across the world.</p>
+        <div class="article-quote">“Tons of weird experiences. I can write you an essay on the shit I have seen,” said Mirza as she talked through umingle.com.</div>
         <p>Known under different names, these roulette-styled chatting platforms allowed users to talk to strangers anonymously without making an account, which made it easy to start a conversation with anyone, including children.</p>
-        
-        <p>It’s precursor, Omegle.com, was one of the most popular sites in this space and had millions of users until it shut down in 2023. The website closed down following numerous lawsuits that showed how they were used by online predators to sexually exploit children.</p>
-        
-        <p>Since then, many websites like Omegle have opened up in this space, including Umingle, that marketed themselves as a better and safer alternative to the original site. Multiple users of the newer versions of Omegle, said that they found out Umingle as they searched for Omegle alternatives or were introduced to random video chatting through social media.</p>
-        
-        <div class="article-quote">“People think that they can say whatever they want when they get online,” said @mallu_potato on Instagram, a 28-year-old content creator based in Kerala, India.</div>
-        
-        <p>He is one among the many new social media influencers who creates content by talking to strangers on Umingle. He appears on screen as a potato masking his face using a camera filter. He holds spontaneous conversations with people on the website and has gained popularity on social media within adults and children alike.</p>
-        
-        <div class="article-quote">“Do not point your camera toward screens, printed signs, or other images...Your camera must remain focused on your face at all times.”</div>
-        
+        <p>It’s precursor, Omegle.com, was one of the most popular sites in this space until it shut down in 2023. The website closed down following numerous lawsuits that showed how they were used by online predators to sexually exploit children.</p>
+        <p>Since then, many websites like Omegle have opened up in this space, including Umingle. Multiple users said they found Umingle while searching for alternatives or were introduced through social media.</p>
+        <div class="article-quote">“People think that they can say whatever they want when they get online,” said @mallu_potato on Instagram, a 28-year-old content creator.</div>
+        <p>He appears on screen as a potato masking his face using a camera filter. He holds spontaneous conversations and has gained popularity within adults and children alike.</p>
+        <div class="article-quote">“Do not point your camera toward screens...Your camera must remain focused on your face at all times.”</div>
         <p>But content creators like @mallu_potato have easily been able to bypass these regulations which highlights how ineffective they are.</p>
     </div>
 </section>
@@ -152,16 +139,15 @@ video { width: 100%; height: 100%; object-fit: cover; }
     <div class="globe-sticky">
         <div id="globeViz"></div>
         <div id="country-label">Select Country</div>
-        
         <div class="scrolly-text-overlay">
             <div class="step" data-step="0">
                 <div class="step-card">
-                    <p>The website Umingle.com was used from the US for 1 hour...</p>
+                    <p>For 12 minutes from, 6:00 a.m. - 6:12 a.m. Pacific time, the website Umingle.com was monitored to know the demographics of its users.</p>
                 </div>
             </div>
             <div class="step" data-step="1">
                 <div class="step-card">
-                    <p>...and these were the countries that the random video chatting platform connected to during this time period.</p>
+                    <p>These are the countries that it connected the video call to from the US in a span of 12 minutes during this time frame.</p>
                 </div>
             </div>
         </div>
@@ -171,60 +157,29 @@ video { width: 100%; height: 100%; object-fit: cover; }
 <section class="article-section">
     <div class="article-content">
         <p>According to Umingle the website retains IP addresses of the users to enforce bans and prevent people that violate the rules. But a quick search on YouTube gives a list of results on different methods that users can do to get unbanned for free.</p>
-        
         <p>Among other interactions, these websites have been historically known for fostering a space for sexual conversations.</p>
-        
         <div class="article-quote">A study conducted at Middlesex University in 2024 revealed that only 2% of adult users expressed regret for interacting with an underage person, while 89% blamed the child.</div>
-        
-        <p>As Mirza shared her experiences about the people she met on Omegle, she said how her exposure to sexually explicit conversations on the website desensitized her from sending nudes photos to people on Snapchat as a child.</p>
-        
+        <p>As Mirza shared her experiences, she said how her exposure to sexually explicit conversations desensitized her from sending nudes photos to people on Snapchat as a child.</p>
         <div class="article-quote">“I was a minor and they were not,” said Mirza.</div>
-        
-        <p>Child protection agencies and Facebook parent groups across the world are raising alarms about this internet rabbit hole after reports surfaced of sexual predators using the sites to target children. But as there are a large number of websites that work on the same principles, identifying online harm against children on these platforms have become increasingly difficult.</p>
-        
-        <div class="article-quote">“We have a list of twenty or even thirty alternatives who use the same basic system,[where] predatory behaviour is a common sight,” said Niels Van Paemel, policy advisor at Child Focus.</div>
-        
-        <p>Omegle.com developed in 2009 by Leif K. Brooks a software programmer in Oregon used to get up to 66 million monthly visits when it was active. Along with similar websites like Chatroulette, it became a cultural moment on the internet as social media influencers picked up the trend and started posting their interactions online.</p>
-        
-        <div class="article-quote">“Omegle was meant to be a way of strolling down a street in that village, striking up conversations with the people you ran into along the way,” Brooks wrote.</div>
-        
-        <p>The National Center for Missing and Exploited Children that records reports of online exploitation of children, received 6,08,601 reports against Omegle in 2022 alone. The website that gained even more popularity during the pandemic finally was shut down and declared bankrupt after a case where an 11-year-old was connected on the website with a man in his late 30s who was convicted of grooming the child for three years.</p>
-        
-        <div class="article-quote">“Hydra effect: closing a popular webcam platform like Omegle leads to the problem becoming more diffuse, and harder to contain,” said Paul Bleakley.</div>
-        
-        <p>Youngsters like Mirza who keeps coming back to use such websites out of boredom, shares how easy it is to find people flashing themselves, masterbating or saying racist and sexist slurs.</p>
-        
-        <p>According to Naomi Leeds, an attorney from Brooklyn who represented the case against Omegle, a major legal difficulty in dealing with online child sexual abuse on these websites was that the platforms did not hold liability until a large enough harm took place.</p>
-        
-        <p>In the US, the Children’s Online Privacy Protection Act or COPPA, is the baseline privacy law to protect children’s data online. COPPA is a federal law that was passed in 1998 and enforced by the Federal Trade Commission or FTC.</p>
-        
-        <p>The law required websites and online services aimed at children under 13 to obtain verifiable parental consent before collecting a child’s personal information.</p>
-        
+        <p>Child protection agencies and Facebook parent groups across the world are raising alarms about this internet rabbit hole. But as there are a large number of websites that work on the same principles, identifying online harm against children has become increasingly difficult.</p>
+        <div class="article-quote">“We have a list of twenty or even thirty alternatives who use the same basic system,[where] predatory behaviour is a common sight,” said Niels Van Paemel.</div>
+        <p>Omegle.com developed in 2009 by Leif K. Brooks used to get up to 66 million monthly visits. Along with similar websites like Chatroulette, it became a cultural moment as influencers posted their interactions online.</p>
+        <div class="article-quote">“Omegle was meant to be a way of strolling down a street in that village, striking up conversations with the people you ran into,” Brooks wrote.</div>
+        <p>The National Center for Missing and Exploited Children received 6,08,601 reports against Omegle in 2022 alone. The website finally shut down after a case where an 11-year-old was connected with a man who groomed the child for three years.</p>
+        <div class="article-quote">“Hydra effect: closing a popular webcam platform like Omegle leads to the problem becoming more diffuse,” said Paul Bleakley.</div>
+        <p>Youngsters like Mirza share how easy it is to find people flashing themselves, masturbating or saying racist and sexist slurs.</p>
+        <p>According to Naomi Leeds, a major legal difficulty was that platforms did not hold liability until a large enough harm took place.</p>
+        <p>In the US, COPPA is the baseline privacy law. It required websites aimed at children under 13 to obtain verifiable parental consent.</p>
         <div class="article-quote">Harvard Law Review (2026): Social media companies compliance with COPPA “stretches credulity” and it’s clear the system is left to self policing.</div>
-        
-        <p>“I don’t think COPPA ought to be the principal safeguard for kids,” said Samuel Levine, the former director of the Federal Trade Commission’s Bureau of Consumer Protection.</p>
-        
-        <p>Apart from other state wide legislations, COPPA is the only federal law that gives the responsibility to an online platform or website to ensure that their user is not a child. But this is where the law gets ambiguous.</p>
-        
-        <p>While COPPA defines a child as an individual who is below the age of thirteen, other states have different age bars. Online child safety laws in states like Florida, Tennessee and Nebraska consider a child as an individual below the age of 18, while it is under 16 for states like Georgia and Louisiana.</p>
-        
-        <p>“COPPA contributes to protecting children from online sexual abuse but that’s not really its aim and that’s not sufficient,” Levine said.</p>
-        
-        <p>The law that is undergoing changes under what is called a COPPA 2.0 legislation will increase the age bar to sixteen and is expected to be an effective ‘floor’ and not the ‘ceiling’ to the different state protection laws according to CATO institute.</p>
-        
-        <p>But this is not just a conversation within the nation. From Australia banning social media for children under sixteen to the UK's Online Safety Act enforcing strict age checks, countries around the world have been continuously trying to build a stronger regulatory framework to protect children online.</p>
-        
-        <p>The internet being the new “Global Village” as Marshall McLuhan puts it has made the conversation for children’s online safety cross borders.</p>
-        
-        <div class="article-quote">“It’sway worse than letting them out on the streets. It’s like you give them access to the whole world and give the whole world access to them,” said Paresh Patel.</div>
-        
-        <p>But as these conversations for better regulations continue, random video or text chatting websites like Umingle.com, Omegle.com, Chatroulette, talkwithstranger.com, omegleapp.me and others are hiding in plain sight.</p>
-        
-        <p>Understanding who the major stakeholders are in ensuring that children are safe on these platforms has become part of the problem. Some adult users blame the children and their parents for the not knowing the dangers of online chatting — while government agencies and legal experts say more accountability needs to placed on the websites.</p>
-        
-        <p>But online platforms continue to exist in a framework that fails to watch over them as underage users keep using their websites — essentially leading to a game of passing the ball where the child’s online safety is on the line.</p>
-        
-        <div class="article-quote">“There is a 100% chance that children are going to be groomed or atleast exposed with live nudity…we do see the issue there,” said Niels Van Paemel.</div>
+        <p>“I don’t think COPPA ought to be the principal safeguard for kids,” said Samuel Levine.</p>
+        <p>While COPPA defines a child as below 13, other states use different age bars—Florida and Tennessee use 18, while Georgia and Louisiana use 16.</p>
+        <p>“COPPA contributes to protecting children from online sexual abuse but that’s not really its aim,” Levine said.</p>
+        <p>The law is undergoing changes under COPPA 2.0 legislation which will increase the age bar to sixteen.</p>
+        <p>From Australia banning social media for under-sixteens to the UK's Online Safety Act, countries are building stronger regulatory frameworks.</p>
+        <div class="article-quote">“It’s way worse than letting them out on the streets. It’s like you give the whole world access to them,” said Paresh Patel.</div>
+        <p>But as regulations continue, random chatting websites are hiding in plain sight. Some adult users blame the children and parents—while experts say more accountability needs to be placed on websites.</p>
+        <p>Online platforms continue to exist in a framework that fails to watch over them, leading to a game of passing the ball where the child’s online safety is on the line.</p>
+        <div class="article-quote">“There is a 100% chance that children are going to be groomed or at least exposed with live nudity,” said Paemel.</div>
     </div>
 </section>
 
@@ -239,7 +194,6 @@ video { width: 100%; height: 100%; object-fit: cover; }
 </section>
 
 <script>
-// --- HERO WHISPERS ---
 const hero = document.getElementById('heroBase');
 const phrases = ["asl?", "m/f", "hello", "where u from?", "typing...", "connected", "show face", "u there?", "disconnected"];
 for(let i=0; i<45; i++) {
@@ -262,112 +216,90 @@ function reply() {
     }, 1000);
 }
 
-// --- SCROLL HANDLER (Unified) ---
 window.addEventListener('scroll', () => {
     const s = window.scrollY;
-    
-    // Hero whispers
     document.querySelectorAll('.whisper').forEach(w => {
         if(s > parseInt(w.getAttribute('data-reveal'))) w.classList.add('visible');
         else w.classList.remove('visible');
     });
-
-    // Hero subheading
     if (s > 800) document.getElementById('subheading').classList.add('visible');
     else document.getElementById('subheading').classList.remove('visible');
 
-    // Body background color transition
-    if (s > 2500) document.body.style.backgroundColor = "var(--deep-blue-dull)";
-    else document.body.style.backgroundColor = "#000000";
-
-    // Globe Scrollytelling Steps
     const steps = document.querySelectorAll('.step');
     steps.forEach(step => {
         const rect = step.getBoundingClientRect();
-        // Activate when the step card is roughly in the middle of the viewport
-        if(rect.top < window.innerHeight * 0.7 && rect.bottom > window.innerHeight * 0.3) {
-            step.classList.add('active');
-        } else {
-            step.classList.remove('active');
-        }
+        if(rect.top < window.innerHeight * 0.7 && rect.bottom > window.innerHeight * 0.3) step.classList.add('active');
+        else step.classList.remove('active');
     });
 });
 
-// --- CENTERED GLOBE (RECONSTRUCTED) ---
 const countryLabel = document.getElementById('country-label');
 const world = Globe()(document.getElementById('globeViz'))
     .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
     .backgroundColor('rgba(0,0,0,0)')
     .showAtmosphere(true)
     .atmosphereColor("#4a8b5c")
-    .atmosphereAltitude(0.15);
+    .atmosphereAltitude(0.2);
 
 world.controls().enableZoom = false;
-world.controls().autoRotate = true; // Added auto-rotate for initial view
-world.controls().autoRotateSpeed = 0.5;
+
+const sequence = [
+    "Singapore", "Switzerland", "New Zealand", "Australia", "Germany", 
+    "Canada", "United Kingdom", "Netherlands", "United Arab Emirates", 
+    "South Africa", "Qatar", "Ireland", "Israel", "Portugal"
+];
 
 fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson')
     .then(res => res.json())
     .then(countries => {
-        // Initial setup for polygons (clickable to change color)
         world.polygonsData(countries.features)
             .polygonCapColor(() => 'rgba(74, 139, 92, 0.05)')
-            .polygonStrokeColor(() => 'rgba(74, 139, 92, 0.4)')
-            .polygonSideColor(() => 'rgba(0, 0, 0, 0)')
-            .polygonLabel(({ properties: p }) => `<b>${p.NAME}</b>`);
+            .polygonStrokeColor(() => 'rgba(74, 139, 92, 0.3)')
+            .polygonSideColor(() => 'rgba(0, 0, 0, 0)');
 
-        // Set initial camera perspective to look at the US
-        world.pointOfView({ lat: 37.09, lng: -95.71, altitude: 2 }, 1000); // Lat/Lng of US
+        world.pointOfView({ lat: 37.09, lng: -95.71, altitude: 2.5 }, 1000);
 
-        // Visualization Sequence (Starts after camera is set)
-        setTimeout(() => {
-            // Stop auto-rotate to focus on connections
-            world.controls().autoRotate = false;
+        let i = 0;
+        function nextConnection() {
+            const countryName = sequence[i % sequence.length];
+            const country = countries.features.find(c => 
+                c.properties.NAME === countryName || c.properties.ADMIN === countryName
+            );
 
-            setInterval(() => {
-                const randomCountry = countries.features[Math.floor(Math.random() * countries.features.length)];
-                
-                // Get valid coordinates (some country polys are nested arrays)
-                let coords = randomCountry.geometry.coordinates[0];
+            if (country) {
+                let coords = country.geometry.coordinates[0];
                 while(Array.isArray(coords[0])) coords = coords[0];
                 const [lng, lat] = coords;
-                const targetCountryName = randomCountry.properties.NAME;
 
-                // 1. Line from US to country
+                // Arc logic - Red to Green
                 world.arcsData([{
-                    startLat: 37.09, startLng: -95.71, // US
+                    startLat: 37.09, startLng: -95.71,
                     endLat: lat, endLng: lng,
-                    color: ['#b83d3d', '#4a8b5c'] // Red start, green end
+                    color: ['#b83d3d', '#4a8b5c']
                 }]);
 
-                // 2. Smooth Glide camera to target country
-                world.pointOfView({ lat: lat, lng: lng, altitude: 1.5 }, 1500); // 1.5s glide
-
-                // 3. Highlight the specific target country color (change color on impact)
-                // We use polygonCapColor dynamically by matching the ID
-                world.polygonCapColor(d => d.properties.NAME === targetCountryName ? 'rgba(184, 61, 61, 0.6)' : 'rgba(74, 139, 92, 0.05)');
-
-                // 4. Show country name below globe
-                countryLabel.innerText = targetCountryName;
-                countryLabel.style.opacity = 1;
-
-                // Reset label after glide, before next loop
+                // Wait 500ms for line to start, then glide
                 setTimeout(() => {
-                     countryLabel.style.opacity = 0;
-                     // Reset polygon color
-                     world.polygonCapColor(() => 'rgba(74, 139, 92, 0.05)');
-                }, 2000); // Wait until just before the next arc starts (2s interval)
+                    world.pointOfView({ lat, lng, altitude: 1.8 }, 1400);
+                    countryLabel.innerText = countryName;
+                    countryLabel.style.opacity = 1;
+                    world.polygonCapColor(d => 
+                        (d.properties.NAME === countryName || d.properties.ADMIN === countryName) 
+                        ? 'rgba(184, 61, 61, 0.6)' : 'rgba(74, 139, 92, 0.05)'
+                    );
+                }, 500);
 
-            }, 2300); // Slightly more than the arc animation time (2s)
-
-        }, 1500); // Wait for initial POV set to complete
-
+                setTimeout(() => {
+                    countryLabel.style.opacity = 0;
+                    i++;
+                    nextConnection();
+                }, 3500); 
+            }
+        }
+        setTimeout(nextConnection, 2000);
     });
 
-// Unified arc/polygon settings for connection visualization
-world.arcDashLength(0.5).arcDashGap(1).arcDashAnimateTime(2000).arcStroke(1);
-world.polygonStrokeColor(() => 'rgba(74, 139, 92, 0.4)');
-
+world.arcDashLength(0.4).arcDashGap(2).arcDashAnimateTime(1500).arcStroke(0.8);
 </script>
 </body>
 </html>
