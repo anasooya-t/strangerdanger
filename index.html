@@ -67,16 +67,30 @@ body {
 .article-content p { margin-bottom: 35px; }
 .article-quote { font-style: italic; border-left: 3px solid var(--alert-red-dull); padding-left: 20px; margin: 45px 0; color: #fff; font-size: 1.55rem; }
 
-/* --- GRAVE LAYOUT --- */
+/* --- VIDEO SIDE-BY-SIDE LAYOUT --- */
 .quote-with-grave {
     display: flex;
-    align-items: center;
-    gap: 40px;
-    margin: 45px 0;
+    align-items: center; 
+    justify-content: space-between;
+    gap: 30px;
+    margin: 60px 0;
 }
+
 .grave-container {
-    flex-shrink: 0;
-    width: 250px;
+    flex: 0 0 300px; /* Adjust based on video aspect ratio */
+    height: auto;
+}
+
+#graveVideo {
+    width: 100%;
+    height: auto;
+    display: block;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+#graveVideo.visible {
+    opacity: 1;
 }
 
 /* --- GLOBE --- */
@@ -158,16 +172,19 @@ body {
         <p>Child protection agencies and Facebook parent groups across the world are raising alarms about this internet rabbit hole after reports surfaced of sexual predators using the sites to target children. But as there are a large number of websites that work on the same principles, identifying online harm against children on these platforms have become increasingly difficult.</p>
         <div class="article-quote">“We have a list of twenty or even thirty alternatives who use the same basic system,[where] you can chat/video call with a stranger and those are the platforms where we see a lot of predatory behaviour,” said Niels Van Paemel.</div>
         <p>Omegle.com developed in 2009 by Leif K. Brooks a software programmer in Oregon used to get up to 66 million monthly visits when it was active. Along with similar websites like Chatroulette, it became a cultural moment on the internet as social media influencers picked up the trend and started posting their interactions online.</p>
-        
+
         <div class="quote-with-grave">
-            <div class="article-quote" style="margin:0; border-left: 3px solid var(--alert-red-dull); padding-left: 20px;">
+            <div class="article-quote" style="margin:0; flex: 1;">
                 “If the internet is a manifestation of the ‘global village,’ Omegle was meant to be a way of strolling down a street in that village, striking up conversations with the people you ran into along the way,” Brooks wrote on his website that is no longer active and holds an image of a tombstone.
             </div>
-            <div class="grave-container" id="graveAnimation">
-                </div>
+            <div class="grave-container">
+                <video id="graveVideo" muted playsinline>
+                    <source src="your-animation.mp4" type="video/mp4">
+                </video>
+            </div>
         </div>
 
-        <p>The National Center for Missing and Exploited Children that records reports of online exploitation of children, received 6,08,601 reports against Omegle in 2022 alone. The website that gained even more popularity during the pandemic finally was shut down and declared bankrupt after a case where an 11-year-old was connected on the website with a man in his late 30s who was convicted of grooming the child for three years.</p>
+        <p>The National Center for Missing and Exploited Children that records reports of online exploitation of children, received 6,08,601 reports against Omegle in 2022 alone. The website finally was shut down and declared bankrupt after a case where an 11-year-old was connected with a man in his late 30s who was convicted of grooming the child for three years.</p>
         <div class="article-quote">“In some ways, what we feared has happened - a Hydra effect, where closing a popular webcam platform like Omegle leads to the problem becoming more diffuse,” said Paul Bleakley.</div>
         <p>Youngsters like Mirza who keeps coming back to use such websites out of boredom, shares how easy it is to find people flashing themselves, masterbating or saying racist and sexist slurs.</p>
         <p>According to Naomi Leeds, an attorney from Brooklyn who represented the case against Omegle, a major legal difficulty in dealing with online child sexual abuse on these websites was that the platforms did not hold liability until a large enough harm took place. In the US, the Children’s Online Privacy Protection Act or COPPA, is the baseline privacy law to protect children’s data online. COPPA is a federal law that was passed in 1998 and enforced by the Federal Trade Commission or FTC.</p>
@@ -183,6 +200,24 @@ body {
 </section>
 
 <script>
+// --- VIDEO CONTROLS ---
+const video = document.getElementById('graveVideo');
+let hasPlayed = false;
+
+const videoObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting) {
+            video.classList.add('visible');
+            if(!hasPlayed) {
+                video.play();
+                hasPlayed = true; // Prevents the video from re-playing from the start
+            }
+        }
+    });
+}, { threshold: 0.5 });
+
+videoObserver.observe(video);
+
 // --- CONVERSATION DATA ---
 const conversation = [
     { options: ["Who are you?", "Hi"], responses: ["I am a person, u?", "How are you?"] },
