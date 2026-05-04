@@ -7,52 +7,52 @@
 <script src="https://unpkg.com/globe.gl"></script>
 <style>
 :root {
---main-green-dull: #4a8b5c;
---deep-blue-dull: #00041a;
---alert-red-dull: #b83d3d;
---text-white-dull: #d0d0d0;
+    --main-green-dull: #4a8b5c;
+    --deep-blue-dull: #00041a; 
+    --alert-red-dull: #b83d3d;
+    --text-white-dull: #d0d0d0;
 }
 
 body {
-margin: 0; padding: 0;
-font-family: 'Helvetica', Arial, sans-serif;
-background-color: #000;
-color: var(--main-green-dull);
-transition: background-color 1.8s ease;
-overflow-x: hidden;
+    margin: 0; padding: 0;
+    font-family: 'Helvetica', Arial, sans-serif;
+    background-color: #000; 
+    color: var(--main-green-dull);
+    transition: background-color 1.8s ease;
+    overflow-x: hidden;
 }
 
 /* --- HERO SECTION --- */
 .hero-container { height: 300vh; position: relative; background: #000 !important; }
 .hero-fixed {
-position: sticky; top: 0; height: 100vh;
-display: flex; flex-direction: column; align-items: center; justify-content: center;
-overflow: hidden;
-background: #000;
+    position: sticky; top: 0; height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    overflow: hidden;
+    background: #000; 
 }
 .hero-overlay h1 { font-size: 5rem; color: var(--text-white-dull); text-transform: uppercase; margin: 0; text-align: center; }
 .scrolly-sub {
-font-size: 1.6rem; margin-top: 20px; color: var(--main-green-dull);
-opacity: 0; filter: blur(20px); transform: translateY(20px);
-transition: opacity 2s ease, filter 2.5s ease, transform 2s ease;
-text-align: center;
+    font-size: 1.6rem; margin-top: 20px; color: var(--main-green-dull);
+    opacity: 0; filter: blur(20px); transform: translateY(20px);
+    transition: opacity 2s ease, filter 2.5s ease, transform 2s ease;
+    text-align: center;
 }
 .scrolly-sub.visible { opacity: 0.8; filter: blur(0px); transform: translateY(0); }
 
 .whisper {
-position: absolute; background: rgba(0, 4, 26, 0.95); color: var(--main-green-dull);
-padding: 12px 22px; border-radius: 40px; font-size: 1rem; opacity: 0;
-filter: blur(20px); transition: opacity 1.2s, filter 1.8s, transform 1.5s;
-box-shadow: 0 0 30px 10px rgba(0, 0, 0, 1); border: 1px solid rgba(74, 139, 92, 0.1); z-index: 8;
+    position: absolute; background: rgba(0, 4, 26, 0.95); color: var(--main-green-dull);
+    padding: 12px 22px; border-radius: 40px; font-size: 1rem; opacity: 0;
+    filter: blur(20px); transition: opacity 1.2s, filter 1.8s, transform 1.5s;
+    box-shadow: 0 0 30px 10px rgba(0, 0, 0, 1); border: 1px solid rgba(74, 139, 92, 0.1); z-index: 8;
 }
 .whisper.visible { opacity: 1; filter: blur(0px); transform: scale(1.05); }
 
 /* --- CHAT SECTION --- */
 .chat-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; }
 .chat-box {
-width: 80%; max-width: 900px; background: rgba(255,255,255,0.02); backdrop-filter: blur(25px);
-padding: 60px; border-radius: 20px; border: 1px solid rgba(74, 139, 92, 0.2);
-box-shadow: 0 0 60px rgba(0, 0, 0, 0.9); text-align: center;
+    width: 80%; max-width: 900px; background: rgba(255,255,255,0.02); backdrop-filter: blur(25px);
+    padding: 60px; border-radius: 20px; border: 1px solid rgba(74, 139, 92, 0.2);
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.9); text-align: center;
 }
 #chat-log { height: 250px; overflow-y: auto; margin-bottom: 30px; text-align: left; }
 .msg { margin-bottom: 20px; font-size: 1.4rem; color: var(--text-white-dull); }
@@ -69,126 +69,126 @@ box-shadow: 0 0 60px rgba(0, 0, 0, 0.9); text-align: center;
 
 /* --- VIDEO SIDE-BY-SIDE LAYOUT --- */
 .quote-with-grave {
-display: flex;
-align-items: center;
-justify-content: space-between;
-gap: 30px;
-margin: 60px 0;
+    display: flex;
+    align-items: center; 
+    justify-content: space-between;
+    gap: 30px;
+    margin: 60px 0;
 }
 .grave-container { flex: 0 0 300px; height: auto; }
 #omegle-grave2 {
-width: 100%;
-height: auto;
-display: block;
-opacity: 0;
-transition: opacity 1.5s ease;
+    width: 100%;
+    height: auto;
+    display: block;
+    opacity: 0; 
+    transition: opacity 1.5s ease;
 }
 #omegle-grave2.visible { opacity: 1; }
 
 /* --- GLOBE --- */
 .globe-container { position: relative; height: 300vh; z-index: 5; }
 .globe-sticky {
-position: sticky; top: 0; height: 100vh; width: 100%;
-display: flex; align-items: center; overflow: hidden;
+    position: sticky; top: 0; height: 100vh; width: 100%;
+    display: flex; align-items: center; overflow: hidden;
 }
 #globeViz { width: 100%; height: 100%; cursor: crosshair; }
 #country-label {
-position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%);
-font-size: 2rem; color: var(--alert-red-dull); text-transform: uppercase;
-letter-spacing: 5px; font-weight: bold; pointer-events: none; z-index: 110;
-text-shadow: 0 0 10px rgba(184, 61, 61, 0.5); opacity: 0; transition: opacity 0.5s ease;
+    position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%);
+    font-size: 2rem; color: var(--alert-red-dull); text-transform: uppercase;
+    letter-spacing: 5px; font-weight: bold; pointer-events: none; z-index: 110;
+    text-shadow: 0 0 10px rgba(184, 61, 61, 0.5); opacity: 0; transition: opacity 0.5s ease;
 }
-.scrolly-text-overlay {
-position: absolute; left: 8%; width: 30%; z-index: 100; pointer-events: none;
-top: 10%; height: 80%; display: flex; flex-direction: column; justify-content: center;
+.scrolly-text-overlay { 
+    position: absolute; left: 8%; width: 30%; z-index: 100; pointer-events: none; 
+    top: 10%; height: 80%; display: flex; flex-direction: column; justify-content: center;
 }
-.step { height: 100vh; display: flex; align-items: center; opacity: 0; transition: 1s; padding-bottom: 50vh;}
+.step { height: 100vh; display: flex; align-items: center; opacity: 0; transition: 1s; padding-bottom: 50vh;} 
 .step.active { opacity: 1; }
-.step-card {
-background: rgba(0, 4, 26, 0.9); padding: 30px; border-left: 3px solid var(--alert-red-dull);
-color: var(--text-white-dull); pointer-events: auto; box-shadow: 0 0 30px rgba(0,0,0,0.5); font-size: 1.2rem;
+.step-card { 
+    background: rgba(0, 4, 26, 0.9); padding: 30px; border-left: 3px solid var(--alert-red-dull); 
+    color: var(--text-white-dull); pointer-events: auto; box-shadow: 0 0 30px rgba(0,0,0,0.5); font-size: 1.2rem;
 }
 </style>
 </head>
 <body>
 
 <div class="hero-container">
-<div class="hero-fixed" id="heroBase">
-<div class="hero-overlay">
-<h1>Stranger Danger</h1>
-<p id="subheading" class="scrolly-sub">How Random Video Chatting Websites Impact Children’s Online Safety</p>
-</div>
-</div>
+    <div class="hero-fixed" id="heroBase">
+        <div class="hero-overlay">
+            <h1>Stranger Danger</h1>
+            <p id="subheading" class="scrolly-sub">How Random Video Chatting Websites Impact Children’s Online Safety</p>
+        </div>
+    </div>
 </div>
 
 <section class="chat-section">
-<div class="chat-box">
-<div id="chat-log"><div class="msg"><span class="stranger">Stranger:</span> Hi</div></div>
-<div class="button-group" id="chat-options">
-<button class="reply-btn" onclick="nextStep(0, 0)">"Who are you?"</button>
-<button class="reply-btn" onclick="nextStep(1, 0)">"Hi"</button>
-</div>
-</div>
+    <div class="chat-box">
+        <div id="chat-log"><div class="msg"><span class="stranger">Stranger:</span> Hi</div></div>
+        <div class="button-group" id="chat-options">
+            <button class="reply-btn" onclick="nextStep(0, 0)">"Who are you?"</button>
+            <button class="reply-btn" onclick="nextStep(1, 0)">"Hi"</button>
+        </div>
+    </div>
 </section>
 
 <section class="article-section">
-<div class="article-content">
-<p>Doomscrolling on Tik Tok was already starting to numb her senses. As her boredom hit a new peak, Adeen Asad Mirza, 18, started looking for a fresh outlet to distract herself. That’s when she started talking to strangers online.</p>
-<p>Born in the UAE, Mirza started talking to online strangers when she was 10-years-old. First introduced to this space by her friends, she got on a website that had no age verification system that allowed video calls and text chats with virtual strangers from across the world. All she had to do was to search the name of the website and click, start conversation.</p>
-<div class="article-quote">“Tons of weird experiences. I can write you an essay on the shit I have seen,” said Mirza as she talked through umingle.com, a newer video chatting website in this space.</div>
-<p>Known under different names, these roulette-styled chatting platforms allowed users to talk to strangers anonymously without making an account, which made it easy to start a conversation with anyone, including children.</p>
-<p>It’s precursor, Omegle.com, was one of the most popular sites in this space and had millions of users until it shut down in 2023. The website closed down following numerous lawsuits that showed how they were used by online predators to sexually exploit children.</p>
-<p>Since then, many websites like Omegle have opened up in this space, including Umingle, that marketed themselves as a better and safer alternative to the original site. Multiple users of the newer versions of Omegle, said that they found out Umingle as they searched for Omegle alternatives or were introduced to random video chatting through social media.</p>
-<div class="article-quote">“People think that they can say whatever they want when they get online,” said @mallu_potato on Instagram.</div>
-<p>He is one among the many new social media influencers who creates content by talking to strangers on Umingle. He appears on screen as a potato masking his face using a camera filter. He holds spontaneous conversations with people on the website and has gained popularity on social media within adults and children alike.</p>
-<p>“Do not point your camera toward screens, printed signs, or other images.” The Umingle’s rules page reads, “Your camera must remain focused on your face at all times.” But content creators like @mallu_potato have easily been able to bypass these regulations which highlights how ineffective they are. According to Umingle the website retains IP addresses of the users to enforce bans and prevent people that violate the rules. But a quick search on YouTube gives a list of results on different methods that users can do to get unbanned for free.</p>
-</div>
+    <div class="article-content">
+        <p>Doomscrolling on Tik Tok was already starting to numb her senses. As her boredom hit a new peak, Adeen Asad Mirza, 18, started looking for a fresh outlet to distract herself. That’s when she started talking to strangers online.</p>
+        <p>Born in the UAE, Mirza started talking to online strangers when she was 10-years-old. First introduced to this space by her friends, she got on a website that had no age verification system that allowed video calls and text chats with virtual strangers from across the world. All she had to do was to search the name of the website and click, start conversation.</p>
+        <div class="article-quote">“Tons of weird experiences. I can write you an essay on the shit I have seen,” said Mirza as she talked through umingle.com, a newer video chatting website in this space.</div>
+        <p>Known under different names, these roulette-styled chatting platforms allowed users to talk to strangers anonymously without making an account, which made it easy to start a conversation with anyone, including children.</p>
+        <p>It’s precursor, Omegle.com, was one of the most popular sites in this space and had millions of users until it shut down in 2023. The website closed down following numerous lawsuits that showed how they were used by online predators to sexually exploit children.</p>
+        <p>Since then, many websites like Omegle have opened up in this space, including Umingle, that marketed themselves as a better and safer alternative to the original site. Multiple users of the newer versions of Omegle, said that they found out Umingle as they searched for Omegle alternatives or were introduced to random video chatting through social media.</p>
+        <div class="article-quote">“People think that they can say whatever they want when they get online,” said @mallu_potato on Instagram.</div>
+        <p>He is one among the many new social media influencers who creates content by talking to strangers on Umingle. He appears on screen as a potato masking his face using a camera filter. He holds spontaneous conversations with people on the website and has gained popularity on social media within adults and children alike.</p>
+        <p>“Do not point your camera toward screens, printed signs, or other images.” The Umingle’s rules page reads, “Your camera must remain focused on your face at all times.” But content creators like @mallu_potato have easily been able to bypass these regulations which highlights how ineffective they are. According to Umingle the website retains IP addresses of the users to enforce bans and prevent people that violate the rules. But a quick search on YouTube gives a list of results on different methods that users can do to get unbanned for free.</p>
+    </div>
 </section>
 
 <section class="globe-container">
-<div class="globe-sticky">
-<div id="globeViz"></div>
-<div id="country-label">Select Country</div>
-<div class="scrolly-text-overlay">
-<div class="step" data-step="0"><div class="step-card"><p>The website Umingle.com was used from the US for 1 hour...</p></div></div>
-<div class="step" data-step="1"><div class="step-card"><p>...and these were the countries that the random video chatting platform umingle.com connected to in 12 minutes.</p></div></div>
-</div>
-</div>
+    <div class="globe-sticky">
+        <div id="globeViz"></div>
+        <div id="country-label">Select Country</div>
+        <div class="scrolly-text-overlay">
+            <div class="step" data-step="0"><div class="step-card"><p>The website Umingle.com was used from the US for 1 hour...</p></div></div>
+            <div class="step" data-step="1"><div class="step-card"><p>...and these were the countries that the random video chatting platform umingle.com connected to in 12 minutes.</p></div></div>
+        </div>
+    </div>
 </section>
 
 <section class="article-section">
-<div class="article-content">
-<p>Among other interactions, these websites have been historically known for fostering a space for sexual conversations. A study conducted at Middlesex University in 2024 about a group of adult users on Omegle revealed that only 2% of the users expressed regret for interacting with an underage person while 89% blamed the child.</p>
-<p>As Mirza shared her experiences about the people she met on Omegle, she said how her exposure to sexually explicit conversations on the website desensitized her from sending nudes photos to people on Snapchat as a child.</p>
-<div class="article-quote">“I was a minor and they were not,” said Mirza.</div>
-<p>Child protection agencies and Facebook parent groups across the world are raising alarms about this internet rabbit hole after reports surfaced of sexual predators using the sites to target children. But as there are a large number of websites that work on the same principles, identifying online harm against children on these platforms have become increasingly difficult.</p>
-<div class="article-quote">“We have a list of twenty or even thirty alternatives who use the same basic system,[where] you can chat/video call with a stranger and those are the platforms where we see a lot of predatory behaviour,” said Niels Van Paemel.</div>
-<p>Omegle.com developed in 2009 by Leif K. Brooks a software programmer in Oregon used to get up to 66 million monthly visits when it was active. Along with similar websites like Chatroulette, it became a cultural moment on the internet as social media influencers picked up the trend and started posting their interactions online.</p>
+    <div class="article-content">
+        <p>Among other interactions, these websites have been historically known for fostering a space for sexual conversations. A study conducted at Middlesex University in 2024 about a group of adult users on Omegle revealed that only 2% of the users expressed regret for interacting with an underage person while 89% blamed the child.</p>
+        <p>As Mirza shared her experiences about the people she met on Omegle, she said how her exposure to sexually explicit conversations on the website desensitized her from sending nudes photos to people on Snapchat as a child.</p>
+        <div class="article-quote">“I was a minor and they were not,” said Mirza.</div>
+        <p>Child protection agencies and Facebook parent groups across the world are raising alarms about this internet rabbit hole after reports surfaced of sexual predators using the sites to target children. But as there are a large number of websites that work on the same principles, identifying online harm against children on these platforms have become increasingly difficult.</p>
+        <div class="article-quote">“We have a list of twenty or even thirty alternatives who use the same basic system,[where] you can chat/video call with a stranger and those are the platforms where we see a lot of predatory behaviour,” said Niels Van Paemel.</div>
+        <p>Omegle.com developed in 2009 by Leif K. Brooks a software programmer in Oregon used to get up to 66 million monthly visits when it was active. Along with similar websites like Chatroulette, it became a cultural moment on the internet as social media influencers picked up the trend and started posting their interactions online.</p>
 
-<div class="quote-with-grave">
-<div class="article-quote" style="margin:0; flex: 1;">
-“If the internet is a manifestation of the ‘global village,’ Omegle was meant to be a way of strolling down a street in that village, striking up conversations with the people you ran into along the way,” Brooks wrote on his website that is no longer active and holds an image of a tombstone.
-</div>
-<div class="grave-container">
-<video id="omegle-grave2" muted playsinline>
-<source src="assets/omegle-grave2.mp4" type="video/mp4">
-</video>
-</div>
-</div>
+        <div class="quote-with-grave">
+            <div class="article-quote" style="margin:0; flex: 1;">
+                “If the internet is a manifestation of the ‘global village,’ Omegle was meant to be a way of strolling down a street in that village, striking up conversations with the people you ran into along the way,” Brooks wrote on his website that is no longer active and holds an image of a tombstone.
+            </div>
+            <div class="grave-container">
+                <video id="omegle-grave2" muted playsinline>
+                    <source src="assets/omegle-grave2.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
 
-<p>The National Center for Missing and Exploited Children that records reports of online exploitation of children, received 6,08,601 reports against Omegle in 2022 alone. The website finally was shut down and declared bankrupt after a case where an 11-year-old was connected with a man in his late 30s who was convicted of grooming the child for three years.</p>
-<div class="article-quote">“In some ways, what we feared has happened - a Hydra effect, where closing a popular webcam platform like Omegle leads to the problem becoming more diffuse,” said Paul Bleakley.</div>
-<p>Youngsters like Mirza who keeps coming back to use such websites out of boredom, shares how easy it is to find people flashing themselves, masterbating or saying racist and sexist slurs.</p>
-<p>According to Naomi Leeds, an attorney from Brooklyn who represented the case against Omegle, a major legal difficulty in dealing with online child sexual abuse on these websites was that the platforms did not hold liability until a large enough harm took place. In the US, the Children’s Online Privacy Protection Act or COPPA, is the baseline privacy law to protect children’s data online. COPPA is a federal law that was passed in 1998 and enforced by the Federal Trade Commission or FTC.</p>
-<div class="article-quote">Harvard Law Review (Feb. 2026): Social media companies compliance with COPPA “stretches credulity” and it’s clear the system is left to self policing.</div>
-<p>“I don’t think COPPA ought to be the principal safeguard for kids,” said Samuel Levine, the former director of the FTC’s Bureau of Consumer Protection. Apart from other state wide legislations, COPPA is the only federal law that gives the responsibility to an online platform or website to ensure that their user is not a child. But this is where the law gets ambiguous.</p>
-<p>While COPPA defines a child as an individual who is below the age of thirteen, other states have different age bars. Florida, Tennessee and Nebraska consider a child below 18, while it is under 16 for Georgia and Louisiana. “COPPA contributes to protecting children from online sexual abuse but that’s not really its aim and that’s not sufficient,” Levine said.</p>
-<p>The law that is undergoing changes under what is called a COPPA 2.0 legislation will increase the age bar to sixteen. But this is not just a conversation within the nation. From Australia banning social media for children under sixteen to the UK's Online Safety Act, countries around the world have been continuously trying to build a stronger regulatory framework.</p>
-<div class="article-quote">“It’s way worse than letting them out on the streets. It’s like you give them access to the whole world and give the whole world access to them,” said Paresh Patel, a parent in California.</div>
-<p>But as these conversations for better regulations continue, random video or text chatting websites like Umingle.com, Omegle.com, Chatroulette, talkwithstranger.com, omegleapp.me and others are hiding in plain sight. Some adult users blame the children and their parents—while government agencies and legal experts say more accountability needs to placed on the websites.</p>
-<p>But online platforms continue to exist in a framework that fails to watch over them as underage users keep using their websites — essentially leading to a game of passing the ball where the child’s online safety is on the line.</p>
-<div class="article-quote">“There is a 100% chance that children are going to be groomed or atleast exposed with live nudity…we do see the issue there,” said Paemel.</div>
-</div>
+        <p>The National Center for Missing and Exploited Children that records reports of online exploitation of children, received 6,08,601 reports against Omegle in 2022 alone. The website finally was shut down and declared bankrupt after a case where an 11-year-old was connected with a man in his late 30s who was convicted of grooming the child for three years.</p>
+        <div class="article-quote">“In some ways, what we feared has happened - a Hydra effect, where closing a popular webcam platform like Omegle leads to the problem becoming more diffuse,” said Paul Bleakley.</div>
+        <p>Youngsters like Mirza who keeps coming back to use such websites out of boredom, shares how easy it is to find people flashing themselves, masterbating or saying racist and sexist slurs.</p>
+        <p>According to Naomi Leeds, an attorney from Brooklyn who represented the case against Omegle, a major legal difficulty in dealing with online child sexual abuse on these websites was that the platforms did not hold liability until a large enough harm took place. In the US, the Children’s Online Privacy Protection Act or COPPA, is the baseline privacy law to protect children’s data online. COPPA is a federal law that was passed in 1998 and enforced by the Federal Trade Commission or FTC.</p>
+        <div class="article-quote">Harvard Law Review (Feb. 2026): Social media companies compliance with COPPA “stretches credulity” and it’s clear the system is left to self policing.</div>
+        <p>“I don’t think COPPA ought to be the principal safeguard for kids,” said Samuel Levine, the former director of the FTC’s Bureau of Consumer Protection. Apart from other state wide legislations, COPPA is the only federal law that gives the responsibility to an online platform or website to ensure that their user is not a child. But this is where the law gets ambiguous.</p>
+        <p>While COPPA defines a child as an individual who is below the age of thirteen, other states have different age bars. Florida, Tennessee and Nebraska consider a child below 18, while it is under 16 for Georgia and Louisiana. “COPPA contributes to protecting children from online sexual abuse but that’s not really its aim and that’s not sufficient,” Levine said.</p>
+        <p>The law that is undergoing changes under what is called a COPPA 2.0 legislation will increase the age bar to sixteen. But this is not just a conversation within the nation. From Australia banning social media for children under sixteen to the UK's Online Safety Act, countries around the world have been continuously trying to build a stronger regulatory framework.</p>
+        <div class="article-quote">“It’s way worse than letting them out on the streets. It’s like you give them access to the whole world and give the whole world access to them,” said Paresh Patel, a parent in California.</div>
+        <p>But as these conversations for better regulations continue, random video or text chatting websites like Umingle.com, Omegle.com, Chatroulette, talkwithstranger.com, omegleapp.me and others are hiding in plain sight. Some adult users blame the children and their parents—while government agencies and legal experts say more accountability needs to placed on the websites.</p>
+        <p>But online platforms continue to exist in a framework that fails to watch over them as underage users keep using their websites — essentially leading to a game of passing the ball where the child’s online safety is on the line.</p>
+        <div class="article-quote">“There is a 100% chance that children are going to be groomed or atleast exposed with live nudity…we do see the issue there,” said Paemel.</div>
+    </div>
 </section>
 
 <script>
@@ -197,15 +197,15 @@ const graveVid = document.getElementById('omegle-grave2');
 let gravePlayed = false;
 
 const videoObserver = new IntersectionObserver((entries) => {
-entries.forEach(entry => {
-if(entry.isIntersecting) {
-graveVid.classList.add('visible');
-if(!gravePlayed) {
-graveVid.play();
-gravePlayed = true;
-}
-}
-});
+    entries.forEach(entry => {
+        if(entry.isIntersecting) {
+            graveVid.classList.add('visible');
+            if(!gravePlayed) {
+                graveVid.play();
+                gravePlayed = true; 
+            }
+        }
+    });
 }, { threshold: 0.5 });
 videoObserver.observe(graveVid);
 
@@ -213,90 +213,91 @@ videoObserver.observe(graveVid);
 const hero = document.getElementById('heroBase');
 const phrases = ["asl?", "m/f", "hello", "where u from?", "connected", "show face", "disconnected"];
 for(let i=0; i<45; i++) {
-const b = document.createElement('div');
-b.className = 'whisper';
-b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
-let x, y;
-do { x = Math.random()*90; y = Math.random()*90; } while(x > 15 && x < 85 && y > 25 && y < 75);
-b.style.left = x+"%"; b.style.top = y+"%";
-b.setAttribute('data-reveal', (i / 45) * 600);
-hero.appendChild(b);
+    const b = document.createElement('div');
+    b.className = 'whisper';
+    b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
+    let x, y;
+    do { x = Math.random()*90; y = Math.random()*90; } while(x > 15 && x < 85 && y > 25 && y < 75);
+    b.style.left = x+"%"; b.style.top = y+"%";
+    b.setAttribute('data-reveal', (i / 45) * 600);
+    hero.appendChild(b);
 }
 
 // --- SCROLL HANDLER ---
 window.addEventListener('scroll', () => {
-const s = window.scrollY;
-if (s > 1800) document.body.style.backgroundColor = "var(--deep-blue-dull)";
-else document.body.style.backgroundColor = "#000000";
-document.querySelectorAll('.whisper').forEach(w => {
-if(s > parseInt(w.getAttribute('data-reveal'))) w.classList.add('visible');
-else w.classList.remove('visible');
-});
+    const s = window.scrollY;
+    if (s > 1800) document.body.style.backgroundColor = "var(--deep-blue-dull)";
+    else document.body.style.backgroundColor = "#000000";
+    
+    document.querySelectorAll('.whisper').forEach(w => {
+        if(s > parseInt(w.getAttribute('data-reveal'))) w.classList.add('visible');
+        else w.classList.remove('visible');
+    });
 
-if (s > 800) document.getElementById('subheading').classList.add('visible');
-else document.getElementById('subheading').classList.remove('visible');
+    if (s > 800) document.getElementById('subheading').classList.add('visible');
+    else document.getElementById('subheading').classList.remove('visible');
 
-const steps = document.querySelectorAll('.step');
-steps.forEach(step => {
-const rect = step.getBoundingClientRect();
-if(rect.top < window.innerHeight * 0.7 && rect.bottom > window.innerHeight * 0.3) step.classList.add('active');
-else step.classList.remove('active');
-});
+    const steps = document.querySelectorAll('.step');
+    steps.forEach(step => {
+        const rect = step.getBoundingClientRect();
+        if(rect.top < window.innerHeight * 0.7 && rect.bottom > window.innerHeight * 0.3) step.classList.add('active');
+        else step.classList.remove('active');
+    });
 });
 
 // --- CHAT LOGIC ---
 const conversation = [
-{ options: ["Who are you?", "Hi"], responses: ["I am a person, u?", "How are you?"] },
-{ options: ["What is this place?", "I am good, how are you?"], responses: ["A place to talk to random strangers I guess haha", "I am good, Where are you from?"] },
-{ options: ["Why would people do that?", "USA"], responses: ["Cuz they are bored I think", "How old are you?"] },
-{ options: ["How can they trust anything over here?", "24"], responses: ["Idk they just try", "I'm kinda horny, is that ok?"] },
-{ options: ["What do you like to do here?", null], responses: ["I'm kinda horny, is that ok?", null] }
+    { options: ["Who are you?", "Hi"], responses: ["I am a person, u?", "How are you?"] },
+    { options: ["What is this place?", "I am good, how are you?"], responses: ["A place to talk to random strangers I guess haha", "I am good, Where are you from?"] },
+    { options: ["Why would people do that?", "USA"], responses: ["Cuz they are bored I think", "How old are you?"] },
+    { options: ["How can they trust anything over here?", "24"], responses: ["Idk they just try", "I'm kinda horny, is that ok?"] },
+    { options: ["What do you like to do here?", null], responses: ["I'm kinda horny, is that ok?", null] }
 ];
 
 function nextStep(optionIdx, step) {
-const log = document.getElementById('chat-log');
-const optContainer = document.getElementById('chat-options');
-log.innerHTML += `<div class="msg"><span class="you">You:</span> ${conversation[step].options[optionIdx]}</div>`;
-optContainer.innerHTML = '';
-setTimeout(() => {
-const reply = conversation[step].responses[optionIdx];
-log.innerHTML += `<div class="msg"><span class="stranger">Stranger:</span> ${reply}</div>`;
-log.scrollTop = log.scrollHeight;
-const next = step + 1;
-if (conversation[next] && (conversation[next].options[0] || conversation[next].options[1])) {
-optContainer.innerHTML = `
-<button class="reply-btn" onclick="nextStep(0, ${next})">"${conversation[next].options[0]}"</button>
-${conversation[next].options[1] ? `<button class="reply-btn" onclick="nextStep(1, ${next})">"${conversation[next].options[1]}"</button>` : ''}
-`;
-}
-}, 1000);
+    const log = document.getElementById('chat-log');
+    const optContainer = document.getElementById('chat-options');
+    log.innerHTML += `<div class="msg"><span class="you">You:</span> ${conversation[step].options[optionIdx]}</div>`;
+    optContainer.innerHTML = '';
+    setTimeout(() => {
+        const reply = conversation[step].responses[optionIdx];
+        log.innerHTML += `<div class="msg"><span class="stranger">Stranger:</span> ${reply}</div>`;
+        log.scrollTop = log.scrollHeight;
+        const next = step + 1;
+        if (conversation[next] && (conversation[next].options[0] || conversation[next].options[1])) {
+            optContainer.innerHTML = `
+                <button class="reply-btn" onclick="nextStep(0, ${next})">"${conversation[next].options[0]}"</button>
+                ${conversation[next].options[1] ? `<button class="reply-btn" onclick="nextStep(1, ${next})">"${conversation[next].options[1]}"</button>` : ''}
+            `;
+        }
+    }, 1000);
 }
 
 // --- GLOBE VISUALS ---
 const targetCountries = ["United Arab Emirates", "India", "United Kingdom", "Netherlands", "United States of America", "Qatar", "Oman"];
 const world = Globe()(document.getElementById('globeViz'))
-.globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
-.backgroundColor('rgba(0,0,0,0)').showAtmosphere(true).atmosphereColor("#4a8b5c")
-.pointOfView({ lat: 20, lng: 0, altitude: 2.5 });
+    .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
+    .backgroundColor('rgba(0,0,0,0)').showAtmosphere(true).atmosphereColor("#4a8b5c")
+    .pointOfView({ lat: 20, lng: 0, altitude: 2.5 });
 world.controls().enableZoom = false;
 
 fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson')
-.then(res => res.json())
-.then(countries => {
-const filtered = countries.features.filter(f => targetCountries.includes(f.properties.NAME) || targetCountries.includes(f.properties.NAME_EN));
-world.polygonsData(countries.features).polygonCapColor(() => 'rgba(74, 139, 92, 0.05)').polygonStrokeColor(() => 'rgba(74, 139, 92, 0.4)');
-setInterval(() => {
-const country = filtered[Math.floor(Math.random() * filtered.length)];
-let coords = country.geometry.coordinates[0];
-while(Array.isArray(coords[0])) coords = coords[0];
-const [lng, lat] = coords;
-world.arcsData([{ startLat: 37, startLng: -95, endLat: lat, endLng: lng, color: ['#b83d3d', '#4a8b5c'] }]);
-world.pointOfView({ lat: lat, lng: lng, altitude: 2.0 }, 1500);
-document.getElementById('country-label').innerText = country.properties.NAME;
-document.getElementById('country-label').style.opacity = 1;
-setTimeout(() => { document.getElementById('country-label').style.opacity = 0; }, 2000);
-}, 3000);
-});
+    .then(res => res.json())
+    .then(countries => {
+        const filtered = countries.features.filter(f => targetCountries.includes(f.properties.NAME) || targetCountries.includes(f.properties.NAME_EN));
+        world.polygonsData(countries.features).polygonCapColor(() => 'rgba(74, 139, 92, 0.05)').polygonStrokeColor(() => 'rgba(74, 139, 92, 0.4)');
+        setInterval(() => {
+            const country = filtered[Math.floor(Math.random() * filtered.length)];
+            let coords = country.geometry.coordinates[0];
+            while(Array.isArray(coords[0])) coords = coords[0];
+            const [lng, lat] = coords;
+            world.arcsData([{ startLat: 37, startLng: -95, endLat: lat, endLng: lng, color: ['#b83d3d', '#4a8b5c'] }]);
+            world.pointOfView({ lat: lat, lng: lng, altitude: 2.0 }, 1500); 
+            document.getElementById('country-label').innerText = country.properties.NAME;
+            document.getElementById('country-label').style.opacity = 1;
+            setTimeout(() => { document.getElementById('country-label').style.opacity = 0; }, 2000);
+        }, 3000);
+    });
 </script>
 </body>
 </html>
