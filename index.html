@@ -92,14 +92,14 @@ body {
     margin: 60px 0;
 }
 .grave-container { flex: 0 0 300px; height: auto; }
-#omegle-grave {
+#omegle-grave2 {
     width: 100%;
     height: auto;
     display: block;
     opacity: 0; 
     transition: opacity 1.5s ease;
 }
-#omegle-grave.visible { opacity: 1; }
+#omegle-grave2.visible { opacity: 1; }
 
 /* --- GLOBE --- */
 .globe-container { position: relative; height: 300vh; z-index: 5; }
@@ -186,8 +186,8 @@ body {
                 “If the internet is a manifestation of the ‘global village,’ Omegle was meant to be a way of strolling down a street in that village, striking up conversations with the people you ran into along the way,” Brooks wrote on his website that is no longer active and holds an image of a tombstone.
             </div>
             <div class="grave-container">
-                <video id="omegle-grave" muted playsinline>
-                    <source src="assets/omegle-grave.mp4" type="video/mp4">
+                <video id="omegle-grave2" muted playsinline>
+                    <source src="assets/omegle-grave2.mp4" type="video/mp4">
                 </video>
             </div>
         </div>
@@ -209,7 +209,7 @@ body {
 
 <script>
 // --- VIDEO CONTROLS ---
-const graveVid = document.getElementById('omegle-grave');
+const graveVid = document.getElementById('omegle-grave2');
 let gravePlayed = false;
 
 const videoObserver = new IntersectionObserver((entries) => {
