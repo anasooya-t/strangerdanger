@@ -8,7 +8,7 @@
 <style>
 :root {
 --main-green-dull: #4a8b5c;
---deep-blue-dull: #00041a;
+--deep-blue-dull: #00041a; /* The blue you wanted */
 --alert-red-dull: #b83d3d;
 --text-white-dull: #d0d0d0;
 }
@@ -16,14 +16,14 @@
 body {
 margin: 0; padding: 0;
 font-family: 'Helvetica', Arial, sans-serif;
-background-color: #000;
+background-color: var(--deep-blue-dull);
 color: var(--main-green-dull);
 transition: background-color 1.2s ease;
 overflow-x: hidden;
 }
 
 /* --- HERO (FASTER SCROLL) --- */
-.hero-container { height: 220vh; position: relative; background: #000; }
+.hero-container { height: 160vh; position: relative; background: #000; }
 .hero-fixed {
 position: sticky; top: 0; height: 100vh;
 display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -46,7 +46,7 @@ z-index: 8;
 .whisper.visible { opacity: 0.6; filter: blur(0px); }
 
 /* --- CHAT --- */
-.chat-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; }
+.chat-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; background-color: var(--deep-blue-dull);}
 .chat-box {
 width: 80%; max-width: 900px; background: rgba(255,255,255,0.02); backdrop-filter: blur(25px);
 padding: 60px; border-radius: 20px; border: 1px solid rgba(74, 139, 92, 0.2);
@@ -59,27 +59,29 @@ box-shadow: 0 0 60px rgba(0, 0, 0, 0.9); text-align: center;
 .reply-btn { background:none; border: 1px solid var(--main-green-dull); color: var(--main-green-dull); padding: 18px 40px; cursor: pointer; font-size: 1.2rem; }
 
 /* --- ARTICLE --- */
-.article-section { padding: 100px 20px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 30; }
+.article-section { padding: 100px 20px; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 30; background-color: var(--deep-blue-dull);}
 .article-content { max-width: 800px; line-height: 1.8; font-size: 1.35rem; color: var(--main-green-dull); }
 .article-content p { margin-bottom: 30px; }
 .article-quote { font-style: italic; border-left: 3px solid var(--alert-red-dull); padding-left: 20px; margin: 40px 0; color: #fff; font-size: 1.5rem; }
 
 /* --- GLOBE (SIDE-BY-SIDE LAYOUT) --- */
-.globe-container { position: relative; height: 350vh; z-index: 5; background-color: #000; }
+.globe-container { position: relative; height: 300vh; z-index: 5; background-color: var(--deep-blue-dull); }
 .globe-sticky {
 position: sticky; top: 0; height: 100vh; width: 100%;
 display: flex; align-items: center; justify-content: center; overflow: hidden;
 }
 #globeViz { 
 width: 100%; height: 100%; transition: transform 1.5s ease-in-out; 
-transform: translateX(0); /* Default centered */
+transform: translateX(0); 
 }
-.globe-container.active #globeViz { transform: translateX(-20%); } /* Shift left when active */
+/* Shift globe left only when scrolly starts appearing */
+.globe-container.active #globeViz { transform: translateX(-20%); } 
 
 #country-label {
 position: absolute; bottom: 80px; left: 30%; transform: translateX(-50%);
 font-size: 2rem; color: var(--alert-red-dull); text-transform: uppercase;
 letter-spacing: 5px; font-weight: bold; opacity: 0; transition: 0.5s;
+z-index: 10;
 }
 
 .scrolly-text-overlay { 
@@ -94,7 +96,7 @@ color: var(--text-white-dull); pointer-events: auto; font-size: 1.25rem; line-he
 }
 
 /* --- VIDEO --- */
-.video-section { height: 120vh; position: relative; z-index: 20; }
+.video-section { height: 120vh; position: relative; z-index: 20; background-color: var(--deep-blue-dull);}
 .video-sticky { position: sticky; top: 0; height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; }
 .video-frame { width: 85%; height: 75%; border: 1px solid rgba(74, 139, 92, 0.2); }
 video { width: 100%; height: 100%; object-fit: cover; }
@@ -127,7 +129,6 @@ video { width: 100%; height: 100%; object-fit: cover; }
         <p>It’s precursor, Omegle.com, was one of the most popular sites in this space until it shut down in 2023. The website closed down following numerous lawsuits that showed how they were used by online predators to sexually exploit children.</p>
         <p>Since then, many websites like Omegle have opened up in this space, including Umingle. Multiple users said they found Umingle while searching for alternatives or were introduced through social media.</p>
         <div class="article-quote">“People think that they can say whatever they want when they get online,” said @mallu_potato on Instagram, a 28-year-old content creator.</div>
-        <p>He appears on screen as a potato masking his face using a camera filter. He holds spontaneous conversations and has gained popularity within adults and children alike.</p>
         <div class="article-quote">“Do not point your camera toward screens...Your camera must remain focused on your face at all times.”</div>
         <p>But content creators like @mallu_potato have easily been able to bypass these regulations which highlights how ineffective they are.</p>
     </div>
@@ -155,28 +156,13 @@ video { width: 100%; height: 100%; object-fit: cover; }
 <section class="article-section">
     <div class="article-content">
         <p>According to Umingle the website retains IP addresses of the users to enforce bans and prevent people that violate the rules. But a quick search on YouTube gives a list of results on different methods that users can do to get unbanned for free.</p>
-        <p>Among other interactions, these websites have been historically known for fostering a space for sexual conversations.</p>
         <div class="article-quote">A study conducted at Middlesex University in 2024 revealed that only 2% of adult users expressed regret for interacting with an underage person, while 89% blamed the child.</div>
-        <p>As Mirza shared her experiences, she said how her exposure to sexually explicit conversations desensitized her from sending nudes photos to people on Snapchat as a child.</p>
         <div class="article-quote">“I was a minor and they were not,” said Mirza.</div>
-        <p>Child protection agencies and Facebook parent groups across the world are raising alarms about this internet rabbit hole. But as there are a large number of websites that work on the same principles, identifying online harm against children has become increasingly difficult.</p>
         <div class="article-quote">“We have a list of twenty or even thirty alternatives who use the same basic system,[where] predatory behaviour is a common sight,” said Niels Van Paemel.</div>
-        <p>Omegle.com developed in 2009 by Leif K. Brooks used to get up to 66 million monthly visits. Along with similar websites like Chatroulette, it became a cultural moment as influencers posted their interactions online.</p>
         <div class="article-quote">“Omegle was meant to be a way of strolling down a street in that village, striking up conversations with the people you ran into,” Brooks wrote.</div>
-        <p>The National Center for Missing and Exploited Children received 6,08,601 reports against Omegle in 2022 alone. The website finally shut down after a case where an 11-year-old was connected with a man who groomed the child for three years.</p>
         <div class="article-quote">“Hydra effect: closing a popular webcam platform like Omegle leads to the problem becoming more diffuse,” said Paul Bleakley.</div>
-        <p>Youngsters like Mirza share how easy it is to find people flashing themselves, masturbating or saying racist and sexist slurs.</p>
-        <p>According to Naomi Leeds, a major legal difficulty was that platforms did not hold liability until a large enough harm took place.</p>
-        <p>In the US, COPPA is the baseline privacy law. It required websites aimed at children under 13 to obtain verifiable parental consent.</p>
         <div class="article-quote">Harvard Law Review (2026): Social media companies compliance with COPPA “stretches credulity” and it’s clear the system is left to self policing.</div>
-        <p>“I don’t think COPPA ought to be the principal safeguard for kids,” said Samuel Levine.</p>
-        <p>While COPPA defines a child as below 13, other states use different age bars—Florida and Tennessee use 18, while Georgia and Louisiana use 16.</p>
-        <p>“COPPA contributes to protecting children from online sexual abuse but that’s not really its aim,” Levine said.</p>
-        <p>The law is undergoing changes under COPPA 2.0 legislation which will increase the age bar to sixteen.</p>
-        <p>From Australia banning social media for under-sixteens to the UK's Online Safety Act, countries are building stronger regulatory frameworks.</p>
         <div class="article-quote">“It’s way worse than letting them out on the streets. It’s like you give the whole world access to them,” said Paresh Patel.</div>
-        <p>But as regulations continue, random chatting websites are hiding in plain sight. Some adult users blame the children and parents—while experts say more accountability needs to be placed on websites.</p>
-        <p>Online platforms continue to exist in a framework that fails to watch over them, leading to a game of passing the ball where the child’s online safety is on the line.</p>
         <div class="article-quote">“There is a 100% chance that children are going to be groomed or at least exposed with live nudity,” said Paemel.</div>
     </div>
 </section>
@@ -188,6 +174,7 @@ video { width: 100%; height: 100%; object-fit: cover; }
 </section>
 
 <script>
+// Faster Hero Whisper Reveal
 const hero = document.getElementById('heroBase');
 const phrases = ["asl?", "m/f", "hello", "where u from?", "typing...", "connected", "show face", "disconnected"];
 for(let i=0; i<30; i++) {
@@ -195,7 +182,7 @@ for(let i=0; i<30; i++) {
     b.className = 'whisper';
     b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
     b.style.left = Math.random()*90+"%"; b.style.top = Math.random()*90+"%";
-    b.setAttribute('data-reveal', (i / 30) * 400);
+    b.setAttribute('data-reveal', (i / 30) * 300);
     hero.appendChild(b);
 }
 
@@ -208,32 +195,44 @@ function reply() {
     }, 1000);
 }
 
+// Scroll Handlers
 window.addEventListener('scroll', () => {
     const s = window.scrollY;
     document.querySelectorAll('.whisper').forEach(w => {
         if(s > parseInt(w.getAttribute('data-reveal'))) w.classList.add('visible');
     });
-    if (s > 400) document.getElementById('subheading').classList.add('visible');
+    if (s > 250) document.getElementById('subheading').classList.add('visible');
     
-    // Globe Shift Logic
+    // Globe Transition Logic
     const globeParent = document.getElementById('globeParent');
-    const gTop = globeParent.getBoundingClientRect().top;
-    if(gTop < 300) globeParent.classList.add('active');
-    else globeParent.classList.remove('active');
+    const gRect = globeParent.getBoundingClientRect();
+    
+    // Start shifting globe left when the section enters the view
+    if(gRect.top < window.innerHeight * 0.5 && gRect.bottom > 0) {
+        globeParent.classList.add('active');
+    } else {
+        globeParent.classList.remove('active');
+    }
 
     const steps = document.querySelectorAll('.step');
     steps.forEach(step => {
         const rect = step.getBoundingClientRect();
-        if(rect.top < window.innerHeight * 0.7) step.classList.add('active');
+        if(rect.top < window.innerHeight * 0.6 && rect.bottom > window.innerHeight * 0.2) {
+            step.classList.add('active');
+        } else {
+            step.classList.remove('active');
+        }
     });
 });
 
+// Globe Initialization - Fixed render issue
 const countryLabel = document.getElementById('country-label');
 const world = Globe()(document.getElementById('globeViz'))
     .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
     .backgroundColor('rgba(0,0,0,0)')
     .showAtmosphere(true)
-    .atmosphereColor("#4a8b5c");
+    .atmosphereColor("#4a8b5c")
+    .atmosphereAltitude(0.15);
 
 const sequence = [
     "Singapore", "Switzerland", "New Zealand", "Australia", "Germany", 
@@ -241,32 +240,44 @@ const sequence = [
     "South Africa", "Qatar", "Ireland", "Israel", "Portugal"
 ];
 
+// Fetch data and start logic
 fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson')
     .then(res => res.json())
     .then(countries => {
         world.polygonsData(countries.features)
-            .polygonCapColor(() => 'rgba(74, 139, 92, 0.05)')
-            .polygonStrokeColor(() => 'rgba(74, 139, 92, 0.2)');
+            .polygonCapColor(() => 'rgba(74, 139, 92, 0.1)')
+            .polygonStrokeColor(() => 'rgba(74, 139, 92, 0.3)')
+            .polygonSideColor(() => 'rgba(0,0,0,0)');
 
-        world.pointOfView({ lat: 37.09, lng: -95.71, altitude: 2.2 }, 1000);
+        // Initial View over US
+        world.pointOfView({ lat: 39.8, lng: -98.5, altitude: 2.5 }, 0);
 
         let i = 0;
         function runSequence() {
             const countryName = sequence[i % sequence.length];
-            const country = countries.features.find(c => c.properties.NAME === countryName || c.properties.ADMIN === countryName);
+            const country = countries.features.find(c => 
+                c.properties.NAME === countryName || c.properties.ADMIN === countryName
+            );
 
             if (country) {
                 let coords = country.geometry.coordinates[0];
                 while(Array.isArray(coords[0])) coords = coords[0];
                 const [lng, lat] = coords;
 
-                world.arcsData([{ startLat: 37.09, startLng: -95.71, endLat: lat, endLng: lng, color: ['#b83d3d', '#4a8b5c'] }]);
+                // Simple smooth arc
+                world.arcsData([{ 
+                    startLat: 39.8, startLng: -98.5, 
+                    endLat: lat, endLng: lng, 
+                    color: ['#b83d3d', '#4a8b5c'] 
+                }]);
 
+                // Smoothly pan camera to target
+                world.pointOfView({ lat, lng, altitude: 1.8 }, 1500);
+                
                 setTimeout(() => {
-                    world.pointOfView({ lat, lng, altitude: 1.8 }, 1200);
                     countryLabel.innerText = countryName;
                     countryLabel.style.opacity = 1;
-                }, 400);
+                }, 1000);
 
                 setTimeout(() => {
                     countryLabel.style.opacity = 0;
@@ -275,10 +286,16 @@ fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/data
                 }, 4000);
             }
         }
-        setTimeout(runSequence, 3000);
+        
+        // Wait for page to settle then start
+        setTimeout(runSequence, 2000);
     });
 
-world.arcDashLength(0.5).arcDashGap(1).arcDashAnimateTime(1500).arcStroke(1);
+world.arcDashLength(0.4)
+     .arcDashGap(2)
+     .arcDashAnimateTime(2000)
+     .arcStroke(0.5);
+
 </script>
 </body>
 </html>
