@@ -52,9 +52,9 @@ body {
 .whisper.visible { opacity: 1; filter: blur(0px); }
 
 @keyframes somberFloat {
-    0% { transform: translate(0, 0) scale(1.05); }
-    50% { transform: translate(6px, -12px) scale(1.05); }
-    100% { transform: translate(0, 0) scale(1.05); }
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(6px, -12px); }
+    100% { transform: translate(0, 0); }
 }
 
 /* --- CHAT SECTION --- */
@@ -219,7 +219,7 @@ const videoObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 videoObserver.observe(graveVid);
 
-// --- HERO WHISPERS: AVOIDING CENTER ---
+// --- HERO WHISPERS ---
 const hero = document.getElementById('heroBase');
 const phrases = ["asl?", "m/f", "hello", "where u from?", "connected", "show face", "disconnected"];
 for(let i=0; i<45; i++) {
@@ -233,7 +233,7 @@ for(let i=0; i<45; i++) {
     b.style.setProperty('--float-delay', `${delay}s`);
 
     let x, y;
-    // logic to keep bubbles out of the center (30% to 70% range)
+    // Spread out but avoid center overlap
     do { 
         x = Math.random()*90; 
         y = Math.random()*90; 
