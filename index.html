@@ -81,15 +81,16 @@ body {
     height: auto;
 }
 
-#graveVideo {
+#omegle-grave {
     width: 100%;
     height: auto;
     display: block;
-    opacity: 0;
-    transition: opacity 1s ease;
+    /* This ensures it starts invisible and fades in when the script triggers */
+    opacity: 0; 
+    transition: opacity 1.5s ease;
 }
 
-#graveVideo.visible {
+#omegle-grave.visible {
     opacity: 1;
 }
 
