@@ -30,20 +30,20 @@ display: flex; flex-direction: column; align-items: center; justify-content: cen
 overflow: hidden;
 background: #000;
 }
-.hero-overlay h1 { font-size: 5rem; color: var(--text-white-dull); text-transform: uppercase; margin: 0; text-align: center; }
+.hero-overlay h1 { font-size: 5rem; color: var(--text-white-dull); text-transform: uppercase; margin: 0; text-align: center; z-index: 10; position: relative; }
 .scrolly-sub {
 font-size: 1.6rem; margin-top: 20px; color: var(--main-green-dull);
 opacity: 0; filter: blur(20px); transform: translateY(20px);
-transition: opacity 2s ease, filter 2.5s ease, transform 2s ease;
-text-align: center;
+transition: opacity 1s ease, filter 1s ease, transform 1s ease;
+text-align: center; z-index: 10; position: relative;
 }
 .scrolly-sub.visible { opacity: 0.8; filter: blur(0px); transform: translateY(0); }
 
 .whisper {
 position: absolute; background: rgba(0, 4, 26, 0.95); color: var(--main-green-dull);
 padding: 12px 22px; border-radius: 40px; font-size: 1rem; opacity: 0;
-filter: blur(20px); transition: opacity 1.2s, filter 1.8s, transform 1.5s;
-box-shadow: 0 0 30px 10px rgba(0, 0, 0, 1); border: 1px solid rgba(74, 139, 92, 0.1); z-index: 8;
+filter: blur(20px); transition: opacity 0.6s, filter 0.8s, transform 0.8s;
+box-shadow: 0 0 30px 10px rgba(0, 0, 0, 1); border: 1px solid rgba(74, 139, 92, 0.1); z-index: 5;
 }
 .whisper.visible { opacity: 1; filter: blur(0px); transform: scale(1.05); }
 
@@ -104,7 +104,7 @@ display: flex; align-items: center; overflow: hidden;
 position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%);
 font-size: 2rem; color: var(--alert-red-dull); text-transform: uppercase;
 letter-spacing: 5px; font-weight: bold; pointer-events: none; z-index: 110;
-text-shadow: 0 0 10px rgba(184, 61, 61, 0.5); opacity: 0; transition: opacity 0.5s ease;
+text-shadow: 0 0 10px rgba(184, 61, 61, 0.5); opacity: 0; transition: opacity 0.2s ease;
 }
 .scrolly-text-overlay {
 position: absolute; left: 8%; width: 30%; z-index: 100; pointer-events: none;
@@ -218,7 +218,7 @@ hasPlayed = true;
 
 videoObserver.observe(video);
 
-// --- CONVERSATION DATA ---
+// --- CHAT SYSTEM ---
 const conversation = [
 { 
     options: ["Who are you?", "Hi"], 
@@ -262,37 +262,47 @@ setTimeout(() => {
 const hero = document.getElementById('heroBase');
 const phrases = ["asl?", "m/f", "hello", "where u from?", "connected", "show face", "disconnected"];
 for(let i=0; i<45; i++) {
-const b = document.createElement('div');
-b.className = 'whisper';
-b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
-let x, y;
-do { x = Math.random()*90; y = Math.random()*90; } while(x > 15 && x < 85 && y > 25 && y < 75);
-b.style.left = x+"%"; b.style.top = y+"%";
-b.setAttribute('data-reveal', (i / 45) * 600);
-hero.appendChild(b);
+    const b = document.createElement('div');
+    b.className = 'whisper';
+    b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
+    
+    let x, y;
+    // STRICT CENTER EXCLUSION ZONE: Whispers stay in margins to never overlap header
+    do { 
+        x = Math.random()*90; 
+        y = Math.random()*90; 
+    } while(x > 15 && x < 85 && y > 20 && y < 80); 
+    
+    b.style.left = x+"%"; 
+    b.style.top = y+"%";
+    b.setAttribute('data-reveal', (i / 45) * 600);
+    hero.appendChild(b);
 }
 
 // --- SCROLL HANDLER ---
 window.addEventListener('scroll', () => {
-const s = window.scrollY;
-if (s > 1800) document.body.style.backgroundColor = "var(--deep-blue-dull)";
-else document.body.style.backgroundColor = "#000000";
-document.querySelectorAll('.whisper').forEach(w => {
-if(s > parseInt(w.getAttribute('data-reveal'))) w.classList.add('visible');
-else w.classList.remove('visible');
-});
-if (s > 800) document.getElementById('subheading').classList.add('visible');
-else document.getElementById('subheading').classList.remove('visible');
-const steps = document.querySelectorAll('.step');
-steps.forEach(step => {
-const rect = step.getBoundingClientRect();
-if(rect.top < window.innerHeight * 0.7 && rect.bottom > window.innerHeight * 0.3) step.classList.add('active');
-else step.classList.remove('active');
-});
+    const s = window.scrollY;
+    if (s > 1800) document.body.style.backgroundColor = "var(--deep-blue-dull)";
+    else document.body.style.backgroundColor = "#000000";
+    
+    document.querySelectorAll('.whisper').forEach(w => {
+        if(s > parseInt(w.getAttribute('data-reveal'))) w.classList.add('visible');
+        else w.classList.remove('visible');
+    });
+
+    if (s > 400) document.getElementById('subheading').classList.add('visible');
+    else document.getElementById('subheading').classList.remove('visible');
+
+    const steps = document.querySelectorAll('.step');
+    steps.forEach(step => {
+        const rect = step.getBoundingClientRect();
+        if(rect.top < window.innerHeight * 0.7 && rect.bottom > window.innerHeight * 0.3) step.classList.add('active');
+        else step.classList.remove('active');
+    });
 });
 
 // --- GLOBE ---
-const targetCountryNames = ["United Arab Emirates", "India", "United Kingdom", "Netherlands", "United States of America", "Qatar", "Oman"];
+const targetCountryNames = ["Singapore", "Switzerland", "New Zealand", "Australia", "Germany", "Canada", "United Kingdom", "Netherlands", "United Arab Emirates", "South Africa", "Qatar", "Ireland", "Israel", "Portugal"];
 const world = Globe()(document.getElementById('globeViz'))
 .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
 .backgroundColor('rgba(0,0,0,0)').showAtmosphere(true).atmosphereColor("#4a8b5c")
@@ -302,19 +312,23 @@ world.controls().enableZoom = false;
 fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson')
 .then(res => res.json())
 .then(countries => {
-const filteredFeatures = countries.features.filter(f => targetCountryNames.includes(f.properties.NAME) || targetCountryNames.includes(f.properties.NAME_EN));
-world.polygonsData(countries.features).polygonCapColor(() => 'rgba(74, 139, 92, 0.05)').polygonStrokeColor(() => 'rgba(74, 139, 92, 0.4)');
-setInterval(() => {
-const country = filteredFeatures[Math.floor(Math.random() * filteredFeatures.length)];
-let coords = country.geometry.coordinates[0];
-while(Array.isArray(coords[0])) coords = coords[0];
-const [lng, lat] = coords;
-world.arcsData([{ startLat: 37, startLng: -95, endLat: lat, endLng: lng, color: ['#b83d3d', '#4a8b5c'] }]);
-world.pointOfView({ lat: lat, lng: lng, altitude: 2.0 }, 1500);
-document.getElementById('country-label').innerText = country.properties.NAME;
-document.getElementById('country-label').style.opacity = 1;
-setTimeout(() => { document.getElementById('country-label').style.opacity = 0; }, 2000);
-}, 3000);
+    const filteredFeatures = countries.features.filter(f => targetCountryNames.includes(f.properties.NAME) || targetCountryNames.includes(f.properties.NAME_EN));
+    world.polygonsData(countries.features).polygonCapColor(() => 'rgba(74, 139, 92, 0.05)').polygonStrokeColor(() => 'rgba(74, 139, 92, 0.4)');
+    
+    let countryIdx = 0;
+    // 350ms interval = all 14 countries shown in ~4.9 seconds
+    setInterval(() => {
+        const country = filteredFeatures[countryIdx % filteredFeatures.length];
+        let coords = country.geometry.coordinates[0];
+        while(Array.isArray(coords[0])) coords = coords[0];
+        const [lng, lat] = coords;
+        world.arcsData([{ startLat: 37, startLng: -95, endLat: lat, endLng: lng, color: ['#b83d3d', '#4a8b5c'] }]);
+        world.pointOfView({ lat: lat, lng: lng, altitude: 2.0 }, 300);
+        document.getElementById('country-label').innerText = country.properties.NAME;
+        document.getElementById('country-label').style.opacity = 1;
+        setTimeout(() => { document.getElementById('country-label').style.opacity = 0; }, 250);
+        countryIdx++;
+    }, 350);
 });
 </script>
 </body>
