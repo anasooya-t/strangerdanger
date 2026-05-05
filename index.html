@@ -77,7 +77,7 @@ margin: 60px 0;
 }
 
 .grave-container {
-flex: 0 0 300px; /* Adjust based on video aspect ratio */
+flex: 0 0 300px; 
 height: auto;
 }
 
@@ -85,7 +85,6 @@ height: auto;
 width: 100%;
 height: auto;
 display: block;
-/* This ensures it starts invisible and fades in when the script triggers */
 opacity: 0;
 transition: opacity 1.5s ease;
 }
@@ -211,7 +210,7 @@ if(entry.isIntersecting) {
 video.classList.add('visible');
 if(!hasPlayed) {
 video.play();
-hasPlayed = true; // Prevents the video from re-playing from the start
+hasPlayed = true; 
 }
 }
 });
@@ -221,29 +220,41 @@ videoObserver.observe(video);
 
 // --- CONVERSATION DATA ---
 const conversation = [
-{ options: ["Who are you?", "Hi"], responses: ["I am a person, u?", "How are you?"] },
-{ options: ["What is this place?", "I am good, how are you?"], responses: ["A place to talk to random strangers I guess haha", "I am good, Where are you from?"] },
-{ options: ["Why would people do that?", "USA"], responses: ["Cuz they are bored I think", "How old are you?"] },
-{ options: ["How can they trust anything over here?", "24"], responses: ["Idk they just try", "I'm kinda horny, is that ok?"] },
-{ options: ["What do you like to do here?", null], responses: ["I'm kinda horny, is that ok?", null] }
+{ 
+    options: ["Who are you?", "Hi"], 
+    responses: ["I am a guy, u?", "I am a guy, u?"] 
+},
+{ 
+    options: ["Just a student", "14/F/USA"], 
+    responses: ["cool. show face?", "cool. show face?"] 
+},
+{ 
+    options: ["I don't have a camera", "Why?"], 
+    responses: ["I'm kinda horny, is that ok?", "I'm kinda horny, is that ok?"] 
+}
 ];
 
 function nextStep(optionIdx, step) {
 const log = document.getElementById('chat-log');
 const optContainer = document.getElementById('chat-options');
+
 log.innerHTML += `<div class="msg"><span class="you">You:</span> ${conversation[step].options[optionIdx]}</div>`;
 optContainer.innerHTML = '';
+
 setTimeout(() => {
-const reply = conversation[step].responses[optionIdx];
-log.innerHTML += `<div class="msg"><span class="stranger">Stranger:</span> ${reply}</div>`;
-log.scrollTop = log.scrollHeight;
-const next = step + 1;
-if (conversation[next] && (conversation[next].options[0] || conversation[next].options[1])) {
-optContainer.innerHTML = `
-<button class="reply-btn" onclick="nextStep(0, ${next})">"${conversation[next].options[0]}"</button>
-${conversation[next].options[1] ? `<button class="reply-btn" onclick="nextStep(1, ${next})">"${conversation[next].options[1]}"</button>` : ''}
-`;
-}
+    const reply = conversation[step].responses[optionIdx];
+    log.innerHTML += `<div class="msg"><span class="stranger">Stranger:</span> ${reply}</div>`;
+    log.scrollTop = log.scrollHeight;
+    
+    const next = step + 1;
+    if (conversation[next]) {
+        optContainer.innerHTML = `
+            <button class="reply-btn" onclick="nextStep(0, ${next})">"${conversation[next].options[0]}"</button>
+            <button class="reply-btn" onclick="nextStep(1, ${next})">"${conversation[next].options[1]}"</button>
+        `;
+    } else {
+        optContainer.innerHTML = `<p style="color: var(--alert-red-dull); font-style: italic;">Stranger has disconnected.</p>`;
+    }
 }, 1000);
 }
 
