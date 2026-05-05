@@ -67,30 +67,29 @@ box-shadow: 0 0 60px rgba(0, 0, 0, 0.9); text-align: center;
 .article-content p { margin-bottom: 35px; }
 .article-quote { font-style: italic; border-left: 3px solid var(--alert-red-dull); padding-left: 20px; margin: 45px 0; color: #fff; font-size: 1.55rem; }
 
-/* --- VIDEO SIDE-BY-SIDE LAYOUT --- */
-.quote-with-grave {
-display: flex;
-align-items: center;
-justify-content: space-between;
-gap: 30px;
-margin: 60px 0;
+/* --- VIDEO POPUP (IN MARGIN) --- */
+.grave-container {
+position: fixed;
+right: 2%;
+top: 50%;
+transform: translateY(-50%);
+width: 280px;
+z-index: 100;
+pointer-events: none;
+opacity: 0;
+transition: opacity 1s ease, transform 1s ease;
 }
 
-.grave-container {
-flex: 0 0 300px; 
-height: auto;
+.grave-container.visible {
+opacity: 1;
+transform: translateY(-50%) scale(1.1);
 }
 
 #omegle-grave2 {
 width: 100%;
 height: auto;
-display: block;
-opacity: 0;
-transition: opacity 1.5s ease;
-}
-
-#omegle-grave2.visible {
-opacity: 1;
+border-radius: 10px;
+box-shadow: 0 0 30px rgba(0,0,0,0.8);
 }
 
 /* --- GLOBE --- */
@@ -104,10 +103,10 @@ display: flex; align-items: center; overflow: hidden;
 position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%);
 font-size: 2rem; color: var(--alert-red-dull); text-transform: uppercase;
 letter-spacing: 5px; font-weight: bold; pointer-events: none; z-index: 110;
-text-shadow: 0 0 10px rgba(184, 61, 61, 0.5); opacity: 0; transition: opacity 0.2s ease;
+text-shadow: 0 0 10px rgba(184, 61, 61, 0.5); opacity: 0; transition: opacity 0.3s ease;
 }
 .scrolly-text-overlay {
-position: absolute; left: 8%; width: 30%; z-index: 100; pointer-events: none;
+position: absolute; left: 8%; width: 35%; z-index: 100; pointer-events: none;
 top: 10%; height: 80%; display: flex; flex-direction: column; justify-content: center;
 }
 .step { height: 100vh; display: flex; align-items: center; opacity: 0; transition: 1s; padding-bottom: 50vh;}
@@ -159,7 +158,7 @@ color: var(--text-white-dull); pointer-events: auto; box-shadow: 0 0 30px rgba(0
 <div id="country-label">Select Country</div>
 <div class="scrolly-text-overlay">
 <div class="step" data-step="0"><div class="step-card"><p>The website Umingle.com was used from the US for 1 hour...</p></div></div>
-<div class="step" data-step="1"><div class="step-card"><p>...and these were the countries that the random video chatting platform umingle.com connected to in 12 minutes.</p></div></div>
+<div class="step" data-step="1"><div class="step-card"><p>In 12 minutes of getting on the platform Umingle.com, strangers from the following countries joined the call on the other end.</p></div></div>
 </div>
 </div>
 </section>
@@ -173,15 +172,16 @@ color: var(--text-white-dull); pointer-events: auto; box-shadow: 0 0 30px rgba(0
 <div class="article-quote">“We have a list of twenty or even thirty alternatives who use the same basic system,[where] you can chat/video call with a stranger and those are the platforms where we see a lot of predatory behaviour,” said Niels Van Paemel.</div>
 <p>Omegle.com developed in 2009 by Leif K. Brooks a software programmer in Oregon used to get up to 66 million monthly visits when it was active. Along with similar websites like Chatroulette, it became a cultural moment on the internet as social media influencers picked up the trend and started posting their interactions online.</p>
 
-<div class="quote-with-grave">
-<div class="article-quote" style="margin:0; flex: 1;">
-“If the internet is a manifestation of the ‘global village,’ Omegle was meant to be a way of strolling down a street in that village, striking up conversations with the people you ran into along the way,” Brooks wrote on his website that is no longer active and holds an image of a tombstone.
+<div class="grave-container" id="graveTrigger">
+    <video id="omegle-grave2" muted playsinline>
+        <source src="assets/omegle-grave2.mp4" type="video/mp4">
+    </video>
 </div>
-<div class="grave-container">
-<video id="omegle-grave2" muted playsinline>
-<source src="assets/omegle-grave2.mp4" type="video/mp4">
-</video>
-</div>
+
+<div id="quote-area">
+    <div class="article-quote">
+    “If the internet is a manifestation of the ‘global village,’ Omegle was meant to be a way of strolling down a street in that village, striking up conversations with the people you ran into along the way,” Brooks wrote on his website that is no longer active and holds an image of a tombstone.
+    </div>
 </div>
 
 <p>The National Center for Missing and Exploited Children that records reports of online exploitation of children, received 6,08,601 reports against Omegle in 2022 alone. The website finally was shut down and declared bankrupt after a case where an 11-year-old was connected with a man in his late 30s who was convicted of grooming the child for three years.</p>
@@ -200,52 +200,38 @@ color: var(--text-white-dull); pointer-events: auto; box-shadow: 0 0 30px rgba(0
 </section>
 
 <script>
-// --- VIDEO CONTROLS ---
 const video = document.getElementById('omegle-grave2');
+const graveContainer = document.getElementById('graveTrigger');
+const quoteArea = document.getElementById('quote-area');
 let hasPlayed = false;
 
 const videoObserver = new IntersectionObserver((entries) => {
 entries.forEach(entry => {
-if(entry.isIntersecting) {
-video.classList.add('visible');
-if(!hasPlayed) {
-video.play();
-hasPlayed = true; 
-}
-}
+    if(entry.isIntersecting) {
+        graveContainer.classList.add('visible');
+        if(!hasPlayed) { video.play(); hasPlayed = true; }
+    } else {
+        graveContainer.classList.remove('visible');
+    }
 });
-}, { threshold: 0.5 });
+}, { threshold: 0.2 });
+videoObserver.observe(quoteArea);
 
-videoObserver.observe(video);
-
-// --- CHAT SYSTEM ---
 const conversation = [
-{ 
-    options: ["Who are you?", "Hi"], 
-    responses: ["I am a guy, u?", "I am a guy, u?"] 
-},
-{ 
-    options: ["Just a student", "14/F/USA"], 
-    responses: ["cool. show face?", "cool. show face?"] 
-},
-{ 
-    options: ["I don't have a camera", "Why?"], 
-    responses: ["I'm kinda horny, is that ok?", "I'm kinda horny, is that ok?"] 
-}
+{ options: ["Who are you?", "Hi"], responses: ["I am a guy, u?", "I am a guy, u?"] },
+{ options: ["Just a student", "14/F/USA"], responses: ["cool. show face?", "cool. show face?"] },
+{ options: ["I don't have a camera", "Why?"], responses: ["I'm kinda horny, is that ok?", "I'm kinda horny, is that ok?"] }
 ];
 
 function nextStep(optionIdx, step) {
 const log = document.getElementById('chat-log');
 const optContainer = document.getElementById('chat-options');
-
 log.innerHTML += `<div class="msg"><span class="you">You:</span> ${conversation[step].options[optionIdx]}</div>`;
 optContainer.innerHTML = '';
-
 setTimeout(() => {
     const reply = conversation[step].responses[optionIdx];
     log.innerHTML += `<div class="msg"><span class="stranger">Stranger:</span> ${reply}</div>`;
     log.scrollTop = log.scrollHeight;
-    
     const next = step + 1;
     if (conversation[next]) {
         optContainer.innerHTML = `
@@ -258,41 +244,29 @@ setTimeout(() => {
 }, 1000);
 }
 
-// --- HERO WHISPERS ---
 const hero = document.getElementById('heroBase');
 const phrases = ["asl?", "m/f", "hello", "where u from?", "connected", "show face", "disconnected"];
 for(let i=0; i<45; i++) {
     const b = document.createElement('div');
     b.className = 'whisper';
     b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
-    
     let x, y;
-    // STRICT CENTER EXCLUSION ZONE: Whispers stay in margins to never overlap header
-    do { 
-        x = Math.random()*90; 
-        y = Math.random()*90; 
-    } while(x > 15 && x < 85 && y > 20 && y < 80); 
-    
-    b.style.left = x+"%"; 
-    b.style.top = y+"%";
+    do { x = Math.random()*90; y = Math.random()*90; } while(x > 15 && x < 85 && y > 20 && y < 80); 
+    b.style.left = x+"%"; b.style.top = y+"%";
     b.setAttribute('data-reveal', (i / 45) * 600);
     hero.appendChild(b);
 }
 
-// --- SCROLL HANDLER ---
 window.addEventListener('scroll', () => {
     const s = window.scrollY;
     if (s > 1800) document.body.style.backgroundColor = "var(--deep-blue-dull)";
     else document.body.style.backgroundColor = "#000000";
-    
     document.querySelectorAll('.whisper').forEach(w => {
         if(s > parseInt(w.getAttribute('data-reveal'))) w.classList.add('visible');
         else w.classList.remove('visible');
     });
-
     if (s > 400) document.getElementById('subheading').classList.add('visible');
     else document.getElementById('subheading').classList.remove('visible');
-
     const steps = document.querySelectorAll('.step');
     steps.forEach(step => {
         const rect = step.getBoundingClientRect();
@@ -301,7 +275,6 @@ window.addEventListener('scroll', () => {
     });
 });
 
-// --- GLOBE ---
 const targetCountryNames = ["Singapore", "Switzerland", "New Zealand", "Australia", "Germany", "Canada", "United Kingdom", "Netherlands", "United Arab Emirates", "South Africa", "Qatar", "Ireland", "Israel", "Portugal"];
 const world = Globe()(document.getElementById('globeViz'))
 .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
@@ -314,21 +287,19 @@ fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/data
 .then(countries => {
     const filteredFeatures = countries.features.filter(f => targetCountryNames.includes(f.properties.NAME) || targetCountryNames.includes(f.properties.NAME_EN));
     world.polygonsData(countries.features).polygonCapColor(() => 'rgba(74, 139, 92, 0.05)').polygonStrokeColor(() => 'rgba(74, 139, 92, 0.4)');
-    
     let countryIdx = 0;
-    // 350ms interval = all 14 countries shown in ~4.9 seconds
     setInterval(() => {
         const country = filteredFeatures[countryIdx % filteredFeatures.length];
         let coords = country.geometry.coordinates[0];
         while(Array.isArray(coords[0])) coords = coords[0];
         const [lng, lat] = coords;
         world.arcsData([{ startLat: 37, startLng: -95, endLat: lat, endLng: lng, color: ['#b83d3d', '#4a8b5c'] }]);
-        world.pointOfView({ lat: lat, lng: lng, altitude: 2.0 }, 300);
+        world.pointOfView({ lat: lat, lng: lng, altitude: 2.0 }, 600);
         document.getElementById('country-label').innerText = country.properties.NAME;
         document.getElementById('country-label').style.opacity = 1;
-        setTimeout(() => { document.getElementById('country-label').style.opacity = 0; }, 250);
+        setTimeout(() => { document.getElementById('country-label').style.opacity = 0; }, 500);
         countryIdx++;
-    }, 350);
+    }, 750);
 });
 </script>
 </body>
