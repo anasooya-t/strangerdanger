@@ -70,10 +70,10 @@ box-shadow: 0 0 60px rgba(0, 0, 0, 0.9); text-align: center;
 /* --- VIDEO POPUP (IN MARGIN) --- */
 .grave-container {
 position: fixed;
-right: 2%;
+right: 5%;
 top: 50%;
 transform: translateY(-50%);
-width: 280px;
+width: 300px;
 z-index: 100;
 pointer-events: none;
 opacity: 0;
@@ -82,14 +82,14 @@ transition: opacity 1s ease, transform 1s ease;
 
 .grave-container.visible {
 opacity: 1;
-transform: translateY(-50%) scale(1.1);
+transform: translateY(-50%) scale(1);
 }
 
 #omegle-grave2 {
 width: 100%;
 height: auto;
-border-radius: 10px;
-box-shadow: 0 0 30px rgba(0,0,0,0.8);
+border-radius: 12px;
+box-shadow: 0 0 40px rgba(0,0,0,0.9);
 }
 
 /* --- GLOBE --- */
@@ -214,7 +214,7 @@ entries.forEach(entry => {
         graveContainer.classList.remove('visible');
     }
 });
-}, { threshold: 0.2 });
+}, { threshold: 0.1 });
 videoObserver.observe(quoteArea);
 
 const conversation = [
@@ -251,7 +251,12 @@ for(let i=0; i<45; i++) {
     b.className = 'whisper';
     b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
     let x, y;
-    do { x = Math.random()*90; y = Math.random()*90; } while(x > 15 && x < 85 && y > 20 && y < 80); 
+    // PUSHED TO MARGINS: Center zone (20% to 80%) is strictly forbidden to keep header clear
+    do { 
+        x = Math.random()*95; 
+        y = Math.random()*95; 
+    } while(x > 20 && x < 80 && y > 25 && y < 75); 
+    
     b.style.left = x+"%"; b.style.top = y+"%";
     b.setAttribute('data-reveal', (i / 45) * 600);
     hero.appendChild(b);
@@ -294,12 +299,12 @@ fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/data
         while(Array.isArray(coords[0])) coords = coords[0];
         const [lng, lat] = coords;
         world.arcsData([{ startLat: 37, startLng: -95, endLat: lat, endLng: lng, color: ['#b83d3d', '#4a8b5c'] }]);
-        world.pointOfView({ lat: lat, lng: lng, altitude: 2.0 }, 600);
+        world.pointOfView({ lat: lat, lng: lng, altitude: 2.0 }, 800);
         document.getElementById('country-label').innerText = country.properties.NAME;
         document.getElementById('country-label').style.opacity = 1;
-        setTimeout(() => { document.getElementById('country-label').style.opacity = 0; }, 500);
+        setTimeout(() => { document.getElementById('country-label').style.opacity = 0; }, 700);
         countryIdx++;
-    }, 750);
+    }, 1000); // 1 second per country
 });
 </script>
 </body>
