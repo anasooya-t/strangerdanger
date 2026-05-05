@@ -67,29 +67,31 @@ box-shadow: 0 0 60px rgba(0, 0, 0, 0.9); text-align: center;
 .article-content p { margin-bottom: 35px; }
 .article-quote { font-style: italic; border-left: 3px solid var(--alert-red-dull); padding-left: 20px; margin: 45px 0; color: #fff; font-size: 1.55rem; }
 
-/* --- VIDEO POPUP (IN MARGIN) --- */
+/* --- VIDEO POPUP (BLENDED MARGIN) --- */
 .grave-container {
 position: fixed;
 right: 5%;
 top: 50%;
 transform: translateY(-50%);
-width: 300px;
+width: 240px; /* Slightly smaller */
 z-index: 100;
 pointer-events: none;
 opacity: 0;
-transition: opacity 1s ease, transform 1s ease;
+transition: opacity 1.5s ease, transform 1.5s ease;
+/* Blends the video background into the site background */
+-webkit-mask-image: radial-gradient(circle, black 40%, transparent 80%);
+mask-image: radial-gradient(circle, black 40%, transparent 80%);
 }
 
 .grave-container.visible {
-opacity: 1;
+opacity: 0.7; /* Slightly transparent to help blending */
 transform: translateY(-50%) scale(1);
 }
 
 #omegle-grave2 {
 width: 100%;
 height: auto;
-border-radius: 12px;
-box-shadow: 0 0 40px rgba(0,0,0,0.9);
+display: block;
 }
 
 /* --- GLOBE --- */
@@ -173,7 +175,7 @@ color: var(--text-white-dull); pointer-events: auto; box-shadow: 0 0 30px rgba(0
 <p>Omegle.com developed in 2009 by Leif K. Brooks a software programmer in Oregon used to get up to 66 million monthly visits when it was active. Along with similar websites like Chatroulette, it became a cultural moment on the internet as social media influencers picked up the trend and started posting their interactions online.</p>
 
 <div class="grave-container" id="graveTrigger">
-    <video id="omegle-grave2" muted playsinline>
+    <video id="omegle-grave2" muted playsinline loop>
         <source src="assets/omegle-grave2.mp4" type="video/mp4">
     </video>
 </div>
@@ -251,7 +253,6 @@ for(let i=0; i<45; i++) {
     b.className = 'whisper';
     b.innerText = phrases[Math.floor(Math.random()*phrases.length)];
     let x, y;
-    // PUSHED TO MARGINS: Center zone (20% to 80%) is strictly forbidden to keep header clear
     do { 
         x = Math.random()*95; 
         y = Math.random()*95; 
@@ -299,12 +300,12 @@ fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/data
         while(Array.isArray(coords[0])) coords = coords[0];
         const [lng, lat] = coords;
         world.arcsData([{ startLat: 37, startLng: -95, endLat: lat, endLng: lng, color: ['#b83d3d', '#4a8b5c'] }]);
-        world.pointOfView({ lat: lat, lng: lng, altitude: 2.0 }, 800);
+        world.pointOfView({ lat: lat, lng: lng, altitude: 2.0 }, 1000);
         document.getElementById('country-label').innerText = country.properties.NAME;
         document.getElementById('country-label').style.opacity = 1;
-        setTimeout(() => { document.getElementById('country-label').style.opacity = 0; }, 700);
+        setTimeout(() => { document.getElementById('country-label').style.opacity = 0; }, 900);
         countryIdx++;
-    }, 1000); // 1 second per country
+    }, 1250); // 1.25 seconds per country
 });
 </script>
 </body>
